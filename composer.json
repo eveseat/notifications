@@ -1,0 +1,24 @@
+{
+    "name": "eveseat/notifications",
+    "description": "SeAT Notifications Components",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Leon Jacobs",
+            "email": "leonja511@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Seat\\Notifications\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.5.9",
+        "laravel/framework": "5.1.*",
+        "psr/log": "1.0.0",
+        "eveseat/eveapi": "1.*",
+        "eveseat/services": "1.*"
+    }
+}
