@@ -74,7 +74,8 @@ class MemberInactivity extends Base
                 ->set('recipient', $recipient)
                 ->set('subject', 'Inactive Member Notification')
                 ->set('message', $inactive_member->name . ' has been ' .
-                    'inactive for more than 3 months.');
+                    'inactive for more than 3 months. The last logoff was at: ' .
+                    $inactive_member->logoffDateTime);
 
             $this->sendNotification($message);
         }
