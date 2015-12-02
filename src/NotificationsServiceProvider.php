@@ -51,6 +51,8 @@ class NotificationsServiceProvider extends ServiceProvider
         $this->add_views();
 
         $this->add_publications();
+
+        $this->add_routes();
     }
 
     /**
@@ -65,6 +67,10 @@ class NotificationsServiceProvider extends ServiceProvider
             __DIR__ . '/Config/notifications.config.php', 'notifications.config');
         $this->mergeConfigFrom(
             __DIR__ . '/Config/notifications.notifiers.php', 'notifications.notifiers');
+
+        // Include this packages menu items
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
     }
 
     /**
@@ -86,5 +92,16 @@ class NotificationsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/database/migrations/' => database_path('migrations'),
         ]);
+    }
+
+    /**
+     * Include the routes
+     */
+    public function add_routes()
+    {
+
+        if (!$this->app->routesAreCached()) {
+            include __DIR__ . '/Http/routes.php';
+        }
     }
 }
