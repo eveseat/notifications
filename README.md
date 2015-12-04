@@ -1,3 +1,4 @@
+![SeAT](http://i.imgur.com/aPPOxSK.png)
 # notifications
 
 [![Code Climate](https://codeclimate.com/github/eveseat/notifications/badges/gpa.svg)](https://codeclimate.com/github/eveseat/notifications)
