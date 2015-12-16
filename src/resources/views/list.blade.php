@@ -1,13 +1,13 @@
 @extends('web::layouts.grids.12')
 
-@section('title', 'Notifications')
-@section('page_header', 'Notifications')
+@section('title', trans('web::seat.notifications'))
+@section('page_header', trans('web::seat.notifications'))
 
 @section('full')
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Notifications
+      <h3 class="panel-title">{{ trans('web::seat.notifications') }}
         <span class="pull-right">
           <a href="{{ route('notifications.clear') }}" class="btn btn-xs btn-danger confirmlink">Clear</a>
         </span>
@@ -18,9 +18,9 @@
       <table class="table table-condensed table-hover table-responsive">
         <tbody>
         <tr>
-          <th>Sent</th>
-          <th>Subject</th>
-          <th>Message</th>
+          <th>{{ trans('web::seat.date') }}</th>
+          <th>{{ trans('web::seat.subject') }}</th>
+          <th>{{ trans('web::seat.message') }}</th>
         </tr>
 
         @foreach($notifications as $notification)
@@ -48,7 +48,7 @@
       </span>
     </div>
     <div class="panel-footer">
-      {{ count($notifications) }} notifications
+      {{ count($notifications) }} {{ trans('web::seat.notifications') }}
     </div>
   </div>
 
