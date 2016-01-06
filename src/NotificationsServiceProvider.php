@@ -56,24 +56,6 @@ class NotificationsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-
-        $this->mergeConfigFrom(
-            __DIR__ . '/Config/notifications.config.php', 'notifications.config');
-        $this->mergeConfigFrom(
-            __DIR__ . '/Config/notifications.notifiers.php', 'notifications.notifiers');
-
-        // Include this packages menu items
-        $this->mergeConfigFrom(
-            __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
-    }
-
-    /**
      * Set the path and namespace for the vies
      */
     public function add_views()
@@ -103,5 +85,23 @@ class NotificationsServiceProvider extends ServiceProvider
         if (!$this->app->routesAreCached()) {
             include __DIR__ . '/Http/routes.php';
         }
+    }
+
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/notifications.config.php', 'notifications.config');
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/notifications.notifiers.php', 'notifications.notifiers');
+
+        // Include this packages menu items
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
     }
 }
