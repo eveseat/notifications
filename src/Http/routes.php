@@ -20,8 +20,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 Route::group([
-    'namespace' => 'Seat\Notifications\Http\Controllers',
-    'prefix'    => 'notifications'
+    'namespace'  => 'Seat\Notifications\Http\Controllers',
+    'prefix'     => 'notifications',
+    'middleware' => 'web'
 ], function () {
 
     Route::get('/', [
