@@ -21,8 +21,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Seat\Notifications\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Seat\Notifications\Models\Notification;
+use Seat\Web\Http\Controllers\Controller;
 
 /**
  * Class NotificationController
