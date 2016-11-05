@@ -49,13 +49,6 @@ abstract class Base
     protected $message;
 
     /**
-     * A required method to call a notifications class
-     *
-     * @return mixed
-     */
-    abstract function call();
-
-    /**
      * Construct an instance by setting up the notifiers
      */
     public function __construct()
@@ -79,6 +72,13 @@ abstract class Base
         $this->notifiers = config('notifications.notifiers');
 
     }
+
+    /**
+     * A required method to call a notifications class
+     *
+     * @return mixed
+     */
+    abstract function call();
 
     /**
      * Determine which users have a specified permission
@@ -186,6 +186,22 @@ abstract class Base
     }
 
     /**
+     * Create a unique hash based on parts of a
+     * message container
+     *
+     * @param \Seat\Notifications\Containers\Message $message
+     *
+     * @return string
+     */
+    protected function hashMessage(Message $message)
+    {
+
+        return md5(implode(",", [
+            $message->recipient->id, $message->subject, $message->message]));
+
+    }
+
+    /**
      * Create / mark a message as sent.
      *
      * @param \Seat\Notifications\Containers\Message $message
@@ -201,21 +217,5 @@ abstract class Base
         ]);
 
         return;
-    }
-
-    /**
-     * Create a unique hash based on parts of a
-     * message container
-     *
-     * @param \Seat\Notifications\Containers\Message $message
-     *
-     * @return string
-     */
-    protected function hashMessage(Message $message)
-    {
-
-        return md5(implode(",", [
-            $message->recipient->id, $message->subject, $message->message]));
-
     }
 }
