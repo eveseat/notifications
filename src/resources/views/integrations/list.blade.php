@@ -76,7 +76,7 @@
 
           // Loop over the configuration and prep the return string
           for (var k in data) {
-            if(data.hasOwnProperty(k)) {
+            if (data.hasOwnProperty(k)) {
               return_string = return_string + k + ': ' + data[k] + '<br>';
             }
           }
@@ -84,6 +84,7 @@
           return return_string;
         }
         },
+        {data: 'actions', name: 'actions', searchable: false},
       ]
     });
   });

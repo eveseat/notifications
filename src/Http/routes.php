@@ -45,6 +45,11 @@ Route::group([
             'uses' => 'IntegrationsController@getIntegrationsData'
         ]);
 
+        Route::get('/delete/{integration_id}', [
+            'as'   => 'notifications.integrations.delete',
+            'uses' => 'IntegrationsController@getDeleteIntegration'
+        ]);
+
         // New Integrations
 
         // Email

@@ -50,7 +50,32 @@ class IntegrationsController extends Controller
     {
 
         return Datatables::of(Integration::all())
+            ->editColumn('type', function ($row) {
+
+                return ucfirst($row->type);
+            })
+            ->addColumn('actions', function ($row) {
+
+                return view(
+                    'notifications::integrations.partials.deleteintegration', compact('row')
+                )->render();
+            })
             ->make(true);
+    }
+
+    /**
+     * @param int $integration_id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getDeleteIntegration(int $integration_id)
+    {
+
+        Integration::findOrFail($integration_id)
+            ->delete();
+
+        return redirect()->back()
+            ->with('success', 'Integration deleted!');
     }
 
     /**
