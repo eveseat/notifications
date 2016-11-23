@@ -23,6 +23,10 @@ namespace Seat\Notifications\Http\Validation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class SlackIntegration
+ * @package Seat\Notifications\Http\Validation
+ */
 class SlackIntegration extends FormRequest
 {
 

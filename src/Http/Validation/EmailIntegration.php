@@ -23,6 +23,10 @@ namespace Seat\Notifications\Http\Validation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class EmailIntegration
+ * @package Seat\Notifications\Http\Validation
+ */
 class EmailIntegration extends FormRequest
 {
 

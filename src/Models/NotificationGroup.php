@@ -46,6 +46,9 @@ class NotificationGroup extends Model
         return $this->belongsToMany(Integration::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function notificationChannels()
     {
 

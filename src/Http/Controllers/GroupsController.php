@@ -23,9 +23,16 @@ namespace Seat\Notifications\Http\Controllers;
 
 use Seat\Web\Http\Controllers\Controller;
 
-class GroupsController extends Controller 
+/**
+ * Class GroupsController
+ * @package Seat\Notifications\Http\Controllers
+ */
+class GroupsController extends Controller
 {
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getGroups()
     {
 
