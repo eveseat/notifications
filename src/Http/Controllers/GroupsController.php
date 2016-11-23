@@ -19,13 +19,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-namespace Seat\Notifications\Notifiers;
+namespace Seat\Notifications\Http\Controllers;
 
-use Seat\Notifications\Containers\Message;
+use Seat\Web\Http\Controllers\Controller;
 
-interface NotifierInterface
+class GroupsController extends Controller 
 {
 
-    public function notify(Message $message);
+    public function getGroups()
+    {
+
+        return view('notifications::groups.list');
+    }
 
 }

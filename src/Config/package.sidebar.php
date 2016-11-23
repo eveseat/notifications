@@ -22,9 +22,32 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 return [
 
     'notifications' => [
-        'name'          => 'Notifications',
+        'name'          => 'notifications',
+        'label'         => 'Notifications',
         'icon'          => 'fa-hand-stop-o',
         'route_segment' => 'notifications',
-        'route'         => 'notifications.list'
-    ]
+        'entries'       => [
+            [
+                'name'       => 'integrations',
+                'label'      => 'Integrations',
+                'permission' => 'notifications',
+                'icon'       => 'fa-toggle-on',
+                'route'      => 'notifications.integrations.list'
+            ],
+            [
+                'name'  => 'notifications',
+                'label' => 'My Notifications',
+                'icon'  => 'fa-envelope-square',
+                'route' => 'notifications.list'
+            ],
+            [
+                'name'       => 'notification.groups',
+                'label'      => 'Notifications Groups',
+                'permission' => 'notifications',
+                'icon'       => 'fa-object-group',
+                'route'      => 'notifications.groups.list'
+            ]
+        ]
+    ],
+
 ];

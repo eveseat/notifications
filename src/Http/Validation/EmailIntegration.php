@@ -19,22 +19,36 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-namespace Seat\Notifications\Http\Controllers;
+namespace Seat\Notifications\Http\Validation;
 
-use Seat\Web\Http\Controllers\Controller;
+use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Class NotificationController
- * @package Seat\Notifications\Http\Controllers
- */
-class NotificationController extends Controller
+class EmailIntegration extends FormRequest
 {
 
-    public function getNotifications()
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
 
-        return view('notifications::notifications.list');
-
+        return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+
+        return [
+
+            'name'  => 'required|max:255|unique:integrations,name',
+            'email' => 'required|email'
+        ];
+    }
 }

@@ -19,22 +19,37 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-namespace Seat\Notifications\Http\Controllers;
+namespace Seat\Notifications\Models;
 
-use Seat\Web\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class NotificationController
- * @package Seat\Notifications\Http\Controllers
+ * Class Integration
+ * @package Seat\Notifications\Models
  */
-class NotificationController extends Controller
+class Integration extends Model
 {
 
-    public function getNotifications()
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'settings' => 'array'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'type', 'settings'
+    ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function notification_groups()
     {
 
-        return view('notifications::notifications.list');
-
+        return $this->belongsToMany(NotificationGroup::class);
     }
-
 }

@@ -18,6 +18,7 @@
         "php": ">=7.0",
         "laravel/framework": "5.3.*",
         "eveseat/eveapi": "~1.0",
-        "eveseat/services": "~1.0"
+        "eveseat/services": "~1.0",
+        "yajra/laravel-datatables-oracle": "^6.21"
     }
 }

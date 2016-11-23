@@ -19,8 +19,36 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-// An array of classes containing notifier implementations
-return [
+namespace Seat\Notifications\Http\Validation;
 
-    Seat\Notifications\Notifiers\EmailNotifier::class
-];
+use Illuminate\Foundation\Http\FormRequest;
+
+class SlackIntegration extends FormRequest
+{
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+
+        return [
+
+            'name' => 'required|max:255|unique:integrations,name',
+            'url'  => 'required|url'
+        ];
+    }
+}

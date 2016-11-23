@@ -95,10 +95,13 @@ class NotificationsServiceProvider extends ServiceProvider
     public function register()
     {
 
+        // Package specific configuration
         $this->mergeConfigFrom(
             __DIR__ . '/Config/notifications.config.php', 'notifications.config');
+
+        // Add new permissions
         $this->mergeConfigFrom(
-            __DIR__ . '/Config/notifications.notifiers.php', 'notifications.notifiers');
+            __DIR__ . '/Config/notifications.permissions.php', 'web.permissions');
 
         // Include this packages menu items
         $this->mergeConfigFrom(

@@ -19,22 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-namespace Seat\Notifications\Http\Controllers;
+return [
 
-use Seat\Web\Http\Controllers\Controller;
-
-/**
- * Class NotificationController
- * @package Seat\Notifications\Http\Controllers
- */
-class NotificationController extends Controller
-{
-
-    public function getNotifications()
-    {
-
-        return view('notifications::notifications.list');
-
-    }
-
-}
+    'notifications',
+];

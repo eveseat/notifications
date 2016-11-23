@@ -27,10 +27,59 @@ Route::group([
 
     Route::get('/', [
         'as'   => 'notifications.list',
-        'uses' => 'NotificationController@listNotifications']);
+        'uses' => 'NotificationController@getNotifications'
+    ]);
 
-    Route::get('/clear', [
-        'as'   => 'notifications.clear',
-        'uses' => 'NotificationController@clearNotifications']);
+    Route::group([
+        'prefix'     => 'integrations',
+        'middleware' => 'bouncer:notifications'
+    ], function () {
+
+        Route::get('/', [
+            'as'   => 'notifications.integrations.list',
+            'uses' => 'IntegrationsController@getIntegrations'
+        ]);
+
+        Route::get('/data', [
+            'as'   => 'notifications.integrations.list.data',
+            'uses' => 'IntegrationsController@getIntegrationsData'
+        ]);
+
+        // New Integrations
+
+        // Email
+        Route::get('/new/email', [
+            'as'   => 'notifications.integrations.new.email',
+            'uses' => 'IntegrationsController@getNewEmail'
+        ]);
+
+        Route::post('/new/email', [
+            'as'   => 'notifications.integrations.new.email.add',
+            'uses' => 'IntegrationsController@postNewEmail'
+        ]);
+
+        // Slack
+        Route::get('/new/slack', [
+            'as'   => 'notifications.integrations.new.slack',
+            'uses' => 'IntegrationsController@getNewSlack'
+        ]);
+
+        Route::post('/new/slack', [
+            'as'   => 'notifications.integrations.new.slack.add',
+            'uses' => 'IntegrationsController@postNewSlack'
+        ]);
+
+    });
+
+    Route::group([
+        'prefix'     => 'groups',
+        'middleware' => 'bouncer:notifications'
+    ], function () {
+
+        Route::get('/', [
+            'as'   => 'notifications.groups.list',
+            'uses' => 'GroupsController@getGroups'
+        ]);
+    });
 
 });
