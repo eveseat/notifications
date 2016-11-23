@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Seat\Notifications\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Class NotificationGroup
@@ -29,6 +30,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class NotificationGroup extends Model
 {
+
+    use Notifiable;
 
     /**
      * @var array
@@ -47,11 +50,41 @@ class NotificationGroup extends Model
     }
 
     /**
+     * Get all of the configured notification channels.
+     *
      * @return mixed
      */
-    public function notificationChannels()
+    public function notificationChannels() : array
     {
 
-        return $this->integrations()->pluck('type');
+        return $this->integrations()
+            ->pluck('type')->unique()->all();
     }
+
+    /**
+     * Return the URL used to route Slack Notifications.
+     *
+     * @return mixed
+     */
+    public function routeNotificationForSlack() : string
+    {
+
+        return $this->integrations
+                   ->where('type', 'slack')
+                   ->first()->settings['url'];
+    }
+
+    /**
+     * Return the email address used to route Mail Notifications.
+     *
+     * @return mixed
+     */
+    public function routeNotificationForMail() : string
+    {
+
+        return $this->integrations
+                   ->where('type', 'mail')
+                   ->first()->settings['email'];
+    }
+
 }

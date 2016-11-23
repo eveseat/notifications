@@ -99,6 +99,10 @@ class NotificationsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/Config/notifications.config.php', 'notifications.config');
 
+        // Registered notifiers
+        $this->mergeConfigFrom(
+            __DIR__ . '/Config/notifications.notifiers.php', 'notifications.notifiers');
+
         // Add new permissions
         $this->mergeConfigFrom(
             __DIR__ . '/Config/notifications.permissions.php', 'web.permissions');

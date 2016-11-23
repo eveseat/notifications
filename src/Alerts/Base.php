@@ -21,11 +21,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Seat\Notifications\Alerts;
 
-use Seat\Notifications\Containers\Message;
-use Seat\Notifications\Exceptions\NoNotifiersException;
-use Seat\Notifications\Exceptions\TypeException;
-use Seat\Notifications\Models\Notification;
-use Seat\Web\Models\User;
+use Illuminate\Support\Collection;
+use Seat\Notifications\Models\NotificationGroup;
 
 /**
  * Class Base
@@ -35,187 +32,65 @@ abstract class Base
 {
 
     /**
-     * The notifier drivers
-     *
-     * @var
+     * @var string
      */
-    protected $notifiers = [];
+    protected $notifier;
 
     /**
-     * The message container that will be sent
+     * The required method to handle the Alert.
      *
-     * @var
+     * @return mixed
      */
-    protected $message;
+    abstract protected function handle();
 
     /**
-     * Construct an instance by setting up the notifiers
+     * Define the notifier to use.
+     *
+     * @return string
+     */
+    abstract protected function notifier() : string;
+
+    /**
+     * Base constructor.
      */
     public function __construct()
     {
 
-        $this->setNotifiers();
+        $this->notifier = $this->getNotifier();
     }
 
     /**
-     * Load the notifications drivers.
-     *
-     * @return $this
-     * @throws \Seat\Notifications\Exceptions\NoNotifiersException
-     */
-    private function setNotifiers()
-    {
-
-        if (empty(config('notifications.notifiers')))
-            throw new NoNotifiersException;
-
-        $this->notifiers = config('notifications.notifiers');
-
-    }
-
-    /**
-     * A required method to call a notifications class
-     *
-     * @return mixed
-     */
-    abstract function call();
-
-    /**
-     * Determine which users have a specified permission
-     *
-     * @param      $permission
-     * @param null $character_id
-     * @param null $corporation_id
-     *
-     * @return array
-     * @throws \Seat\Notifications\Exceptions\TypeException
-     */
-    public function usersWithPermission(
-        $permission, $character_id = null, $corporation_id = null)
-    {
-
-        if (!is_null($character_id) && !is_null($corporation_id))
-            throw new TypeException(
-                'Define either the character_id or corporation_id. Not both.');
-
-        $users = [];
-
-        foreach (User::all() as $user) {
-
-            $user->setCorporationId($corporation_id);
-            $user->setCharacterId($character_id);
-
-            if ($user->has($permission))
-                array_push($users, $user);
-        }
-
-        return $users;
-
-    }
-
-    /**
-     * Instantiate a new Messge Container and
-     * return it.
-     *
-     * @return \Seat\Notifications\Containers\Message
-     */
-    public function newMessage()
-    {
-
-        $this->message = new Message;
-
-        return $this->message;
-    }
-
-    /**
-     * Send the notification using the notification
-     * drivers.
-     *
-     * @param \Seat\Notifications\Containers\Message $message
-     */
-    public function sendNotification(Message $message)
-    {
-
-        if ($this->isMessageOk($message) && $this->shouldSendMessage($message)) {
-
-            foreach ($this->notifiers as $notifier) {
-
-                (new $notifier)->notify($message);
-                $this->markMessageAsSent($message);
-            }
-        }
-
-        return;
-    }
-
-    /**
-     * Check if a Message container has all of the
-     * required fields populated.
-     *
-     * @param \Seat\Notifications\Containers\Message $message
-     *
-     * @return bool
-     */
-    protected function isMessageOk(Message $message)
-    {
-
-        return (!is_null($message->recipient) &&
-            !is_null($message->subject) && !is_null($message->message));
-    }
-
-    /**
-     * Check if a message should be sent based on
-     * a poormans cache implementation lookup.
-     *
-     * @param \Seat\Notifications\Containers\Message $message
-     *
-     * @return bool
-     */
-    protected function shouldSendMessage(Message $message)
-    {
-
-        $sent = Notification::where('user_id', $message->recipient->id)
-            ->where('hash', $this->hashMessage($message))
-            ->first();
-
-        if (!$sent)
-            return true;
-
-        return false;
-
-    }
-
-    /**
-     * Create a unique hash based on parts of a
-     * message container
-     *
-     * @param \Seat\Notifications\Containers\Message $message
+     * Return the full class of the notifier from the config.
      *
      * @return string
      */
-    protected function hashMessage(Message $message)
+    public function getNotifier() : string
     {
 
-        return md5(implode(",", [
-            $message->recipient->id, $message->subject, $message->message]));
+        return config('notifications.notifiers.' . $this->notifier());
+    }
+
+    /**
+     * Dispatch the notifications from the data returned
+     * in the handle() method.
+     */
+    public function notify()
+    {
+
+        $data = $this->handle();
+
+        foreach ($this->getNotificationGroups() as $group)
+            $group->notify(new $this->notifier($data));
 
     }
 
     /**
-     * Create / mark a message as sent.
-     *
-     * @param \Seat\Notifications\Containers\Message $message
+     * @return \Illuminate\Support\Collection
      */
-    protected function markMessageAsSent(Message $message)
+    public function getNotificationGroups() : Collection
     {
 
-        Notification::create([
-            'user_id' => $message->recipient->id,
-            'hash'    => $this->hashMessage($message),
-            'subject' => $message->subject,
-            'message' => $message->message
-        ]);
-
-        return;
+        return NotificationGroup::all();
     }
+
 }
