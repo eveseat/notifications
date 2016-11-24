@@ -120,6 +120,21 @@ class GroupsController extends Controller
     }
 
     /**
+     * @param int $group_id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getDeleteGroup(int $group_id)
+    {
+
+        NotificationGroup::findOrFail($group_id)
+            ->delete();
+
+        return redirect()->back()
+            ->with('success', 'Group removed!');
+    }
+
+    /**
      * @param \Seat\Notifications\Http\Validation\GroupIntegration $request
      *
      * @return \Illuminate\Http\RedirectResponse

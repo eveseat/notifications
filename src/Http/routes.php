@@ -96,6 +96,11 @@ Route::group([
             'uses' => 'GroupsController@postNewGroup'
         ]);
 
+        Route::get('/delete/{group_id}', [
+            'as'   => 'notifications.groups.delete',
+            'uses' => 'GroupsController@getDeleteGroup'
+        ]);
+
         Route::get('/edit/{notification_group_id}', [
             'as'   => 'notifications.groups.edit',
             'uses' => 'GroupsController@getEditGroup'
