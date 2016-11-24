@@ -24,8 +24,17 @@ return [
     'seat' => [],
     'eve'  => [
 
-        'playercount' => \Seat\Notifications\Alerts\Eve\PlayerCount::class,
+        'playercount' => [
+            'alert'    => \Seat\Notifications\Alerts\Eve\PlayerCount::class,
+            'notifier' => \Seat\Notifications\Notifications\EvePlayerCount::class,
+        ]
     ],
     'char' => [],
-    'corp' => []
+    'corp' => [
+
+        'inactivemember' => [
+            'alert'    => \Seat\Notifications\Alerts\Corp\MemberInactivity::class,
+            'notifier' => \Seat\Notifications\Notifications\InActiveCorpMember::class,
+        ],
+    ]
 ];

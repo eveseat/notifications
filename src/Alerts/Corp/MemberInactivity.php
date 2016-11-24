@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Seat\Notifications\Alerts\Corp;
 
 use DB;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Corporation\MemberTracking;
 use Seat\Notifications\Alerts\Base;
 
@@ -33,53 +34,39 @@ class MemberInactivity extends Base
 {
 
     /**
-     * Run the Notifications Job
-     */
-    function call()
-    {
-
-        foreach ($this->getInactivities() as $inactive_member)
-            $this->processNotifications($inactive_member);
-
-        return;
-    }
-
-    /**
+     * The required method to handle the Alert.
+     *
      * @return mixed
      */
-    public function getInactivities()
+    protected function getData(): Collection
     {
 
         return MemberTracking::where(
             'logoffDateTime', '<', DB::raw('date_sub(NOW(), INTERVAL 3 MONTH)'))
+            ->take(1)
             ->get();
     }
 
     /**
-     * @param $inactive_member
+     * The type of notification.
      *
-     * @throws \Seat\Notifications\Exceptions\TypeException
+     * @return string
      */
-    public function processNotifications($inactive_member)
+    protected function getType(): string
     {
 
-        // Get the users that should be notified about this
-        // inactivity
-        $recipients = $this->usersWithPermission(
-            'corporation.tracking', null, $inactive_member->corporationID);
-
-        foreach ($recipients as $recipient) {
-
-            $message = $this->newMessage()
-                ->set('recipient', $recipient)
-                ->set('subject', 'Inactive Member Notification')
-                ->set('message', $inactive_member->name . ' has been ' .
-                    'inactive for more than 3 months. The last logoff was at: ' .
-                    $inactive_member->logoffDateTime);
-
-            $this->sendNotification($message);
-        }
-
+        return 'corp';
     }
 
+    /**
+     * The name of the alert. This is also the name
+     * of the notifier to use.
+     *
+     * @return string
+     */
+    protected function getName(): string
+    {
+
+        return 'inactivemember';
+    }
 }

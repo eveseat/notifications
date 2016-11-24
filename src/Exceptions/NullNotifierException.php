@@ -23,7 +23,7 @@ namespace Seat\Notifications\Exceptions;
 
 use Exception;
 
-class TypeException extends Exception
+class NullNotifierException extends Exception
 {
 
 }

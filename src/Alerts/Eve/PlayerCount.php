@@ -21,6 +21,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Seat\Notifications\Alerts\Eve;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Server\ServerStatus;
 use Seat\Notifications\Alerts\Base;
 
@@ -34,7 +35,7 @@ class PlayerCount extends Base
     /**
      * @return string
      */
-    protected function type(): string
+    protected function getType(): string
     {
 
         return 'eve';
@@ -43,7 +44,7 @@ class PlayerCount extends Base
     /**
      * @return string
      */
-    protected function name(): string
+    protected function getName(): string
     {
 
         return 'playercount';
@@ -52,20 +53,12 @@ class PlayerCount extends Base
     /**
      * Get the data for the notification.
      */
-    public function data(): ServerStatus
+    protected function getData(): Collection
     {
 
-        return ServerStatus::orderBy('currentTime', 'desc')->first();
+        return ServerStatus::orderBy('currentTime', 'desc')
+            ->take(1)->get();
 
-    }
-
-    /**
-     * @return string
-     */
-    protected function notifier(): string
-    {
-
-        return 'eveplayercount';
     }
 
 }

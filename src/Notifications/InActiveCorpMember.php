@@ -21,23 +21,27 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Seat\Notifications\Notifications;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
-use Seat\Notifications\Models\NotificationGroup;
 
 class InActiveCorpMember extends Notification
 {
 
-    use Queueable;
+    /**
+     * @var
+     */
+    private $member;
 
     /**
      * Create a new notification instance.
      *
+     * @param $member
      */
-    public function __construct()
+    public function __construct($member)
     {
-        //
+
+        $this->member = $member;
     }
 
     /**
@@ -50,9 +54,7 @@ class InActiveCorpMember extends Notification
     public function via($notifiable)
     {
 
-//        return $notifiable->notificationChannels();
-
-        return ['mail'];
+        return $notifiable->notificationChannels();
     }
 
     /**
@@ -66,9 +68,45 @@ class InActiveCorpMember extends Notification
     {
 
         return (new MailMessage)
+            ->error()
+            ->greeting('Heads up!')
             ->subject('Inactive Member Notification')
-            ->line('A member of {corporation} is now considered inactive.')
-            ->action('Notification Action', 'https://laravel.com');
+            ->line(
+                $this->member->name . ' logged off more than 3 months ago at ' .
+                $this->member->logoffDateTime . '.'
+            )
+            ->action(
+                'View Corporation Tracking', route('corporation.view.tracking', [
+                'corporation_id' => $this->member->corporationID
+            ]))
+            ->line(
+                'Last seen at ' . $this->member->location . ' in a ' .
+                $this->member->shipType
+            );
+    }
+
+    /**
+     * @param $notifiable
+     *
+     * @return $this
+     */
+    public function toSlack($notifiable)
+    {
+
+        return (new SlackMessage)
+            ->error()
+            ->content($this->member->name . ' has not logged in for some time!')
+            ->attachment(function ($attachment) {
+
+                $attachment->title('Tracking Details', route('corporation.view.tracking', [
+                    'corporation_id' => $this->member->corporationID
+                ]))->fields([
+                    'Name'        => $this->member->name,
+                    'Last Logoff' => $this->member->logoffDateTime,
+                    'Location'    => $this->member->location,
+                    'Ship'        => $this->member->shipType
+                ]);
+            });
     }
 
     /**
@@ -82,7 +120,10 @@ class InActiveCorpMember extends Notification
     {
 
         return [
-            //
+            'name'        => $this->member->name,
+            'last_logoff' => $this->member->logoffDateTime,
+            'location'    => $this->member->location,
+            'ship'        => $this->member->shipType
         ];
     }
 }

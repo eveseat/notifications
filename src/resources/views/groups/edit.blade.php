@@ -100,7 +100,7 @@
 
               @foreach(config('notifications.alerts.' . $group->type) as $name => $class)
 
-                <option value="{{ $name }}">{{ class_basename($class) }}</option>
+                <option value="{{ $name }}">{{ class_basename($class['alert']) }}</option>
 
               @endforeach
 

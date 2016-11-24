@@ -22,6 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Seat\Notifications\Alerts;
 
 use Illuminate\Support\Collection;
+use Seat\Notifications\Exceptions\NullNotifierException;
 use Seat\Notifications\Models\NotificationGroup;
 
 /**
@@ -37,7 +38,7 @@ abstract class Base
     protected $notifier;
 
     /**
-     * @var mixed
+     * @var Collection
      */
     protected $data;
 
@@ -47,30 +48,31 @@ abstract class Base
     protected $name;
 
     /**
+     * @var string
+     */
+    protected $type;
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
      */
-    abstract protected function data();
-
-    /**
-     * Define the notifier to use.
-     *
-     * @return string
-     */
-    abstract protected function notifier(): string;
+    abstract protected function getData(): Collection;
 
     /**
      * The type of notification.
      *
      * @return string
      */
-    abstract protected function type(): string;
+    abstract protected function getType(): string;
 
     /**
+     * The name of the alert. This is also the name
+     * of the notifier to use.
+     *
      * @return string
      */
-    abstract protected function name(): string;
+    abstract protected function getName(): string;
 
     /**
      * Base constructor.
@@ -78,20 +80,32 @@ abstract class Base
     public function __construct()
     {
 
+        $this->data = $this->getData();
+        $this->name = $this->getName();
+        $this->type = $this->getType();
+
         $this->notifier = $this->getNotifier();
-        $this->data = $this->data();
-        $this->name = $this->name();
+
     }
 
     /**
      * Return the full class of the notifier from the config.
      *
      * @return string
+     * @throws \Seat\Notifications\Exceptions\NullNotifierException
      */
     public function getNotifier(): string
     {
 
-        return config('notifications.notifiers.' . $this->notifier());
+        $notifier = config('notifications.alerts.' . $this->type . '.' . $this->name);
+
+        // Ensure that we actual resolved a notifier. Failure to do so
+        // could indicate a wrong type || name.
+        if (is_null($notifier))
+            throw new NullNotifierException(
+                'Could not resolve the notifier. Check type and name.');
+
+        return $notifier['notifier'];
     }
 
     /**
@@ -100,9 +114,27 @@ abstract class Base
     public function handle()
     {
 
-        foreach ($this->getNotificationGroups() as $group)
-            $group->notify(new $this->notifier($this->data));
+        // Let every notification group...
+        foreach ($this->getNotificationGroups() as $group) {
 
+            // Get each data element in a notification
+            foreach ($this->data as $data)
+                $group->notify(new $this->notifier($data));
+
+        }
+
+    }
+
+    /**
+     * If an affiliation needs to be taken into account,
+     * specify which one.
+     *
+     * @return string
+     */
+    public function affiliationType()
+    {
+
+        return 'corp';
     }
 
     /**
@@ -111,12 +143,16 @@ abstract class Base
     public function getNotificationGroups(): Collection
     {
 
+        // Get the groups that are applicable to this
+        // notification type.
         return NotificationGroup::with('alerts')
             ->whereHas('alerts', function ($query) {
 
-                $query->where('alert', $this->name());
+                $query->where('alert', $this->name);
 
-            })->where('type', $this->type())->get();
+            })->where('type', $this->type)
+            ->get();
+
     }
 
 }
