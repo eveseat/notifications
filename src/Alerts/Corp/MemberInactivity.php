@@ -48,6 +48,18 @@ class MemberInactivity extends Base
     }
 
     /**
+     * The field to use form the data when trying
+     * to infer an affiliation.
+     *
+     * @return string
+     */
+    public function getAffiliationField()
+    {
+
+        return 'corporationID';
+    }
+
+    /**
      * The type of notification.
      *
      * @return string

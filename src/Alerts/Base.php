@@ -118,23 +118,17 @@ abstract class Base
         foreach ($this->getNotificationGroups() as $group) {
 
             // Get each data element in a notification
-            foreach ($this->data as $data)
-                $group->notify(new $this->notifier($data));
+            foreach ($this->data as $data) {
+
+                // Ensure that affiliation rules are applied and
+                // send the notification
+                if ($this->affiliationOk($group, $data))
+                    $group->notify(new $this->notifier($data));
+
+            }
 
         }
 
-    }
-
-    /**
-     * If an affiliation needs to be taken into account,
-     * specify which one.
-     *
-     * @return string
-     */
-    public function affiliationType()
-    {
-
-        return 'corp';
     }
 
     /**
@@ -152,6 +146,47 @@ abstract class Base
 
             })->where('type', $this->type)
             ->get();
+
+    }
+
+    /**
+     * Check if the affiliation of the notification is ok.
+     *
+     * Defining a method getAffiliationField() will have it
+     * used to retreive the property name to use when checking
+     * the affiliation_id.
+     *
+     * @param $group
+     * @param $data
+     *
+     * @return bool
+     */
+    public function affiliationOk($group, $data)
+    {
+
+        // If we are working with an alert that is not
+        // a char or corp alert, then no affiliation
+        // rules are applicable.
+        if ($this->type == 'seat' || $this->type == 'eve')
+            return true;
+
+        // If the group has *no* affiliations, then we are
+        // assuming it wants *all* of the notifications.
+        if ($group->affiliations->count() <= 0)
+            return true;
+
+        // If a group *does* have affiliations, it implies that
+        // a filter is needed. lets check that if getAffiliationField()
+        // is defined.
+        if (method_exists($this, 'getAffiliationField')) {
+
+            if ($group->affiliations->where(
+                    'affiliation_id', $data[$this->getAffiliationField()])->count() > 0
+            )
+                return true;
+        }
+
+        return false;
 
     }
 
