@@ -79,7 +79,7 @@ class EvePlayerCount extends Notification
                 'The player count is ' . $this->player_count->onlinePlayers .
                 ' checked ' .
                 carbon($this->player_count->currentTime)->diffForHumans() .
-                '!'
+                ' at ' . $this->player_count->currentTime . '!'
             )
             ->action('Check it out on SeAT', route('home'));
     }
@@ -97,7 +97,7 @@ class EvePlayerCount extends Notification
                 'The player count is ' . $this->player_count->onlinePlayers .
                 ' checked ' .
                 carbon($this->player_count->currentTime)->diffForHumans() .
-                '!'
+                ' at ' . $this->player_count->currentTime . '!'
             );
     }
 
