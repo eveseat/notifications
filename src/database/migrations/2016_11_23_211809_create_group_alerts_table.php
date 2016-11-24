@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateNotificationGroupsTable extends Migration
+class CreateGroupAlertsTable extends Migration
 {
 
     /**
@@ -15,15 +15,16 @@ class CreateNotificationGroupsTable extends Migration
     public function up()
     {
 
-        Schema::create('notification_groups', function (Blueprint $table) {
+        Schema::create('group_alerts', function (Blueprint $table) {
 
             $table->increments('id');
 
-            $table->string('name');
-            $table->string('type');
+            $table->integer('notification_group_id')->unsigned();
+            $table->string('alert');
 
-            $table->index('name');
-            $table->index('type');
+            $table->foreign('notification_group_id')->references('id')
+                ->on('notification_groups')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -37,6 +38,6 @@ class CreateNotificationGroupsTable extends Migration
     public function down()
     {
 
-        Schema::dropIfExists('notification_groups');
+        Schema::dropIfExists('group_alerts');
     }
 }

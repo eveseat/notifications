@@ -19,35 +19,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-namespace Seat\Notifications\Alerts\Eve;
+return [
 
-use Seat\Eveapi\Models\Server\ServerStatus;
-use Seat\Notifications\Alerts\Base;
+    'seat' => [],
+    'eve'  => [
 
-/**
- * Class PlayerCount
- * @package Seat\Notifications\Alerts\Eve
- */
-class PlayerCount extends Base
-{
-
-    /**
-     * Handle the notification.
-     */
-    public function handle()
-    {
-
-        return ServerStatus::orderBy('currentTime', 'desc')->first();
-
-    }
-
-    /**
-     * @return string
-     */
-    protected function notifier() : string
-    {
-
-        return 'eveplayercount';
-    }
-
-}
+        'playercount' => \Seat\Notifications\Alerts\Eve\PlayerCount::class,
+    ],
+    'char' => [],
+    'corp' => []
+];

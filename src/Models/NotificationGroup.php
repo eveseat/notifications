@@ -50,6 +50,24 @@ class NotificationGroup extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function alerts()
+    {
+
+        return $this->hasMany(GroupAlert::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function affiliations()
+    {
+
+        return $this->hasMany(GroupAffiliation::class);
+    }
+
+    /**
      * Get all of the configured notification channels.
      *
      * @return mixed

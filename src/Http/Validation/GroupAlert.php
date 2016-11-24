@@ -19,35 +19,42 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-namespace Seat\Notifications\Alerts\Eve;
+namespace Seat\Notifications\Http\Validation;
 
-use Seat\Eveapi\Models\Server\ServerStatus;
-use Seat\Notifications\Alerts\Base;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class PlayerCount
- * @package Seat\Notifications\Alerts\Eve
+ * Class GroupAlert
+ * @package Seat\Notifications\Http\Validation
  */
-class PlayerCount extends Base
+class GroupAlert extends FormRequest
 {
 
     /**
-     * Handle the notification.
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    public function handle()
+    public function authorize()
     {
 
-        return ServerStatus::orderBy('currentTime', 'desc')->first();
-
+        return true;
     }
 
     /**
-     * @return string
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
      */
-    protected function notifier() : string
+    public function rules()
     {
 
-        return 'eveplayercount';
-    }
+        return [
 
+            'alerts.*' => 'required|in:' . implode(
+                    ',', array_keys(config('notifications.alerts.' . $this->request->get('type')))),
+            'type'     => 'required|in:' . implode(',', array_keys(config('notifications.alerts'))),
+            'id'       => 'required|numeric|exists:notification_groups,id'
+        ];
+    }
 }

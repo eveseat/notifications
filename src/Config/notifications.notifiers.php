@@ -21,5 +21,5 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 return [
 
-    'playercount' => \Seat\Notifications\Notifications\ConcurrentPlayerCount::class,
+    'eveplayercount' => \Seat\Notifications\Notifications\EvePlayerCount::class,
 ];

@@ -19,35 +19,28 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-namespace Seat\Notifications\Alerts\Eve;
+namespace Seat\Notifications\Models;
 
-use Seat\Eveapi\Models\Server\ServerStatus;
-use Seat\Notifications\Alerts\Base;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class PlayerCount
- * @package Seat\Notifications\Alerts\Eve
+ * Class GroupAlert
+ * @package Seat\Notifications\Models
  */
-class PlayerCount extends Base
+class GroupAlert extends Model
 {
 
     /**
-     * Handle the notification.
+     * @var array
      */
-    public function handle()
-    {
-
-        return ServerStatus::orderBy('currentTime', 'desc')->first();
-
-    }
+    protected $fillable = ['alert'];
 
     /**
-     * @return string
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    protected function notifier() : string
+    public function group()
     {
 
-        return 'eveplayercount';
+        return $this->belongsTo(NotificationGroup::class);
     }
-
 }

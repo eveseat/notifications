@@ -85,6 +85,52 @@ Route::group([
             'as'   => 'notifications.groups.list',
             'uses' => 'GroupsController@getGroups'
         ]);
+
+        Route::get('/data', [
+            'as'   => 'notifications.groups.list.data',
+            'uses' => 'GroupsController@getGroupsData'
+        ]);
+
+        Route::post('/new', [
+            'as'   => 'notifications.groups.new.post',
+            'uses' => 'GroupsController@postNewGroup'
+        ]);
+
+        Route::get('/edit/{notification_group_id}', [
+            'as'   => 'notifications.groups.edit',
+            'uses' => 'GroupsController@getEditGroup'
+        ]);
+
+        Route::post('/edit/integration/add', [
+            'as'   => 'notifications.groups.edit.integration.add',
+            'uses' => 'GroupsController@postAddIntegrations'
+        ]);
+
+        Route::get('/edit/integration/delete/{group_id}/{integration_id}', [
+            'as'   => 'notifications.groups.edit.integration.delete',
+            'uses' => 'GroupsController@getDeleteIntegration'
+        ]);
+
+        Route::post('/edit/alert/add', [
+            'as'   => 'notifications.groups.edit.alert.add',
+            'uses' => 'GroupsController@postAddAlert'
+        ]);
+
+        Route::get('/edit/alert/delete/{group_id}/{alert_id}', [
+            'as'   => 'notifications.groups.edit.alert.delete',
+            'uses' => 'GroupsController@getDeleteAlert'
+        ]);
+
+        Route::post('/edit/affiliations/add', [
+            'as'   => 'notifications.groups.edit.affiliations.add',
+            'uses' => 'GroupsController@postAddAffiliation'
+        ]);
+
+        Route::get('/edit/affiliation/delete/{group_id}/{affiliation_id}', [
+            'as'   => 'notifications.groups.edit.affiliation.delete',
+            'uses' => 'GroupsController@getDeleteAffiliation'
+        ]);
+
     });
 
 });

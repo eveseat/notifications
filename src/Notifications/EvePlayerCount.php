@@ -25,7 +25,11 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
-class ConcurrentPlayerCount extends Notification
+/**
+ * Class EvePlayerCount
+ * @package Seat\Notifications\Notifications
+ */
+class EvePlayerCount extends Notification
 {
 
     /**
@@ -80,6 +84,11 @@ class ConcurrentPlayerCount extends Notification
             ->action('Check it out on SeAT', route('home'));
     }
 
+    /**
+     * @param $notifiable
+     *
+     * @return $this
+     */
     public function toSlack($notifiable)
     {
 
