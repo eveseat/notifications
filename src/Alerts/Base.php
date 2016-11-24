@@ -37,18 +37,40 @@ abstract class Base
     protected $notifier;
 
     /**
+     * @var mixed
+     */
+    protected $data;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
      */
-    abstract protected function handle();
+    abstract protected function data();
 
     /**
      * Define the notifier to use.
      *
      * @return string
      */
-    abstract protected function notifier() : string;
+    abstract protected function notifier(): string;
+
+    /**
+     * The type of notification.
+     *
+     * @return string
+     */
+    abstract protected function type(): string;
+
+    /**
+     * @return string
+     */
+    abstract protected function name(): string;
 
     /**
      * Base constructor.
@@ -57,6 +79,8 @@ abstract class Base
     {
 
         $this->notifier = $this->getNotifier();
+        $this->data = $this->data();
+        $this->name = $this->name();
     }
 
     /**
@@ -64,33 +88,35 @@ abstract class Base
      *
      * @return string
      */
-    public function getNotifier() : string
+    public function getNotifier(): string
     {
 
         return config('notifications.notifiers.' . $this->notifier());
     }
 
     /**
-     * Dispatch the notifications from the data returned
-     * in the handle() method.
+     * Dispatch the notifications.
      */
-    public function notify()
+    public function handle()
     {
 
-        $data = $this->handle();
-
         foreach ($this->getNotificationGroups() as $group)
-            $group->notify(new $this->notifier($data));
+            $group->notify(new $this->notifier($this->data));
 
     }
 
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getNotificationGroups() : Collection
+    public function getNotificationGroups(): Collection
     {
 
-        return NotificationGroup::all();
+        return NotificationGroup::with('alerts')
+            ->whereHas('alerts', function ($query) {
+
+                $query->where('alert', $this->name());
+
+            })->where('type', $this->type())->get();
     }
 
 }

@@ -32,9 +32,27 @@ class PlayerCount extends Base
 {
 
     /**
-     * Handle the notification.
+     * @return string
      */
-    public function handle()
+    protected function type(): string
+    {
+
+        return 'eve';
+    }
+
+    /**
+     * @return string
+     */
+    protected function name(): string
+    {
+
+        return 'playercount';
+    }
+
+    /**
+     * Get the data for the notification.
+     */
+    public function data(): ServerStatus
     {
 
         return ServerStatus::orderBy('currentTime', 'desc')->first();
@@ -44,7 +62,7 @@ class PlayerCount extends Base
     /**
      * @return string
      */
-    protected function notifier() : string
+    protected function notifier(): string
     {
 
         return 'eveplayercount';
