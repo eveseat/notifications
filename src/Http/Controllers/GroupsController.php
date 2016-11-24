@@ -145,10 +145,21 @@ class GroupsController extends Controller
         $group = NotificationGroup::findOrFail($request->input('id'));
 
         // Attach the integrations to the group.
-        foreach ($request->integrations as $integration_id)
+        foreach ($request->integrations as $integration_id) {
+
+            $integration = Integration::find($integration_id);
+
+            // Make sure only one integration type is added.
+            if ($group->integrations->contains('type', $integration->type))
+                return redirect()->back()
+                    ->with('warning', 'A ' . $integration->type .
+                        ' integration already exists. Please choose another type.');
+
+            // Add the integration
             if (!$group->integrations->contains($integration_id))
                 $group->integrations()
                     ->attach(Integration::findOrFail($integration_id));
+        }
 
         return redirect()->back()
             ->with('success', 'Integrations Added!');

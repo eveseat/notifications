@@ -24,7 +24,9 @@
 
               @foreach($integrations as $integration)
 
-                <option value="{{ $integration->id }}">{{ $integration->name }}</option>
+                <option value="{{ $integration->id }}">
+                  {{ $integration->name }} ({{ $integration->type }})
+                </option>
 
               @endforeach
 
