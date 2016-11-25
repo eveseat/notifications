@@ -29,9 +29,9 @@ class ScheduleSeeder extends Seeder
 
     protected $schedule = [
 
-        [   // Notify of Inactive Corp Members | Every Day
-            'command'           => 'notify:corp:inactive-member',
-            'expression'        => '0 0 * * * *',
+        [   // Process Alerts Every 5 minutes.
+            'command'           => 'alerts:run',
+            'expression'        => '*/5 * * * * *',
             'allow_overlap'     => false,
             'allow_maintenance' => false,
             'ping_before'       => null,
@@ -53,7 +53,6 @@ class ScheduleSeeder extends Seeder
 
             $existing = DB::table('schedules')
                 ->where('command', $job['command'])
-                ->where('expression', $job['expression'])
                 ->first();
 
             if (!$existing)

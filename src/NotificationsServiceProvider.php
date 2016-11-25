@@ -22,7 +22,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Seat\Notifications;
 
 use Illuminate\Support\ServiceProvider;
-use Seat\Notifications\Commands\Corp\AlertCorpInactive;
+use Seat\Notifications\Commands\AlertsRun;
 
 /**
  * Class NotificationsServiceProvider
@@ -35,7 +35,7 @@ class NotificationsServiceProvider extends ServiceProvider
      * @var array
      */
     protected $available_commands = [
-        AlertCorpInactive::class
+        AlertsRun::class
     ];
 
     /**
