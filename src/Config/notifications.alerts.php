@@ -38,6 +38,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberInactivity::class,
             'notifier' => \Seat\Notifications\Notifications\InActiveCorpMember::class,
         ],
+        'memberapistate'      => [
+            'name'     => 'Member API State',
+            'alert'    => \Seat\Notifications\Alerts\Corp\MemberApiState::class,
+            'notifier' => \Seat\Notifications\Notifications\MemberApiState::class,
+        ],
         'starbasefuel'        => [
             'name'     => 'Low Starbase Fuel',
             'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
