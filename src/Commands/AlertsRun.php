@@ -67,7 +67,7 @@ class AlertsRun extends Command
 
             foreach ($alerts as $name => $classes) {
 
-                $this->comment('Handling: ' . $classes['alert']);
+                $this->comment('Handling: ' . $classes['name'] . '@' . $classes['alert']);
 
                 (new $classes['alert'])->handle();
             }

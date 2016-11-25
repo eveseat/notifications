@@ -25,6 +25,7 @@ return [
     'eve'  => [
 
         'playercount' => [
+            'name'     => 'Eve Player Count',
             'alert'    => \Seat\Notifications\Alerts\Eve\PlayerCount::class,
             'notifier' => \Seat\Notifications\Notifications\EvePlayerCount::class,
         ]
@@ -33,10 +34,12 @@ return [
     'corp' => [
 
         'inactivemember' => [
+            'name'     => 'Inactive Corp Members',
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberInactivity::class,
             'notifier' => \Seat\Notifications\Notifications\InActiveCorpMember::class,
         ],
         'starbasefuel'   => [
+            'name'     => 'Low Starbase Fuel',
             'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
             'notifier' => \Seat\Notifications\Notifications\StarbaseFuel::class,
         ]

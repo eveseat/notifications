@@ -101,7 +101,7 @@
 
               @foreach(config('notifications.alerts.' . $group->type) as $name => $class)
 
-                <option value="{{ $name }}">{{ class_basename($class['alert']) }}</option>
+                <option value="{{ $name }}">{{ $class['name'] }}</option>
 
               @endforeach
 
@@ -131,7 +131,9 @@
         @foreach($group->alerts as $alert)
 
           <tr>
-            <td>{{ $alert->alert }}</td>
+            <td>
+              {{ config('notifications.alerts.' . $group->type . '.' . $alert->alert . '.name') }}
+            </td>
             <td>
               <a href="{{ route('notifications.groups.edit.alert.delete', ['group_id' => $group->id, 'alert_id' => $alert->id]) }}"
                  class="btn btn-xs btn-danger pull-right">
