@@ -36,7 +36,13 @@ return [
             'notifier' => \Seat\Notifications\Notifications\EvePlayerCount::class,
         ]
     ],
-    'char' => [],
+    'char' => [
+        'newmailmessage' => [
+            'name'     => 'New Mail Message',
+            'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
+            'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
+        ]
+    ],
     'corp' => [
 
         'inactivemember'      => [
