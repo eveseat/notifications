@@ -21,7 +21,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 return [
 
-    'seat' => [],
+    'seat' => [
+        'newapikey' => [
+            'name'     => 'New API Added',
+            'alert'    => \Seat\Notifications\Alerts\Seat\NewApiKey::class,
+            'notifier' => \Seat\Notifications\Notifications\NewApiKey::class,
+        ]
+    ],
     'eve'  => [
 
         'playercount' => [
