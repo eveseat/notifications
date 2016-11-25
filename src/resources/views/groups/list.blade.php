@@ -1,13 +1,13 @@
 @extends('web::layouts.grids.4-8', ['viewname' => 'groups'])
 
-@section('title', trans('web::seat.groups'))
-@section('page_header', trans('web::seat.groups'))
+@section('title', trans_choice('notifications::notifications.group', 2))
+@section('page_header', trans_choice('notifications::notifications.group', 2))
 
 @section('left')
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">New Notifications Group</h3>
+      <h3 class="panel-title">{{ trans('notifications::notifications.new_group') }}</h3>
     </div>
     <div class="panel-body">
 
@@ -17,18 +17,18 @@
         <div class="box-body">
 
           <div class="form-group">
-            <label for="name">Group Name</label>
-            <input type="text" name="name" class="form-control" id="username" value="{{ old('name') }}"
+            <label for="name">{{ trans('notifications::notifications.group_name') }}</label>
+            <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}"
                    placeholder="Group Name">
           </div>
 
           <div class="form-group">
-            <label for="text">Group Type</label>
+            <label for="text">{{ trans('notifications::notifications.group_type') }}</label>
             <select name="type" class="form-control" id="notification-type">
               <option value="seat">SeAT</option>
               <option value="eve">Eve</option>
               <option value="char">Character</option>
-              <option value="corp">Corp</option>
+              <option value="corp">Corporation</option>
             </select>
           </div>
 
@@ -36,7 +36,7 @@
 
         <div class="box-footer">
           <button type="submit" class="btn btn-primary pull-right">
-            Add
+            {{ trans('notifications::notifications.add') }}
           </button>
         </div>
       </form>
@@ -50,18 +50,18 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Notifications Groups</h3>
+      <h3 class="panel-title">{{ trans_choice('notifications::notifications.group', 2) }}</h3>
     </div>
     <div class="panel-body">
 
       <table class="table compact table-condensed table-hover table-responsive" id="groups">
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Alerts</th>
-          <th>Integrations</th>
-          <th>Affiliations</th>
+          <th>{{ trans('notifications::notifications.name') }}</th>
+          <th>{{ trans('notifications::notifications.type') }}</th>
+          <th>{{ trans_choice('notifications::notifications.alert', 2) }}</th>
+          <th>{{ trans_choice('notifications::notifications.integration', 2) }}</th>
+          <th>{{ trans_choice('notifications::notifications.affiliation', 2) }}</th>
           <th></th>
         </tr>
         </thead>
@@ -76,21 +76,21 @@
 
 <script>
 
-  $(function () {
-    $('table#groups').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: '{{ route('notifications.groups.list.data') }}',
-      columns: [
-        {data: 'name', name: 'name'},
-        {data: 'type', name: 'type'},
-        {data: 'alerts', name: 'alerts', searchable: false},
-        {data: 'integrations', name: 'integrations', searchable: false},
-        {data: 'affiliations', name: 'affiliations', searchable: false},
-        {data: 'actions', name: 'actions', searchable: false, orderable: false},
-      ]
+    $(function () {
+        $('table#groups').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{{ route('notifications.groups.list.data') }}',
+            columns: [
+                {data: 'name', name: 'name'},
+                {data: 'type', name: 'type'},
+                {data: 'alerts', name: 'alerts', searchable: false},
+                {data: 'integrations', name: 'integrations', searchable: false},
+                {data: 'affiliations', name: 'affiliations', searchable: false},
+                {data: 'actions', name: 'actions', searchable: false, orderable: false},
+            ]
+        });
     });
-  });
 
 </script>
 

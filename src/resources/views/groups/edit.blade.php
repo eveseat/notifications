@@ -1,14 +1,14 @@
 @extends('web::layouts.grids.4-4-4')
 
-@section('title', trans('web::seat.edit_group'))
-@section('page_header', trans('web::seat.edit_group'))
+@section('title', trans('notifications::notifications.edit_group'))
+@section('page_header', trans('notifications::notifications.edit_group'))
 @section('page_description', $group->name)
 
 @section('left')
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Integrations</h3>
+      <h3 class="panel-title">{{ trans_choice('notifications::notifications.integration', 2) }}</h3>
     </div>
     <div class="panel-body">
 
@@ -19,7 +19,7 @@
         <div class="box-body">
 
           <div class="form-group">
-            <label for="username">Integration</label>
+            <label for="username">{{ trans_choice('notifications::notifications.integration', 1) }}</label>
             <select name="integrations[]" id="integration" class="form-control" multiple>
 
               @foreach($integrations as $integration)
@@ -37,7 +37,7 @@
 
         <div class="box-footer">
           <button type="submit" class="btn btn-primary pull-right">
-            Add
+            {{ trans('notifications::notifications.add') }}
           </button>
         </div>
       </form>
@@ -45,8 +45,8 @@
       <table class="table compact table-condensed table-hover table-responsive">
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Type</th>
+          <th>{{ trans('notifications::notifications.name') }}</th>
+          <th>{{ trans('notifications::notifications.type') }}</th>
           <th></th>
         </tr>
         </thead>
@@ -60,7 +60,7 @@
             <td>
               <a href="{{ route('notifications.groups.edit.integration.delete', ['group_id' => $group->id, 'integration_id' => $integration->id]) }}"
                  class="btn btn-xs btn-danger pull-right">
-                Delete
+                {{ trans('web::seat.delete') }}
               </a>
             </td>
           </tr>
@@ -72,7 +72,8 @@
 
     </div>
     <div class="panel-footer">
-      {{ count($group->integrations) }} Integrations
+      {{ count($group->integrations) }}
+      {{ trans_choice('notifications::notifications.integration', count($group->integrations)) }}
     </div>
   </div>
 
@@ -83,7 +84,7 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Alerts</h3>
+      <h3 class="panel-title">{{ trans_choice('notifications::notifications.alert', 2) }}</h3>
     </div>
     <div class="panel-body">
 
@@ -111,10 +112,10 @@
 
         <div class="box-footer">
           <a href="#" class="btn btn-success">
-            Add All Alerts
+            {{ trans('notifications::notifications.add_all_alerts') }}
           </a>
           <button type="submit" class="btn btn-primary pull-right">
-            Add
+            {{ trans('notifications::notifications.add') }}
           </button>
         </div>
       </form>
@@ -122,7 +123,7 @@
       <table class="table compact table-condensed table-hover table-responsive">
         <thead>
         <tr>
-          <th>Name</th>
+          <th>{{ trans('notifications::notifications.name') }}</th>
         </tr>
         </thead>
         <tbody>
@@ -134,7 +135,7 @@
             <td>
               <a href="{{ route('notifications.groups.edit.alert.delete', ['group_id' => $group->id, 'alert_id' => $alert->id]) }}"
                  class="btn btn-xs btn-danger pull-right">
-                Delete
+                {{ trans('web::seat.delete') }}
               </a>
             </td>
           </tr>
@@ -146,7 +147,8 @@
 
     </div>
     <div class="panel-footer">
-      {{ count($group->alerts) }} Alerts
+      {{ count($group->alerts) }}
+      {{ trans_choice('notifications::notifications.alert', count($group->alerts)) }}
       <span class="pull-right">{{ ucfirst($group->type) }}</span>
     </div>
   </div>
@@ -161,7 +163,7 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Affiliations</h3>
+        <h3 class="panel-title">{{ trans_choice('notifications::notifications.affiliation', 2) }}</h3>
       </div>
       <div class="panel-body">
 
@@ -202,33 +204,43 @@
 
         </form>
 
-        <table class="table table-hover table-condensed">
-          <tbody>
+        @if($group->affiliations->count() > 0)
 
-          <tr>
-            <th colspan="4" class="text-center">{{ trans('web::seat.current_affiliations') }}</th>
-          </tr>
-
-          @foreach($group->affiliations as $affiliation)
+          <table class="table table-hover table-condensed">
+            <tbody>
 
             <tr>
-              <td>
-                {!! img('auto', $affiliation->affiliation_id, 64, ['class' => 'img-circle eve-icon small-icon']) !!}
-                <span rel="id-to-name">{{ $affiliation->affiliation_id }}</span>
-              </td>
-              <td>{{ ucfirst($affiliation->type) }}</td>
-              <td>
-                <a href="{{ route('notifications.groups.edit.affiliation.delete', ['group_id' => $group->id, 'affiliation_id' => $affiliation->id]) }}"
-                   type="button" class="btn btn-danger btn-xs pull-right">
-                  {{ trans('web::seat.remove') }}
-                </a>
-              </td>
+              <th colspan="4" class="text-center">{{ trans('web::seat.current_affiliations') }}</th>
             </tr>
 
-          @endforeach
+            @foreach($group->affiliations as $affiliation)
 
-          </tbody>
-        </table>
+              <tr>
+                <td>
+                  {!! img('auto', $affiliation->affiliation_id, 64, ['class' => 'img-circle eve-icon small-icon']) !!}
+                  <span rel="id-to-name">{{ $affiliation->affiliation_id }}</span>
+                </td>
+                <td>{{ ucfirst($affiliation->type) }}</td>
+                <td>
+                  <a href="{{ route('notifications.groups.edit.affiliation.delete', ['group_id' => $group->id, 'affiliation_id' => $affiliation->id]) }}"
+                     type="button" class="btn btn-danger btn-xs pull-right">
+                    {{ trans('web::seat.remove') }}
+                  </a>
+                </td>
+              </tr>
+
+            @endforeach
+
+            </tbody>
+          </table>
+
+        @else
+
+          <p>
+            {{ trans('notifications::notifications.no_affiliation_notice') }}
+          </p>
+
+        @endif
 
       </div>
     </div>

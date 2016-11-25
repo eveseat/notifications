@@ -53,6 +53,8 @@ class NotificationsServiceProvider extends ServiceProvider
         $this->add_publications();
 
         $this->add_routes();
+
+        $this->add_translations();
     }
 
     /**
@@ -74,6 +76,15 @@ class NotificationsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/database/migrations/' => database_path('migrations'),
         ]);
+    }
+
+    /**
+     * Include the translations and set the namespace
+     */
+    public function add_translations()
+    {
+
+        $this->loadTranslationsFrom(__DIR__ . '/lang', 'notifications');
     }
 
     /**

@@ -1,27 +1,27 @@
 @extends('web::layouts.grids.4-8', ['viewname' => 'integrations'])
 
-@section('title', trans('web::seat.integrations'))
-@section('page_header', trans('web::seat.integrations'))
+@section('title', trans_choice('notifications::notifications.integration', 2))
+@section('page_header', trans_choice('notifications::notifications.integration', 2))
 
 @section('left')
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">New Integration</h3>
+      <h3 class="panel-title">{{ trans('notifications::notifications.new_integration') }}</h3>
     </div>
     <div class="panel-body">
 
       <p>
-        Add a new notifications integration.
+        {{ trans('notifications::notifications.new_integration_message') }}
       </p>
 
       <p>
 
         <a href="{{ route('notifications.integrations.new.email') }}" class="btn btn-primary btn-block">
-          New Email Integration
+          {{ trans('notifications::notifications.new_email') }}
         </a>
         <a href="{{ route('notifications.integrations.new.slack') }}" class="btn btn-primary btn-block">
-          New Slack Integration
+          {{ trans('notifications::notifications.new_slack') }}
         </a>
 
       </p>
@@ -35,7 +35,7 @@
 
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Configured Integrations</h3>
+      <h3 class="panel-title">{{ trans('notifications::notifications.configured_integrations') }}</h3>
     </div>
     <div class="panel-body">
 
@@ -43,9 +43,9 @@
              id="integrations">
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Settings</th>
+          <th>{{ trans('notifications::notifications.name') }}</th>
+          <th>{{ trans('notifications::notifications.type') }}</th>
+          <th>{{ trans('notifications::notifications.settings') }}</th>
         </tr>
         </thead>
       </table>
