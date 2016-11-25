@@ -36,5 +36,9 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberInactivity::class,
             'notifier' => \Seat\Notifications\Notifications\InActiveCorpMember::class,
         ],
+        'starbasefuel'   => [
+            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
+            'notifier' => \Seat\Notifications\Notifications\StarbaseFuel::class,
+        ]
     ]
 ];
