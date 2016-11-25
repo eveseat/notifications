@@ -33,15 +33,20 @@ return [
     'char' => [],
     'corp' => [
 
-        'inactivemember' => [
+        'inactivemember'      => [
             'name'     => 'Inactive Corp Members',
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberInactivity::class,
             'notifier' => \Seat\Notifications\Notifications\InActiveCorpMember::class,
         ],
-        'starbasefuel'   => [
+        'starbasefuel'        => [
             'name'     => 'Low Starbase Fuel',
             'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
             'notifier' => \Seat\Notifications\Notifications\StarbaseFuel::class,
+        ],
+        'starbasestatechange' => [
+            'name'     => 'Starbase State Change',
+            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseStateChange::class,
+            'notifier' => \Seat\Notifications\Notifications\StarbaseStateChange::class,
         ]
     ]
 ];

@@ -26,10 +26,10 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Class StarbaseFuel
+ * Class StarbaseStateChange
  * @package Seat\Notifications\Notifications
  */
-class StarbaseFuel extends Notification
+class StarbaseStateChange extends Notification
 {
 
     /**
@@ -75,13 +75,12 @@ class StarbaseFuel extends Notification
             ->error()
             ->greeting('Heads up!')
             ->line(
-                'The starbase at ' . $this->starbase['location'] . ' is low on fuel!'
+                'The starbase at ' . $this->starbase['location'] . ' has changed state!'
             )
             ->line(
                 'The ' . $this->starbase['type'] .
                 (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has ' . $this->starbase['fuel_blocks'] . ' fuel blocks left and is estimated to ' .
-                'go offline in ' . $this->starbase['hours_left'] . ' hours.'
+                ' is now ' . $this->starbase['state_name'] . '.'
             )
             ->action('Check it out on SeAT', route('corporation.view.starbases', [
                 'corporation_id' => $this->starbase['corporation_id']
@@ -100,17 +99,16 @@ class StarbaseFuel extends Notification
 
         return (new SlackMessage)
             ->error()
-            ->content('A starbase is low on fuel!')
+            ->content('A starbase has changed state!')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Starbase Details', route('corporation.view.starbases', [
                     'corporation_id' => $this->starbase['corporation_id']
                 ]))->fields([
-                    'Type'             => $this->starbase['type'],
-                    'Location'         => $this->starbase['location'],
-                    'Name'             => $this->starbase['name'],
-                    'Fuel Block Count' => $this->starbase['fuel_blocks'],
-                    'Hours Left'       => $this->starbase['hours_left']
+                    'Type'      => $this->starbase['type'],
+                    'Location'  => $this->starbase['location'],
+                    'Name'      => $this->starbase['name'],
+                    'New State' => $this->starbase['state_name'],
                 ]);
             });
     }
@@ -126,11 +124,10 @@ class StarbaseFuel extends Notification
     {
 
         return [
-            'type'             => $this->starbase['type'],
-            'location'         => $this->starbase['location'],
-            'name'             => $this->starbase['name'],
-            'fuel_block_count' => $this->starbase['fuel_blocks'],
-            'hours_left'       => $this->starbase['hours_left']
+            'type'       => $this->starbase['type'],
+            'location'   => $this->starbase['location'],
+            'name'       => $this->starbase['name'],
+            'new _state' => $this->starbase['state_name'],
         ];
     }
 }
