@@ -43,7 +43,6 @@ class MemberInactivity extends Base
 
         return MemberTracking::where(
             'logoffDateTime', '<', DB::raw('date_sub(NOW(), INTERVAL 3 MONTH)'))
-            ->take(1)
             ->get();
     }
 
@@ -81,4 +80,17 @@ class MemberInactivity extends Base
 
         return 'inactivemember';
     }
+
+    /**
+     * Fields in a collection row that make the alert
+     * unique.
+     *
+     * @return array
+     */
+    protected function getUniqueFields(): array
+    {
+
+        return ['characterID', 'logoffDateTime'];
+    }
+
 }

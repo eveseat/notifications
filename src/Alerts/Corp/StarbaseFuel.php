@@ -113,4 +113,16 @@ class StarbaseFuel extends Base
 
         return 'starbasefuel';
     }
+
+    /**
+     * Fields in a collection row that make the alert
+     * unique.
+     *
+     * @return array
+     */
+    protected function getUniqueFields(): array
+    {
+
+        return ['location', 'fuel_blocks'];
+    }
 }

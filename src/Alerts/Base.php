@@ -22,8 +22,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Seat\Notifications\Alerts;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Seat\Notifications\Exceptions\NullNotifierException;
 use Seat\Notifications\Models\NotificationGroup;
+use Seat\Notifications\Models\NotificationHistory;
 
 /**
  * Class Base
@@ -53,6 +55,16 @@ abstract class Base
     protected $type;
 
     /**
+     * @var
+     */
+    protected $groups;
+
+    /**
+     * @var string
+     */
+    protected $cacheKey = 'notifications';
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
@@ -73,6 +85,14 @@ abstract class Base
      * @return string
      */
     abstract protected function getName(): string;
+
+    /**
+     * Fields in a collection row that make the alert
+     * unique.
+     *
+     * @return array
+     */
+    abstract protected function getUniqueFields(): array;
 
     /**
      * Base constructor.
@@ -114,19 +134,22 @@ abstract class Base
     public function handle()
     {
 
-        // Let every notification group...
-        foreach ($this->getNotificationGroups() as $group) {
+        // Loop over every entry in the data collection.
+        foreach ($this->data as $data) {
 
-            // Get each data element in a notification
-            foreach ($this->data as $data) {
+            // Check if the notification has been sent before.
+            if ($this->isOldNotification($data))
+                continue;
 
-                // Ensure that affiliation rules are applied and
-                // send the notification
+            foreach ($this->getNotificationGroups() as $group) {
+
+                // Check that the affiliations are ok for
+                // the group.
                 if ($this->affiliationOk($group, $data))
                     $group->notify(new $this->notifier($data));
-
             }
 
+            $this->markNotificationAsOld($data);
         }
 
     }
@@ -137,15 +160,21 @@ abstract class Base
     public function getNotificationGroups(): Collection
     {
 
+        // Return the groups we already found if we have.
+        if ($this->groups)
+            return $this->groups;
+
         // Get the groups that are applicable to this
         // notification type.
-        return NotificationGroup::with('alerts')
+        $this->groups = NotificationGroup::with('alerts')
             ->whereHas('alerts', function ($query) {
 
                 $query->where('alert', $this->name);
 
             })->where('type', $this->type)
             ->get();
+
+        return $this->groups;
 
     }
 
@@ -188,6 +217,67 @@ abstract class Base
 
         return false;
 
+    }
+
+    /**
+     * @param $data
+     *
+     * @return string
+     */
+    public function getDataHash($data)
+    {
+
+        $hashable = collect($data)
+            ->only($this->getUniqueFields())
+            ->implode(',');
+
+        return md5($this->type . $this->name . $hashable);
+    }
+
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
+    public function isOldNotification($data)
+    {
+
+        $hash = $this->getDataHash($data);
+
+        if (cache($this->cacheKey . $hash))
+            return true;
+
+        // Check the database.
+        $in_db = NotificationHistory::whereHash($hash)
+            ->first();
+
+        // If its in the db, add it to the cache
+        if ($in_db) {
+
+            Cache::forever($this->cacheKey . $hash, true);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $data
+     */
+    public function markNotificationAsOld($data)
+    {
+
+        NotificationHistory::firstOrCreate([
+            'hash'         => $this->getDataHash($data),
+            'type'         => $this->type,
+            'name'         => $this->name,
+            'notification' => collect($data)
+                ->only($this->getUniqueFields())
+                ->toJson()
+        ]);
+
+        Cache::forever($this->cacheKey . $this->getDataHash($data), true);
     }
 
 }
