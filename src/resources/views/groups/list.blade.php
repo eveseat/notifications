@@ -76,21 +76,21 @@
 
 <script>
 
-    $(function () {
-        $('table#groups').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{{ route('notifications.groups.list.data') }}',
-            columns: [
-                {data: 'name', name: 'name'},
-                {data: 'type', name: 'type'},
-                {data: 'alerts', name: 'alerts', searchable: false},
-                {data: 'integrations', name: 'integrations', searchable: false},
-                {data: 'affiliations', name: 'affiliations', searchable: false},
-                {data: 'actions', name: 'actions', searchable: false, orderable: false},
-            ]
-        });
+  $(function () {
+    $('table#groups').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax      : '{{ route('notifications.groups.list.data') }}',
+      columns   : [
+        {data: 'name', name: 'name'},
+        {data: 'type', name: 'type'},
+        {data: 'alerts', name: 'alerts', searchable: false},
+        {data: 'integrations', name: 'integrations', searchable: false},
+        {data: 'affiliations', name: 'affiliations', searchable: false},
+        {data: 'actions', name: 'actions', searchable: false, orderable: false},
+      ]
     });
+  });
 
 </script>
 

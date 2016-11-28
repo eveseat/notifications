@@ -79,15 +79,6 @@ class NotificationsServiceProvider extends ServiceProvider
     }
 
     /**
-     * Include the translations and set the namespace
-     */
-    public function add_translations()
-    {
-
-        $this->loadTranslationsFrom(__DIR__ . '/lang', 'notifications');
-    }
-
-    /**
      * Include the routes
      */
     public function add_routes()
@@ -96,6 +87,15 @@ class NotificationsServiceProvider extends ServiceProvider
         if (!$this->app->routesAreCached()) {
             include __DIR__ . '/Http/routes.php';
         }
+    }
+
+    /**
+     * Include the translations and set the namespace
+     */
+    public function add_translations()
+    {
+
+        $this->loadTranslationsFrom(__DIR__ . '/lang', 'notifications');
     }
 
     /**

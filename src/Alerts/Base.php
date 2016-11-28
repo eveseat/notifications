@@ -65,36 +65,6 @@ abstract class Base
     protected $cacheKey = 'notifications';
 
     /**
-     * The required method to handle the Alert.
-     *
-     * @return mixed
-     */
-    abstract protected function getData(): Collection;
-
-    /**
-     * The type of notification.
-     *
-     * @return string
-     */
-    abstract protected function getType(): string;
-
-    /**
-     * The name of the alert. This is also the name
-     * of the notifier to use.
-     *
-     * @return string
-     */
-    abstract protected function getName(): string;
-
-    /**
-     * Fields in a collection row that make the alert
-     * unique.
-     *
-     * @return array
-     */
-    abstract protected function getUniqueFields(): array;
-
-    /**
      * Base constructor.
      */
     public function __construct()
@@ -107,6 +77,28 @@ abstract class Base
         $this->notifier = $this->getNotifier();
 
     }
+
+    /**
+     * The required method to handle the Alert.
+     *
+     * @return mixed
+     */
+    abstract protected function getData(): Collection;
+
+    /**
+     * The name of the alert. This is also the name
+     * of the notifier to use.
+     *
+     * @return string
+     */
+    abstract protected function getName(): string;
+
+    /**
+     * The type of notification.
+     *
+     * @return string
+     */
+    abstract protected function getType(): string;
 
     /**
      * Return the full class of the notifier from the config.
@@ -153,6 +145,57 @@ abstract class Base
         }
 
     }
+
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
+    public function isOldNotification($data)
+    {
+
+        $hash = $this->getDataHash($data);
+
+        if (cache($this->cacheKey . $hash))
+            return true;
+
+        // Check the database.
+        $in_db = NotificationHistory::whereHash($hash)
+            ->first();
+
+        // If its in the db, add it to the cache
+        if ($in_db) {
+
+            Cache::forever($this->cacheKey . $hash, true);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return string
+     */
+    public function getDataHash($data)
+    {
+
+        $hashable = collect($data)
+            ->only($this->getUniqueFields())
+            ->implode(',');
+
+        return md5($this->type . $this->name . $hashable);
+    }
+
+    /**
+     * Fields in a collection row that make the alert
+     * unique.
+     *
+     * @return array
+     */
+    abstract protected function getUniqueFields(): array;
 
     /**
      * @return \Illuminate\Support\Collection
@@ -217,49 +260,6 @@ abstract class Base
 
         return false;
 
-    }
-
-    /**
-     * @param $data
-     *
-     * @return string
-     */
-    public function getDataHash($data)
-    {
-
-        $hashable = collect($data)
-            ->only($this->getUniqueFields())
-            ->implode(',');
-
-        return md5($this->type . $this->name . $hashable);
-    }
-
-    /**
-     * @param $data
-     *
-     * @return bool
-     */
-    public function isOldNotification($data)
-    {
-
-        $hash = $this->getDataHash($data);
-
-        if (cache($this->cacheKey . $hash))
-            return true;
-
-        // Check the database.
-        $in_db = NotificationHistory::whereHash($hash)
-            ->first();
-
-        // If its in the db, add it to the cache
-        if ($in_db) {
-
-            Cache::forever($this->cacheKey . $hash, true);
-
-            return true;
-        }
-
-        return false;
     }
 
     /**

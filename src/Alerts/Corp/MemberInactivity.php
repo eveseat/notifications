@@ -34,6 +34,18 @@ class MemberInactivity extends Base
 {
 
     /**
+     * The field to use form the data when trying
+     * to infer an affiliation.
+     *
+     * @return string
+     */
+    public function getAffiliationField()
+    {
+
+        return 'corporationID';
+    }
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
@@ -44,18 +56,6 @@ class MemberInactivity extends Base
         return MemberTracking::where(
             'logoffDateTime', '<', DB::raw('date_sub(NOW(), INTERVAL 3 MONTH)'))
             ->get();
-    }
-
-    /**
-     * The field to use form the data when trying
-     * to infer an affiliation.
-     *
-     * @return string
-     */
-    public function getAffiliationField()
-    {
-
-        return 'corporationID';
     }
 
     /**

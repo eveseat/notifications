@@ -32,6 +32,18 @@ class StarbaseFuel extends Base
     use Starbases;
 
     /**
+     * The field to use from the data when trying
+     * to infer an affiliation.
+     *
+     * @return string
+     */
+    public function getAffiliationField()
+    {
+
+        return 'corporation_id';
+    }
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
@@ -77,18 +89,6 @@ class StarbaseFuel extends Base
 
         return $low_feul;
 
-    }
-
-    /**
-     * The field to use from the data when trying
-     * to infer an affiliation.
-     *
-     * @return string
-     */
-    public function getAffiliationField()
-    {
-
-        return 'corporation_id';
     }
 
     /**

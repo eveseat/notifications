@@ -257,10 +257,10 @@
 
 <script>
 
-    $("select#integration, " +
-        "select#alerts, " +
-        "select#available_corporations, " +
-        "select#available_characters").select2();
+  $("select#integration, " +
+      "select#alerts, " +
+      "select#available_corporations, " +
+      "select#available_characters").select2();
 
 </script>
 

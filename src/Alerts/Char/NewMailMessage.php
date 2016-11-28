@@ -29,6 +29,18 @@ class NewMailMessage extends Base
 {
 
     /**
+     * The field to use from the data when trying
+     * to infer an affiliation.
+     *
+     * @return string
+     */
+    public function getAffiliationField()
+    {
+
+        return 'characterID';
+    }
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
@@ -40,18 +52,6 @@ class NewMailMessage extends Base
             ->where('sentDate', '>', carbon('now')->subMonth())
             ->get();
 
-    }
-
-    /**
-     * The field to use from the data when trying
-     * to infer an affiliation.
-     *
-     * @return string
-     */
-    public function getAffiliationField()
-    {
-
-        return 'characterID';
     }
 
     /**

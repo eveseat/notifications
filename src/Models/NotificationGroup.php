@@ -41,15 +41,6 @@ class NotificationGroup extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function integrations()
-    {
-
-        return $this->belongsToMany(Integration::class);
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function alerts()
@@ -72,7 +63,7 @@ class NotificationGroup extends Model
      *
      * @return mixed
      */
-    public function notificationChannels() : array
+    public function notificationChannels(): array
     {
 
         return $this->integrations()
@@ -80,16 +71,25 @@ class NotificationGroup extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function integrations()
+    {
+
+        return $this->belongsToMany(Integration::class);
+    }
+
+    /**
      * Return the URL used to route Slack Notifications.
      *
      * @return mixed
      */
-    public function routeNotificationForSlack() : string
+    public function routeNotificationForSlack(): string
     {
 
         return $this->integrations
-                   ->where('type', 'slack')
-                   ->first()->settings['url'];
+            ->where('type', 'slack')
+            ->first()->settings['url'];
     }
 
     /**
@@ -97,12 +97,12 @@ class NotificationGroup extends Model
      *
      * @return mixed
      */
-    public function routeNotificationForMail() : string
+    public function routeNotificationForMail(): string
     {
 
         return $this->integrations
-                   ->where('type', 'mail')
-                   ->first()->settings['email'];
+            ->where('type', 'mail')
+            ->first()->settings['email'];
     }
 
 }

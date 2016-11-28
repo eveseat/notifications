@@ -36,6 +36,18 @@ class MemberApiState extends Base
     use Corporation, Members;
 
     /**
+     * The field to use from the data when trying
+     * to infer an affiliation.
+     *
+     * @return string
+     */
+    public function getAffiliationField()
+    {
+
+        return 'corporation_id';
+    }
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
@@ -58,18 +70,6 @@ class MemberApiState extends Base
         }
 
         return $members;
-    }
-
-    /**
-     * The field to use from the data when trying
-     * to infer an affiliation.
-     *
-     * @return string
-     */
-    public function getAffiliationField()
-    {
-
-        return 'corporation_id';
     }
 
     /**

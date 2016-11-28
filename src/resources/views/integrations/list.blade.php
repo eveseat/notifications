@@ -62,8 +62,8 @@
     $('table#integrations').DataTable({
       processing: true,
       serverSide: true,
-      ajax: '{{ route('notifications.integrations.list.data') }}',
-      columns: [
+      ajax      : '{{ route('notifications.integrations.list.data') }}',
+      columns   : [
         {data: 'name', name: 'name'},
         {data: 'type', name: 'type'},
         {

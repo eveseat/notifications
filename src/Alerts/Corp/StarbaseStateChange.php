@@ -37,6 +37,18 @@ class StarbaseStateChange extends Base
     use Starbases, EveRepository;
 
     /**
+     * The field to use from the data when trying
+     * to infer an affiliation.
+     *
+     * @return string
+     */
+    public function getAffiliationField()
+    {
+
+        return 'corporation_id';
+    }
+
+    /**
      * The required method to handle the Alert.
      *
      * @return mixed
@@ -73,18 +85,6 @@ class StarbaseStateChange extends Base
         });
 
         return $starbases;
-    }
-
-    /**
-     * The field to use from the data when trying
-     * to infer an affiliation.
-     *
-     * @return string
-     */
-    public function getAffiliationField()
-    {
-
-        return 'corporation_id';
     }
 
     /**
