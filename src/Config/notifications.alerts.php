@@ -50,6 +50,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberInactivity::class,
             'notifier' => \Seat\Notifications\Notifications\InActiveCorpMember::class,
         ],
+        'killmails'           => [
+            'name'     => 'Killmails',
+            'alert'    => \Seat\Notifications\Alerts\Corp\Killmails::class,
+            'notifier' => \Seat\Notifications\Notifications\Killmail::class,
+        ],
         'memberapistate'      => [
             'name'     => 'Member API State',
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberApiState::class,
