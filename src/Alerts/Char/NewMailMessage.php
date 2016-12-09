@@ -49,7 +49,7 @@ class NewMailMessage extends Base
     {
 
         return MailMessage::with('body')
-            ->where('sentDate', '>', carbon('now')->subMonth())
+            ->where('sentDate', '>', carbon('now')->subWeek())
             ->get();
 
     }
