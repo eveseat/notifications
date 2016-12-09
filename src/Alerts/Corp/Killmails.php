@@ -44,7 +44,7 @@ class Killmails extends Base
     public function getAffiliationField()
     {
 
-        return 'corporationID';
+        return 'ownerID';
     }
 
     /**
@@ -70,6 +70,7 @@ class Killmails extends Base
         }
 
         return $killmails;
+
     }
 
     /**
