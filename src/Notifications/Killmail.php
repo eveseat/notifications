@@ -77,11 +77,11 @@ class Killmail extends Notification
                 'A new killmail has been recorded!'
             )
             ->line(
-                $this->killmail->characterName . ' (in ' .
-                $this->killmail->corporationName . ') lost a ' .
+                $this->killmail->characterName . ' in ' .
+                $this->killmail->corporationName . ' lost a ' .
                 $this->killmail->typeName . ' in ' .
                 $this->killmail->itemName . ' (' .
-                $this->killmail->security . ')'
+                number_format($this->killmail->security, 2) . ')'
             )
             ->action(
                 'Check it out on zKillboard',
@@ -110,7 +110,9 @@ class Killmail extends Notification
                         'Character Corporation' => $this->killmail->corporationName,
                         'Loss Ship Type'        => $this->killmail->typeName,
                         'System'                => $this->killmail->itemName,
-                        'System Security'       => $this->killmail->security,
+                        'System Security'       => number_format($this->killmail->security, 2),
+                        'Loss / Kill?'          => $this->killmail->victimID == $this->killmail->ownerID ?
+                            'Loss' : 'Kill'
                     ]);
             });
 
