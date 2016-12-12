@@ -55,11 +55,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Corp\Killmails::class,
             'notifier' => \Seat\Notifications\Notifications\Killmail::class,
         ],
-        'memberapistate'      => [
-            'name'     => 'Member API State',
-            'alert'    => \Seat\Notifications\Alerts\Corp\MemberApiState::class,
-            'notifier' => \Seat\Notifications\Notifications\MemberApiState::class,
-        ],
+//        'memberapistate'      => [
+//            'name'     => 'Member API State',
+//            'alert'    => \Seat\Notifications\Alerts\Corp\MemberApiState::class,
+//            'notifier' => \Seat\Notifications\Notifications\MemberApiState::class,
+//        ],
         'starbasefuel'        => [
             'name'     => 'Low Starbase Fuel',
             'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
