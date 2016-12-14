@@ -92,7 +92,7 @@ class InActiveCorpMember extends Notification
      */
     public function toSlack($notifiable)
     {
-
+        sleep(1);
         return (new SlackMessage)
             ->error()
             ->content($this->member->name . ' has not logged in for some time!')

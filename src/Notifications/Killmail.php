@@ -98,7 +98,7 @@ class Killmail extends Notification
      */
     public function toSlack($notifiable)
     {
-
+        sleep(1);
         return (new SlackMessage)
             ->content('Boom! Someone exploded!')
             ->attachment(function ($attachment) {
