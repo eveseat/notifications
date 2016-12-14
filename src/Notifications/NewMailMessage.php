@@ -72,7 +72,7 @@ class NewMailMessage extends Notification
     {
 
         return (new MailMessage)
-            ->line('You have revceived a new EVEMail!')
+            ->line('You have received a new EVEMail!')
             ->line(
                 'The message is from ' . $this->message->senderName . ' with ' .
                 'subject: ' . $this->message->title . '. A snippet from the mail ' .
