@@ -95,7 +95,6 @@ class NewApiKey extends Notification
      */
     public function toSlack($notifiable)
     {
-        sleep(1);
         return (new SlackMessage)
             ->success()
             ->content('A new API key was added!')

@@ -96,7 +96,6 @@ class MemberApiState extends Notification
      */
     public function toSlack($notifiable)
     {
-        sleep(1);
         return (new SlackMessage)
             ->error()
             ->content('A corporation members API key state has changed!')

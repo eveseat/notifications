@@ -96,7 +96,6 @@ class StarbaseSiphons extends Notification
      */
     public function toSlack($notifiable)
     {
-        sleep(1);
         return (new SlackMessage)
             ->error()
             ->content('A starbase is possibly being Siphoned!')

@@ -97,7 +97,6 @@ class StarbaseFuel extends Notification
      */
     public function toSlack($notifiable)
     {
-        sleep(1);
         return (new SlackMessage)
             ->error()
             ->content('A starbase is low on fuel!')

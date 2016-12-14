@@ -91,7 +91,6 @@ class EvePlayerCount extends Notification
      */
     public function toSlack($notifiable)
     {
-        sleep(1);
         return (new SlackMessage)
             ->content(
                 'The player count is ' . $this->player_count->onlinePlayers .
