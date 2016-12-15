@@ -26,26 +26,26 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Class NewMailMessage
+ * Class StarbaseSiphons
  * @package Seat\Notifications\Notifications
  */
-class NewMailMessage extends Notification
+class StarbaseSiphons extends Notification
 {
 
     /**
      * @var
      */
-    private $message;
+    private $starbase;
 
     /**
      * Create a new notification instance.
      *
-     * @param $message
+     * @param $starbase
      */
-    public function __construct($message)
+    public function __construct($starbase)
     {
 
-        $this->message = $message;
+        $this->starbase = $starbase;
     }
 
     /**
@@ -70,22 +70,20 @@ class NewMailMessage extends Notification
      */
     public function toMail($notifiable)
     {
-
         return (new MailMessage)
-            ->line('You have received a new EVEMail!')
+            ->error()
+            ->greeting('Heads up!')
             ->line(
-                'The message is from ' . $this->message->senderName . ' with ' .
-                'subject: ' . $this->message->title . '. A snippet from the mail ' .
-                'follows:'
+                'The starbase at ' . $this->starbase['location'] . ' is possibly being Siphoned!'
             )
-            ->line('"' .
-                str_limit(
-                    str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                    250) .
-                '"'
+            ->line(
+                'The ' . $this->starbase['type'] .
+                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
+                ' has ' . $this->starbase['fuel_blocks'] . ' fuel blocks left and is estimated to ' .
+                'go offline in ' . $this->starbase['hours_left'] . ' hours.'
             )
-            ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
-                'message_id' => $this->message->messageID
+            ->action('Check it out on SeAT', route('corporation.view.starbases', [
+                'corporation_id' => $this->starbase['corporation_id']
             ]));
     }
 
@@ -99,18 +97,17 @@ class NewMailMessage extends Notification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->content('New EVEMail Received!')
+            ->error()
+            ->content('A starbase is possibly being Siphoned!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
-                    'message_id' => $this->message->messageID
+                $attachment->title('Starbase Details', route('corporation.view.starbases', [
+                    'corporation_id' => $this->starbase['corporation_id']
                 ]))->fields([
-                    'From'      => $this->message->senderName,
-                    'Subject'   => $this->message->title,
-                    'Sent Date' => $this->message->sentDate,
-                    'Message'   => str_limit(
-                        str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                        250)
+                    'Type'             => $this->starbase['type'],
+                    'Location'         => $this->starbase['location'],
+                    'Name'             => $this->starbase['name'],
+                    'Silo Content Amount' => $this->starbase['silo_used_volume']
                 ]);
             });
     }
@@ -126,9 +123,10 @@ class NewMailMessage extends Notification
     {
 
         return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
-            'sent_date' => $this->message->sentDate
+            'type'             => $this->starbase['type'],
+            'location'         => $this->starbase['location'],
+            'name'             => $this->starbase['name'],
+            'silo_used_volume' => $this->starbase['silo_used_volume']
         ];
     }
 }

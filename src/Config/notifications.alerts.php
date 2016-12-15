@@ -69,6 +69,11 @@ return [
             'name'     => 'Starbase State Change',
             'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseStateChange::class,
             'notifier' => \Seat\Notifications\Notifications\StarbaseStateChange::class,
+        ],
+        'starbasesiphons' => [
+            'name'     => 'Starbase Siphon Detection',
+            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseSiphons::class,
+            'notifier' => \Seat\Notifications\Notifications\StarbaseSiphons::class,
         ]
     ]
 ];

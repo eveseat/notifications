@@ -96,7 +96,6 @@ class StarbaseStateChange extends Notification
      */
     public function toSlack($notifiable)
     {
-
         return (new SlackMessage)
             ->error()
             ->content('A starbase has changed state!')
