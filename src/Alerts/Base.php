@@ -137,8 +137,17 @@ abstract class Base
 
                 // Check that the affiliations are ok for
                 // the group.
-                if ($this->affiliationOk($group, $data))
+                if ($this->affiliationOk($group, $data)) {
+
+                    // Run the notifier.
                     $group->notify(new $this->notifier($data));
+
+                    // Once the notification has been sent, sleep
+                    // for a second. This is to try and avoid HTTP 429's
+                    // from services that use webhooks.
+                    sleep(1);
+
+                }
             }
 
             $this->markNotificationAsOld($data);
