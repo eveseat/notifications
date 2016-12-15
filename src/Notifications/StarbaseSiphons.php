@@ -70,6 +70,7 @@ class StarbaseSiphons extends Notification
      */
     public function toMail($notifiable)
     {
+
         return (new MailMessage)
             ->error()
             ->greeting('Heads up!')
@@ -96,6 +97,7 @@ class StarbaseSiphons extends Notification
      */
     public function toSlack($notifiable)
     {
+
         return (new SlackMessage)
             ->error()
             ->content('A starbase is possibly being Siphoned!')
@@ -104,9 +106,9 @@ class StarbaseSiphons extends Notification
                 $attachment->title('Starbase Details', route('corporation.view.starbases', [
                     'corporation_id' => $this->starbase['corporation_id']
                 ]))->fields([
-                    'Type'             => $this->starbase['type'],
-                    'Location'         => $this->starbase['location'],
-                    'Name'             => $this->starbase['name'],
+                    'Type'                => $this->starbase['type'],
+                    'Location'            => $this->starbase['location'],
+                    'Name'                => $this->starbase['name'],
                     'Silo Content Amount' => $this->starbase['silo_used_volume']
                 ]);
             });

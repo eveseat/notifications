@@ -98,6 +98,7 @@ class NewMailMessage extends Notification
      */
     public function toSlack($notifiable)
     {
+
         return (new SlackMessage)
             ->content('New EVEMail Received!')
             ->attachment(function ($attachment) {

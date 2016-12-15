@@ -29,8 +29,9 @@ use Seat\Services\Repositories\Corporation\Starbases;
 
 class StarbaseSiphons extends Base
 {
-    use Starbases;
+
     use Assets;
+    use Starbases;
 
     /**
      * The field to use from the data when trying
@@ -65,25 +66,36 @@ class StarbaseSiphons extends Base
             // .. and check the details of each starbase
             $this->getCorporationStarbases($corporation_id)->each(
                 function ($starbase) use ($corporation_id, &$siphon) {
-                    $details = $this->getCorporationStarbases($corporation_id, $starbase->itemID);
-                    foreach($details->modules as $module) {
-                        $data = $module["detail"];
-                        if($data->typeID == 14343) {
-                            $usedVolume = $module["used_volume"];
-                            // K, the contents of the silo is NOT divisible by 100.. time to alert
-                            if($usedVolume % 100 > 0) {
-                                $info = [
-                                    'corporation_id'    => $corporation_id,
-                                    'type'              => $starbase->starbaseTypeName,
-                                    'name'              => $starbase->starbaseName,
-                                    'location'          => $starbase->moonName,
-                                    'silo_used_volume'  => $usedVolume
-                                ];
 
-                                $siphon->push($info);
-                            }
+                    // Get the details (with module details) of a specific starbase
+                    $details = $this->getCorporationStarbases($corporation_id, $starbase->itemID);
+
+                    // Loop over each module at the starbase and
+                    // check if it looks like a siphon is present on a silo.
+                    $details->modules->each(function ($module) use (
+                        $corporation_id, $starbase, &$siphon
+                    ) {
+
+                        if (
+                            // If we have a silo (typeID 14343)
+                            $module['detail']->typeID == 14343 &&
+
+                            // And its used volume is not divisble by 100
+                            $module['used_volume'] % 100 > 0
+                        ) {
+
+                            // Push information about this module as one
+                            // that is possibly being siphoned.
+                            $siphon->push([
+                                'corporation_id'   => $corporation_id,
+                                'type'             => $starbase->starbaseTypeName,
+                                'name'             => $starbase->starbaseName,
+                                'location'         => $starbase->moonName,
+                                'silo_used_volume' => $module['used_volume']
+                            ]);
                         }
-                    }
+                    });
+
                 });
         });
 
