@@ -80,18 +80,18 @@ class StarbaseSiphons extends Base
                             // If we have a silo (typeID 14343)
                             $module['detail']->typeID == 14343 &&
 
-                            // And its used volume is not divisble by 100
-                            $module['used_volume'] % 100 > 0
+                            // And total items is not divisble by 100
+                            $module['total_items'] % 100 > 0
                         ) {
 
                             // Push information about this module as one
                             // that is possibly being siphoned.
                             $siphon->push([
-                                'corporation_id'   => $corporation_id,
-                                'type'             => $starbase->starbaseTypeName,
-                                'name'             => $starbase->starbaseName,
-                                'location'         => $starbase->moonName,
-                                'silo_used_volume' => $module['used_volume']
+                                'corporation_id' => $corporation_id,
+                                'type'           => $starbase->starbaseTypeName,
+                                'name'           => $starbase->starbaseName,
+                                'location'       => $starbase->moonName,
+                                'total_items'    => $module['total_items']
                             ]);
                         }
                     });
@@ -134,6 +134,6 @@ class StarbaseSiphons extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['location', 'silo_used_volume'];
+        return ['location', 'total_items'];
     }
 }

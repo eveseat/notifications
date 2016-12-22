@@ -80,8 +80,8 @@ class StarbaseSiphons extends Notification
             ->line(
                 'The ' . $this->starbase['type'] .
                 (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has a silo with its contents not being divisible by 100. The volume is' .
-                $this->starbase['silo_used_volume'] . '.'
+                ' has a silo with its contents not being divisible by 100. The number of items is' .
+                $this->starbase['total_items'] . '.'
             )
             ->action('Check it out on SeAT', route('corporation.view.starbases', [
                 'corporation_id' => $this->starbase['corporation_id']
@@ -106,10 +106,10 @@ class StarbaseSiphons extends Notification
                 $attachment->title('Starbase Details', route('corporation.view.starbases', [
                     'corporation_id' => $this->starbase['corporation_id']
                 ]))->fields([
-                    'Type'                => $this->starbase['type'],
-                    'Location'            => $this->starbase['location'],
-                    'Name'                => $this->starbase['name'],
-                    'Silo Content Amount' => $this->starbase['silo_used_volume']
+                    'Type'        => $this->starbase['type'],
+                    'Location'    => $this->starbase['location'],
+                    'Name'        => $this->starbase['name'],
+                    'Silo Amount' => $this->starbase['total_items']
                 ]);
             });
     }
@@ -125,10 +125,10 @@ class StarbaseSiphons extends Notification
     {
 
         return [
-            'type'             => $this->starbase['type'],
-            'location'         => $this->starbase['location'],
-            'name'             => $this->starbase['name'],
-            'silo_used_volume' => $this->starbase['silo_used_volume']
+            'type'        => $this->starbase['type'],
+            'location'    => $this->starbase['location'],
+            'name'        => $this->starbase['name'],
+            'total_items' => $this->starbase['total_items']
         ];
     }
 }
