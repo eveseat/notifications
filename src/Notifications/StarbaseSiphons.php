@@ -80,7 +80,7 @@ class StarbaseSiphons extends Notification
             ->line(
                 'The ' . $this->starbase['type'] .
                 (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has a silo with its contents not being divisable by 100. The volume is' .
+                ' has a silo with its contents not being divisible by 100. The volume is' .
                 $this->starbase['silo_used_volume'] . '.'
             )
             ->action('Check it out on SeAT', route('corporation.view.starbases', [
