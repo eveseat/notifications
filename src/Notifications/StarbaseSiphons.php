@@ -80,8 +80,8 @@ class StarbaseSiphons extends Notification
             ->line(
                 'The ' . $this->starbase['type'] .
                 (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has ' . $this->starbase['fuel_blocks'] . ' fuel blocks left and is estimated to ' .
-                'go offline in ' . $this->starbase['hours_left'] . ' hours.'
+                ' has a silo with its contents not being divisable by 100. The volume is' .
+                $this->starbase['silo_used_volume'] . '.'
             )
             ->action('Check it out on SeAT', route('corporation.view.starbases', [
                 'corporation_id' => $this->starbase['corporation_id']
