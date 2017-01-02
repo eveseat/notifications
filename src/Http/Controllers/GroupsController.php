@@ -1,23 +1,24 @@
 <?php
+
 /*
-This file is part of SeAT
-
-Copyright (C) 2015, 2016  Leon Jacobs
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+ * This file is part of SeAT
+ *
+ * Copyright (C) 2015, 2016, 2017  Leon Jacobs
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 namespace Seat\Notifications\Http\Controllers;
 
@@ -25,7 +26,6 @@ use Seat\Notifications\Http\Validation\Group;
 use Seat\Notifications\Http\Validation\GroupAffiliation;
 use Seat\Notifications\Http\Validation\GroupAlert;
 use Seat\Notifications\Http\Validation\GroupIntegration;
-use Seat\Notifications\Http\Validation\GroupName;
 use Seat\Notifications\Models\GroupAffiliation as GroupAffiliationModel;
 use Seat\Notifications\Models\GroupAlert as GroupAlertModel;
 use Seat\Notifications\Models\Integration;
@@ -36,12 +36,11 @@ use Seat\Web\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 
 /**
- * Class GroupsController
+ * Class GroupsController.
  * @package Seat\Notifications\Http\Controllers
  */
 class GroupsController extends Controller
 {
-
     use Corporation, Character;
 
     /**
@@ -90,7 +89,7 @@ class GroupsController extends Controller
 
         NotificationGroup::create([
             'name' => $request->input('name'),
-            'type' => $request->input('type')
+            'type' => $request->input('type'),
         ]);
 
         return redirect()->back()
@@ -156,7 +155,7 @@ class GroupsController extends Controller
                         ' integration already exists. Please choose another type.');
 
             // Add the integration
-            if (!$group->integrations->contains($integration_id))
+            if (! $group->integrations->contains($integration_id))
                 $group->integrations()
                     ->attach(Integration::findOrFail($integration_id));
         }
@@ -193,7 +192,7 @@ class GroupsController extends Controller
         $group = NotificationGroup::findOrFail($request->input('id'));
 
         foreach ($request->alerts as $alert)
-            if (!$group->alerts->contains('alert', $alert))
+            if (! $group->alerts->contains('alert', $alert))
                 $group->alerts()
                     ->save(new GroupAlertModel(['alert' => $alert]));
 
@@ -232,19 +231,19 @@ class GroupsController extends Controller
         // Process the corporations
         if ($request->has('corporations'))
             foreach ($request->input('corporations') as $corp)
-                if (!$group->affiliations->contains('affiliation_id', $corp))
+                if (! $group->affiliations->contains('affiliation_id', $corp))
                     $group->affiliations()->save(new GroupAffiliationModel([
                         'type'           => 'corp',
-                        'affiliation_id' => $corp
+                        'affiliation_id' => $corp,
                     ]));
 
         // Process the characters
         if ($request->has('characters'))
             foreach ($request->input('characters') as $character)
-                if (!$group->affiliations->contains('affiliation_id', $character))
+                if (! $group->affiliations->contains('affiliation_id', $character))
                     $group->affiliations()->save(new GroupAffiliationModel([
                         'type'           => 'char',
-                        'affiliation_id' => $character
+                        'affiliation_id' => $character,
                     ]));
 
         return redirect()->back()
@@ -268,5 +267,4 @@ class GroupsController extends Controller
         return redirect()->back()
             ->with('success', 'Affiliation removed!');
     }
-
 }
