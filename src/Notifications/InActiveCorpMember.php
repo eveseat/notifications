@@ -1,23 +1,24 @@
 <?php
+
 /*
-This file is part of SeAT
-
-Copyright (C) 2015, 2016  Leon Jacobs
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-*/
+ * This file is part of SeAT
+ *
+ * Copyright (C) 2015, 2016, 2017  Leon Jacobs
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 namespace Seat\Notifications\Notifications;
 
@@ -27,7 +28,6 @@ use Illuminate\Notifications\Notification;
 
 class InActiveCorpMember extends Notification
 {
-
     /**
      * @var
      */
@@ -77,7 +77,7 @@ class InActiveCorpMember extends Notification
             )
             ->action(
                 'View Corporation Tracking', route('corporation.view.tracking', [
-                'corporation_id' => $this->member->corporationID
+                'corporation_id' => $this->member->corporationID,
             ]))
             ->line(
                 'Last seen at ' . $this->member->location . ' in a ' .
@@ -99,12 +99,12 @@ class InActiveCorpMember extends Notification
             ->attachment(function ($attachment) {
 
                 $attachment->title('Tracking Details', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporationID
+                    'corporation_id' => $this->member->corporationID,
                 ]))->fields([
                     'Name'        => $this->member->name,
                     'Last Logoff' => $this->member->logoffDateTime,
                     'Location'    => $this->member->location,
-                    'Ship'        => $this->member->shipType
+                    'Ship'        => $this->member->shipType,
                 ]);
             });
     }
@@ -123,7 +123,7 @@ class InActiveCorpMember extends Notification
             'name'        => $this->member->name,
             'last_logoff' => $this->member->logoffDateTime,
             'location'    => $this->member->location,
-            'ship'        => $this->member->shipType
+            'ship'        => $this->member->shipType,
         ];
     }
 }
