@@ -23,7 +23,7 @@
 Route::group([
     'namespace'  => 'Seat\Notifications\Http\Controllers',
     'prefix'     => 'notifications',
-    'middleware' => 'web',
+    'middleware' => ['web', 'auth'],
 ], function () {
 
     Route::get('/', [
