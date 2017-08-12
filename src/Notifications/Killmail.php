@@ -121,7 +121,7 @@ class Killmail extends Notification
                                 $this->killmail->itemID,
                                 $this->killmail->itemName . ' (' . number_format($this->killmail->security, 2) . ')'));
                     })
-                    /* TODO : exploit ESI adding a Job on markets/prices | then we will be able to display a price
+                    /*
                     ->field(function($field){
                         $field->title('Price')
                             ->content('N/A');
@@ -132,8 +132,7 @@ class Killmail extends Notification
                     ->footer('zKillboard')
                     ->footerIcon('https://zkillboard.com/img/wreck.png');
 
-                // TODO : uncomment for Laravel 5.5 -> https://github.com/laravel/framework/pull/19200
-                //$attachment->thumb('https://imageserver.eveonline.com/Type/'. $this->killmail->shipTypeID . '_64.png');
+                // $attachment->thumb('https://imageserver.eveonline.com/Type/'. $this->killmail->shipTypeID . '_64.png');
 
                 logger()->debug($attachment->content);
             });
