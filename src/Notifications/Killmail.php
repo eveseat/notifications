@@ -193,7 +193,7 @@ class Killmail extends Notification
         } else {
 
             // the killmail refers to a kill
-            $content = sprintf('*%s* has killed a %s in a versus',
+            $content = sprintf('*%s* has killed a %s in a fight',
                 $final_blow->characterName,
                 $this->killmail->typeName);
 
