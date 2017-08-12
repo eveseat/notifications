@@ -186,7 +186,6 @@ class Killmail extends Notification
 
                 if ($final_blow->characterID != 0) {
 
-                    dump($final_blow);
                     $content .= ' in a fight against ' . $final_blow->characterName;
                 }
             }
