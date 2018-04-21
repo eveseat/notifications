@@ -178,8 +178,8 @@
             <select name="corporations[]" id="available_corporations" style="width: 100%" multiple>
 
               @foreach($all_corporations as $corporation)
-                <option value="{{ $corporation->corporationID }}">
-                  {{ $corporation->corporationName }}
+                <option value="{{ $corporation->corporation_id }}">
+                  {{ $corporation->name }}
                 </option>
               @endforeach
 
@@ -191,8 +191,8 @@
             <select name="characters[]" id="available_characters" style="width: 100%" multiple>
 
               @foreach($all_characters as $character)
-                <option value="{{ $character->characterID }}">
-                  {{ $character->characterName }}
+                <option value="{{ $character->character_id }}">
+                  {{ $character->name }}
                 </option>
               @endforeach
 
