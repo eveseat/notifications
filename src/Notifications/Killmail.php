@@ -137,25 +137,6 @@ class Killmail extends Notification
 
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed $notifiable
-     *
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'characterName'   => $this->killmail->characterName,
-            'corporationName' => $this->killmail->corporationName,
-            'typeName'        => $this->killmail->typeName,
-            'itemName'        => $this->killmail->itemName,
-            'security'        => $this->killmail->security,
-        ];
-    }
-
     private function toSlackContent()
     {
 
@@ -229,6 +210,24 @@ class Killmail extends Notification
 
         return sprintf('%s !',
             $this->zKillBoardToSlackLink('kill', $this->killmail->killID, $content));
+    }
+
+    /**
+     * Build a link to zKillboard using Slack message formatting.
+     *
+     * @param string $type (must be ship, character, corporation or alliance)
+     * @param int    $id   the type entity ID
+     * @param string $name the type name
+     *
+     * @return string
+     */
+    private function zKillBoardToSlackLink(string $type, int $id, string $name)
+    {
+
+        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
+            return '';
+
+        return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
     }
 
     /**
@@ -313,20 +312,21 @@ class Killmail extends Notification
     }
 
     /**
-     * Build a link to zKillboard using Slack message formatting.
+     * Get the array representation of the notification.
      *
-     * @param string $type (must be ship, character, corporation or alliance)
-     * @param int    $id   the type entity ID
-     * @param string $name the type name
+     * @param  mixed $notifiable
      *
-     * @return string
+     * @return array
      */
-    private function zKillBoardToSlackLink(string $type, int $id, string $name)
+    public function toArray($notifiable)
     {
 
-        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
-            return '';
-
-        return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
+        return [
+            'characterName'   => $this->killmail->characterName,
+            'corporationName' => $this->killmail->corporationName,
+            'typeName'        => $this->killmail->typeName,
+            'itemName'        => $this->killmail->itemName,
+            'security'        => $this->killmail->security,
+        ];
     }
 }
