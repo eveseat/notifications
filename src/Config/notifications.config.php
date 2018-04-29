@@ -22,5 +22,5 @@
 
 return [
 
-    'version' => '2.0.11',
+    'version' => '3.0.0-beta1',
 ];
