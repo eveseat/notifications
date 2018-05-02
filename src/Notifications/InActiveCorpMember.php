@@ -72,16 +72,16 @@ class InActiveCorpMember extends Notification
             ->greeting('Heads up!')
             ->subject('Inactive Member Notification')
             ->line(
-                $this->member->name . ' logged off more than 3 months ago at ' .
-                $this->member->logoffDateTime . '.'
+                $this->member->character_id . ' logged off more than 3 months ago at ' .
+                $this->member->logoff_date . '.'
             )
             ->action(
                 'View Corporation Tracking', route('corporation.view.tracking', [
-                'corporation_id' => $this->member->corporationID,
+                'corporation_id' => $this->member->corporation_id,
             ]))
             ->line(
-                'Last seen at ' . $this->member->location . ' in a ' .
-                $this->member->shipType
+                'Last seen at ' . $this->member->location_id . ' in a ' .
+                $this->member->ship_type_id
             );
     }
 
@@ -95,16 +95,16 @@ class InActiveCorpMember extends Notification
 
         return (new SlackMessage)
             ->error()
-            ->content($this->member->name . ' has not logged in for some time!')
+            ->content($this->member->character_id . ' has not logged in for some time!')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Tracking Details', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporationID,
+                    'corporation_id' => $this->member->corporation_id,
                 ]))->fields([
-                    'Name'        => $this->member->name,
-                    'Last Logoff' => $this->member->logoffDateTime,
-                    'Location'    => $this->member->location,
-                    'Ship'        => $this->member->shipType,
+                    'Name'        => $this->member->character_id,
+                    'Last Logoff' => $this->member->logoff_date,
+                    'Location'    => $this->member->location_id,
+                    'Ship'        => $this->member->ship_type_id,
                 ]);
             });
     }
@@ -120,10 +120,10 @@ class InActiveCorpMember extends Notification
     {
 
         return [
-            'name'        => $this->member->name,
-            'last_logoff' => $this->member->logoffDateTime,
-            'location'    => $this->member->location,
-            'ship'        => $this->member->shipType,
+            'name'        => $this->member->character_id,
+            'last_logoff' => $this->member->logoff_date,
+            'location'    => $this->member->location_id,
+            'ship'        => $this->member->ship_type_id,
         ];
     }
 }

@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Alerts\Eve;
 
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Server\ServerStatus;
+use Seat\Eveapi\Models\Status\ServerStatus;
 use Seat\Notifications\Alerts\Base;
 
 /**
@@ -56,7 +56,7 @@ class PlayerCount extends Base
     protected function getData(): Collection
     {
 
-        return ServerStatus::orderBy('currentTime', 'desc')
+        return ServerStatus::orderBy('start_time', 'desc')
             ->take(1)->get();
 
     }
@@ -70,6 +70,6 @@ class PlayerCount extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['currentTime', 'onlinePlayers'];
+        return ['start_time', 'players'];
     }
 }

@@ -74,18 +74,18 @@ class NewMailMessage extends Notification
         return (new MailMessage)
             ->line('You have received a new EVEMail!')
             ->line(
-                'The message is from ' . $this->message->senderName . ' with ' .
-                'subject: ' . $this->message->title . '. A snippet from the mail ' .
+                'The message is from ' . $this->message->header->from . ' with ' .
+                'subject: ' . $this->message->header->subject . '. A snippet from the mail ' .
                 'follows:'
             )
             ->line('"' .
                 str_limit(
-                    str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
+                    str_replace('<br>', ' ', clean_ccp_html($this->message->header->body->body, '<br>')),
                     250) .
                 '"'
             )
             ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
-                'message_id' => $this->message->messageID,
+                'message_id' => $this->message->mail_id,
             ]));
     }
 
@@ -104,13 +104,13 @@ class NewMailMessage extends Notification
             ->attachment(function ($attachment) {
 
                 $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
-                    'message_id' => $this->message->messageID,
+                    'message_id' => $this->message->mail_id,
                 ]))->fields([
-                    'From'      => $this->message->senderName,
-                    'Subject'   => $this->message->title,
-                    'Sent Date' => $this->message->sentDate,
+                    'From'      => $this->message->header->from,
+                    'Subject'   => $this->message->header->subject,
+                    'Sent Date' => $this->message->header->timestamp,
                     'Message'   => str_limit(
-                        str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
+                        str_replace('<br>', ' ', clean_ccp_html($this->message->header->body->body, '<br>')),
                         250),
                 ]);
             });
@@ -127,9 +127,9 @@ class NewMailMessage extends Notification
     {
 
         return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
-            'sent_date' => $this->message->sentDate,
+            'from'      => $this->message->header->from,
+            'subject'   => $this->message->header->title,
+            'sent_date' => $this->message->header->timestamp,
         ];
     }
 }

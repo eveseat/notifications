@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Alerts\Char;
 
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Character\MailMessage;
+use Seat\Eveapi\Models\Mail\MailRecipient;
 use Seat\Notifications\Alerts\Base;
 
 class NewMailMessage extends Base
@@ -48,9 +48,12 @@ class NewMailMessage extends Base
     protected function getData(): Collection
     {
 
-        return MailMessage::with('body')
-            ->where('sentDate', '>', carbon('now')->subWeek())
-            ->get();
+        return MailRecipient::whereHas('mail', function ($query) {
+                    $query->where('timestamp', '>', carbon('now')->subWeek());
+                })
+                ->with('body')
+                ->where('recipient_type', 'character')
+                ->get();
 
     }
 
@@ -86,6 +89,6 @@ class NewMailMessage extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['characterID', 'messageID'];
+        return ['recipient_id', 'mail_id'];
     }
 }
