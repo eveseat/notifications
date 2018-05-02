@@ -30,22 +30,22 @@ use Illuminate\Notifications\Notification;
  * Class NewApiKey.
  * @package Seat\Notifications\Notifications
  */
-class NewApiKey extends Notification
+class NewRefreshToken extends Notification
 {
     /**
      * @var
      */
-    private $key;
+    private $token;
 
     /**
      * Create a new notification instance.
      *
-     * @param $key
+     * @param $token
      */
-    public function __construct($key)
+    public function __construct($token)
     {
 
-        $this->key = $key;
+        $this->token = $token;
 
     }
 
@@ -75,14 +75,14 @@ class NewApiKey extends Notification
         return (new MailMessage)
             ->success()
             ->greeting('Heads up!')
-            ->line('We have a new API key added to SeAT!')
+            ->line('We have a new Refresh Token added to SeAT!')
             ->line(
-                'The key was added by ' . $this->key->owner->name . ' that last ' .
-                'logged in from ' . $this->key->owner->last_login_source . ' at ' .
-                $this->key->owner->last_login . '.'
+                'The key was added by ' . $this->token->user->name . ' that last ' .
+                'logged in from ' . $this->token->user->last_login_source . ' at ' .
+                $this->token->owner->last_login . '.'
             )
-            ->action('Check it out on SeAT', route('api.key.detail', [
-                'key_id' => $this->key->key_id,
+            ->action('Check it out on SeAT', route('character.view.sheet', [
+                'character_id' => $this->token->character_id,
             ]));
     }
 
@@ -98,16 +98,16 @@ class NewApiKey extends Notification
 
         return (new SlackMessage)
             ->success()
-            ->content('A new API key was added!')
+            ->content('A new Refresh Token was added!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('API Key Details', route('api.key.detail', [
-                    'key_id' => $this->key->key_id,
+                $attachment->title('Refresh Token Details', route('character.view.sheet', [
+                    'key_id' => $this->token->key_id,
                 ]))->fields([
-                    'Key ID'                  => $this->key->key_id,
-                    'Key Owner'               => $this->key->owner->name,
-                    'Owner Last Login Source' => $this->key->owner->last_login_source,
-                    'Owner Last Login Time'   => $this->key->owner->last_login,
+                    'Character ID'            => $this->token->character_id,
+                    'Token Owner'             => $this->token->user->name,
+                    'Owner Last Login Source' => $this->token->user->last_login_source,
+                    'Owner Last Login Time'   => $this->token->user->last_login,
                 ]);
             });
     }
@@ -123,10 +123,10 @@ class NewApiKey extends Notification
     {
 
         return [
-            'key_id'                  => $this->key->key_id,
-            'key_owner'               => $this->key->owner->name,
-            'owner_last_login_source' => $this->key->owner->last_login_source,
-            'owner_last_login_time'   => $this->key->owner->last_login,
+            'character_id'           => $this->token->character_id,
+            'token_owner'            => $this->token->user->name,
+            'user_last_login_source' => $this->token->user->last_login_source,
+            'user_last_login_time'   => $this->token->user->last_login,
         ];
     }
 }

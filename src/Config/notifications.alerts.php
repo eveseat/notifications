@@ -23,10 +23,10 @@
 return [
 
     'seat' => [
-        'newapikey' => [
-            'name'     => 'New API Added',
-            'alert'    => \Seat\Notifications\Alerts\Seat\NewApiKey::class,
-            'notifier' => \Seat\Notifications\Notifications\NewApiKey::class,
+        'newrefreshtoken' => [
+            'name'     => 'New Token Added',
+            'alert'    => \Seat\Notifications\Alerts\Seat\NewRefreshToken::class,
+            'notifier' => \Seat\Notifications\Notifications\NewRefreshToken::class,
         ],
     ],
     'eve'  => [
@@ -56,11 +56,6 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Corp\Killmails::class,
             'notifier' => \Seat\Notifications\Notifications\Killmail::class,
         ],
-//        'memberapistate'      => [
-//            'name'     => 'Member API State',
-//            'alert'    => \Seat\Notifications\Alerts\Corp\MemberApiState::class,
-//            'notifier' => \Seat\Notifications\Notifications\MemberApiState::class,
-//        ],
         'starbasefuel'        => [
             'name'     => 'Low Starbase Fuel',
             'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,

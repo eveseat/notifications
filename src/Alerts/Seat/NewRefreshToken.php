@@ -23,14 +23,14 @@
 namespace Seat\Notifications\Alerts\Seat;
 
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Eve\ApiKey;
+use Seat\Eveapi\Models\RefreshToken;
 use Seat\Notifications\Alerts\Base;
 
 /**
  * Class NewApiKey.
  * @package Seat\Notifications\Alerts\Seat
  */
-class NewApiKey extends Base
+class NewRefreshToken extends Base
 {
     /**
      * The required method to handle the Alert.
@@ -40,7 +40,7 @@ class NewApiKey extends Base
     protected function getData(): Collection
     {
 
-        return ApiKey::with('owner')->get();
+        return RefreshToken::with('user')->get();
     }
 
     /**
@@ -63,7 +63,7 @@ class NewApiKey extends Base
     protected function getName(): string
     {
 
-        return 'newapikey';
+        return 'newrefreshtoken';
     }
 
     /**
@@ -75,6 +75,6 @@ class NewApiKey extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['key_id'];
+        return ['character_id'];
     }
 }
