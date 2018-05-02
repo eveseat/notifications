@@ -75,6 +75,6 @@ class NewRefreshToken extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['character_id'];
+        return ['character_id', 'refresh_token'];
     }
 }

@@ -76,10 +76,10 @@ class EvePlayerCount extends Notification
         return (new MailMessage)
             ->success()
             ->line(
-                'The player count is ' . $this->player_count->onlinePlayers .
+                'The player count is ' . $this->player_count->players .
                 ' checked ' .
-                carbon($this->player_count->currentTime)->diffForHumans() .
-                ' at ' . $this->player_count->currentTime . '!'
+                carbon($this->player_count->start_time)->diffForHumans() .
+                ' at ' . $this->player_count->start_time . '!'
             )
             ->action('Check it out on SeAT', route('home'));
     }
@@ -94,10 +94,10 @@ class EvePlayerCount extends Notification
 
         return (new SlackMessage)
             ->content(
-                'The player count is ' . $this->player_count->onlinePlayers .
+                'The player count is ' . $this->player_count->players .
                 ' checked ' .
-                carbon($this->player_count->currentTime)->diffForHumans() .
-                ' at ' . $this->player_count->currentTime . '!'
+                carbon($this->player_count->start_time)->diffForHumans() .
+                ' at ' . $this->player_count->start_time . '!'
             );
     }
 
@@ -112,8 +112,8 @@ class EvePlayerCount extends Notification
     {
 
         return [
-            'player_count' => $this->player_count->onlinePlayers,
-            'calculated'   => carbon($this->player_count->currentTime)
+            'player_count' => $this->player_count->players,
+            'calculated'   => carbon($this->player_count->start_time)
                 ->diffForHumans(),
         ];
     }

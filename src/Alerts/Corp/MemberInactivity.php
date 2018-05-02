@@ -22,9 +22,9 @@
 
 namespace Seat\Notifications\Alerts\Corp;
 
-use DB;
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Corporation\MemberTracking;
+use Illuminate\Support\Facades\DB;
+use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Notifications\Alerts\Base;
 
 /**
@@ -53,8 +53,8 @@ class MemberInactivity extends Base
     protected function getData(): Collection
     {
 
-        return MemberTracking::where(
-            'logoffDateTime', '<', DB::raw('date_sub(NOW(), INTERVAL 3 MONTH)'))
+        return CorporationMemberTracking::where(
+            'logoff_date', '<', DB::raw('date_sub(NOW(), INTERVAL 3 MONTH)'))
             ->get();
     }
 
@@ -90,6 +90,6 @@ class MemberInactivity extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['characterID', 'logoffDateTime'];
+        return ['corporation_id', 'character_id', 'logoff_date'];
     }
 }
