@@ -130,13 +130,11 @@ abstract class Base
         foreach ($this->data as $data) {
 
             // Check if the notification has been sent before.
-            if ($this->isOldNotification($data))
-                continue;
+            if ($this->isOldNotification($data)) continue;
 
             foreach ($this->getNotificationGroups() as $group) {
 
-                // Check that the affiliations are ok for
-                // the group.
+                // Check that the affiliations are ok for the group.
                 if ($this->affiliationOk($group, $data)) {
 
                     // Run the notifier.
@@ -146,27 +144,25 @@ abstract class Base
                     // for a second. This is to try and avoid HTTP 429's
                     // from services that use webhooks.
                     sleep(1);
-
                 }
             }
 
             $this->markNotificationAsOld($data);
         }
-
     }
 
     /**
      * @param $data
      *
      * @return bool
+     * @throws \Exception
      */
     public function isOldNotification($data)
     {
 
         $hash = $this->getDataHash($data);
 
-        if (cache($this->cacheKey . $hash))
-            return true;
+        if (cache($this->cacheKey . $hash)) return true;
 
         // Check the database.
         $in_db = NotificationHistory::whereHash($hash)
@@ -213,8 +209,7 @@ abstract class Base
     {
 
         // Return the groups we already found if we have.
-        if ($this->groups)
-            return $this->groups;
+        if ($this->groups) return $this->groups;
 
         // Get the groups that are applicable to this
         // notification type.

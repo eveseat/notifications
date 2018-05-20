@@ -20,18 +20,33 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Alerts\Seat;
+namespace Seat\Notifications\Alerts\Corp;
 
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Eve\ApiKey;
 use Seat\Notifications\Alerts\Base;
+use Seat\Services\Repositories\Corporation\Corporation;
+use Seat\Services\Repositories\Corporation\Members;
 
 /**
- * Class NewApiKey.
- * @package Seat\Notifications\Alerts\Seat
+ * Class MemberTokenState.
+ * @package Seat\Notifications\Alerts\Corp
  */
-class NewApiKey extends Base
+class MemberTokenState extends Base
 {
+    use Corporation, Members;
+
+    /**
+     * The field to use from the data when trying
+     * to infer an affiliation.
+     *
+     * @return string
+     */
+    public function getAffiliationField()
+    {
+
+        return 'corporation_id';
+    }
+
     /**
      * The required method to handle the Alert.
      *
@@ -40,7 +55,21 @@ class NewApiKey extends Base
     protected function getData(): Collection
     {
 
-        return ApiKey::with('owner')->get();
+        $members = collect();
+
+        foreach ($this->getAllCorporations()->unique('corporation_id') as $corporation) {
+
+            $this->getCorporationMemberTracking($corporation->corporation_id)
+                ->each(function ($member) use (&$members) {
+
+                    // Add the member to the collection.
+                    if (! $members->contains($member))
+                        $members->push($member);
+
+                });
+        }
+
+        return $members;
     }
 
     /**
@@ -51,7 +80,7 @@ class NewApiKey extends Base
     protected function getType(): string
     {
 
-        return 'seat';
+        return 'corp';
     }
 
     /**
@@ -63,7 +92,7 @@ class NewApiKey extends Base
     protected function getName(): string
     {
 
-        return 'newapikey';
+        return 'memberapistate';
     }
 
     /**
@@ -75,6 +104,6 @@ class NewApiKey extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['key_id'];
+        return ['character_id', 'enabled', 'updated_at'];
     }
 }

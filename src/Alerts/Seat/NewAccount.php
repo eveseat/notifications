@@ -20,33 +20,18 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Alerts\Corp;
+namespace Seat\Notifications\Alerts\Seat;
 
 use Illuminate\Support\Collection;
 use Seat\Notifications\Alerts\Base;
-use Seat\Services\Repositories\Corporation\Corporation;
-use Seat\Services\Repositories\Corporation\Members;
+use Seat\Web\Models\User;
 
 /**
- * Class MemberApiState.
- * @package Seat\Notifications\Alerts\Corp
+ * Class NewAccount.
+ * @package Seat\Notifications\Alerts\Seat
  */
-class MemberApiState extends Base
+class NewAccount extends Base
 {
-    use Corporation, Members;
-
-    /**
-     * The field to use from the data when trying
-     * to infer an affiliation.
-     *
-     * @return string
-     */
-    public function getAffiliationField()
-    {
-
-        return 'corporation_id';
-    }
-
     /**
      * The required method to handle the Alert.
      *
@@ -55,21 +40,7 @@ class MemberApiState extends Base
     protected function getData(): Collection
     {
 
-        $members = collect();
-
-        foreach ($this->getAllCorporations()->unique('corporationID') as $corporation) {
-
-            $this->getCorporationMemberTracking($corporation->corporationID)
-                ->each(function ($member) use (&$members) {
-
-                    // Add the member to the collection.
-                    if (! $members->contains($member))
-                        $members->push($member);
-
-                });
-        }
-
-        return $members;
+        return User::with('login_history')->get();
     }
 
     /**
@@ -80,7 +51,7 @@ class MemberApiState extends Base
     protected function getType(): string
     {
 
-        return 'corp';
+        return 'seat';
     }
 
     /**
@@ -92,7 +63,7 @@ class MemberApiState extends Base
     protected function getName(): string
     {
 
-        return 'memberapistate';
+        return 'newaccount';
     }
 
     /**
@@ -104,6 +75,6 @@ class MemberApiState extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['characterID', 'keyID', 'enabled', 'updated_at'];
+        return ['id'];
     }
 }

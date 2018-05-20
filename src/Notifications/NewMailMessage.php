@@ -74,18 +74,17 @@ class NewMailMessage extends Notification
         return (new MailMessage)
             ->line('You have received a new EVEMail!')
             ->line(
-                'The message is from ' . $this->message->senderName . ' with ' .
-                'subject: ' . $this->message->title . '. A snippet from the mail ' .
+                'Subject: ' . $this->message->subject . '. A snippet from the mail ' .
                 'follows:'
             )
             ->line('"' .
                 str_limit(
                     str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                    250) .
+                    2000) .
                 '"'
             )
             ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
-                'message_id' => $this->message->messageID,
+                'message_id' => $this->message->mail_id,
             ]));
     }
 
@@ -104,14 +103,13 @@ class NewMailMessage extends Notification
             ->attachment(function ($attachment) {
 
                 $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
-                    'message_id' => $this->message->messageID,
+                    'message_id' => $this->message->mail_id,
                 ]))->fields([
-                    'From'      => $this->message->senderName,
-                    'Subject'   => $this->message->title,
-                    'Sent Date' => $this->message->sentDate,
+                    'Subject'   => $this->message->subject,
+                    'Sent Date' => $this->message->timestamp,
                     'Message'   => str_limit(
                         str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                        250),
+                        2000),
                 ]);
             });
     }

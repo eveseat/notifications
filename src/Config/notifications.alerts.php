@@ -23,18 +23,10 @@
 return [
 
     'seat' => [
-        'newapikey' => [
-            'name'     => 'New API Added',
-            'alert'    => \Seat\Notifications\Alerts\Seat\NewApiKey::class,
-            'notifier' => \Seat\Notifications\Notifications\NewApiKey::class,
-        ],
-    ],
-    'eve'  => [
-
-        'playercount' => [
-            'name'     => 'Eve Player Count',
-            'alert'    => \Seat\Notifications\Alerts\Eve\PlayerCount::class,
-            'notifier' => \Seat\Notifications\Notifications\EvePlayerCount::class,
+        'newaccount' => [
+            'name'     => 'New SeAT Account',
+            'alert'    => \Seat\Notifications\Alerts\Seat\NewAccount::class,
+            'notifier' => \Seat\Notifications\Notifications\NewAccount::class,
         ],
     ],
     'char' => [
@@ -56,25 +48,25 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Corp\Killmails::class,
             'notifier' => \Seat\Notifications\Notifications\Killmail::class,
         ],
-//        'memberapistate'      => [
-//            'name'     => 'Member API State',
-//            'alert'    => \Seat\Notifications\Alerts\Corp\MemberApiState::class,
-//            'notifier' => \Seat\Notifications\Notifications\MemberApiState::class,
+        'memberapistate'      => [
+            'name'     => 'Member API State',
+            'alert'    => \Seat\Notifications\Alerts\Corp\MemberTokenState::class,
+            'notifier' => \Seat\Notifications\Notifications\MemberTokenState::class,
+        ],
+//        'starbasefuel'        => [
+//            'name'     => 'Low Starbase Fuel',
+//            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
+//            'notifier' => \Seat\Notifications\Notifications\StarbaseFuel::class,
 //        ],
-        'starbasefuel'        => [
-            'name'     => 'Low Starbase Fuel',
-            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
-            'notifier' => \Seat\Notifications\Notifications\StarbaseFuel::class,
-        ],
-        'starbasestatechange' => [
-            'name'     => 'Starbase State Change',
-            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseStateChange::class,
-            'notifier' => \Seat\Notifications\Notifications\StarbaseStateChange::class,
-        ],
-        'starbasesiphons'     => [
-            'name'     => 'Starbase Siphon Detection',
-            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseSiphons::class,
-            'notifier' => \Seat\Notifications\Notifications\StarbaseSiphons::class,
-        ],
+//        'starbasestatechange' => [
+//            'name'     => 'Starbase State Change',
+//            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseStateChange::class,
+//            'notifier' => \Seat\Notifications\Notifications\StarbaseStateChange::class,
+//        ],
+//        'starbasesiphons'     => [
+//            'name'     => 'Starbase Siphon Detection',
+//            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseSiphons::class,
+//            'notifier' => \Seat\Notifications\Notifications\StarbaseSiphons::class,
+//        ],
     ],
 ];

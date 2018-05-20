@@ -44,7 +44,7 @@ class Killmails extends Base
     public function getAffiliationField()
     {
 
-        return 'ownerID';
+        return 'corporation_id';
     }
 
     /**
@@ -57,20 +57,18 @@ class Killmails extends Base
 
         $killmails = collect();
 
-        foreach ($this->getAllCorporations()->unique('corporationID') as $corporation) {
+        foreach ($this->getAllCorporations()->unique('corporation_id') as $corporation) {
 
-            $this->getCorporationKillmails($corporation->corporationID)
+            $this->getCorporationKillmails($corporation->corporation_id)
                 ->each(function ($killmail) use (&$killmails) {
 
                     // Add the killmail to the collection.
-                    if (! $killmails->contains($killmail))
-                        $killmails->push($killmail);
+                    if (! $killmails->contains($killmail)) $killmails->push($killmail);
 
                 });
         }
 
         return $killmails;
-
     }
 
     /**
@@ -105,6 +103,6 @@ class Killmails extends Base
     protected function getUniqueFields(): array
     {
 
-        return ['killID'];
+        return ['killmail_id'];
     }
 }

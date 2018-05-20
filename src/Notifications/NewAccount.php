@@ -27,27 +27,26 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Class EvePlayerCount.
+ * Class NewAccount.
  * @package Seat\Notifications\Notifications
  */
-class EvePlayerCount extends Notification
+class NewAccount extends Notification
 {
     /**
-     * The current playercount object.
-     *
      * @var
      */
-    private $player_count;
+    private $user;
 
     /**
      * Create a new notification instance.
      *
-     * @param $player_count
+     * @param $user
      */
-    public function __construct($player_count)
+    public function __construct($user)
     {
 
-        $this->player_count = $player_count;
+        $this->user = $user;
+
     }
 
     /**
@@ -75,16 +74,21 @@ class EvePlayerCount extends Notification
 
         return (new MailMessage)
             ->success()
+            ->greeting('Heads up!')
+            ->line('We have a new account created on to SeAT!')
             ->line(
-                'The player count is ' . $this->player_count->onlinePlayers .
-                ' checked ' .
-                carbon($this->player_count->currentTime)->diffForHumans() .
-                ' at ' . $this->player_count->currentTime . '!'
+                'The key was added by ' . $this->user->name . ' that last ' .
+                'logged in from ' . $this->user->last_login_source . ' at ' .
+                $this->user->last_login . '.'
             )
-            ->action('Check it out on SeAT', route('home'));
+            ->action('Check it out on SeAT', route('api.key.detail', [
+                'key_id' => $this->user->id,
+            ]));
     }
 
     /**
+     * Get the Slack representation of the notification.
+     *
      * @param $notifiable
      *
      * @return $this
@@ -93,12 +97,18 @@ class EvePlayerCount extends Notification
     {
 
         return (new SlackMessage)
-            ->content(
-                'The player count is ' . $this->player_count->onlinePlayers .
-                ' checked ' .
-                carbon($this->player_count->currentTime)->diffForHumans() .
-                ' at ' . $this->player_count->currentTime . '!'
-            );
+            ->success()
+            ->content('A new SeAT account was created!')
+            ->attachment(function ($attachment) {
+
+                $attachment->title('Account Details', route('configuration.users.edit', [
+                    'user_id' => $this->user->id,
+                ]))->fields([
+                    'Account Name'            => $this->user->name,
+                    'Owner Last Login Source' => $this->user->last_login_source,
+                    'Owner Last Login Time'   => $this->user->last_login,
+                ]);
+            });
     }
 
     /**
@@ -112,9 +122,10 @@ class EvePlayerCount extends Notification
     {
 
         return [
-            'player_count' => $this->player_count->onlinePlayers,
-            'calculated'   => carbon($this->player_count->currentTime)
-                ->diffForHumans(),
+            'key_id'                  => $this->user->id,
+            'key_owner'               => $this->user->name,
+            'owner_last_login_source' => $this->user->last_login_source,
+            'owner_last_login_time'   => $this->user->last_login,
         ];
     }
 }

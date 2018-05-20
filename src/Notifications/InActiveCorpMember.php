@@ -95,16 +95,14 @@ class InActiveCorpMember extends Notification
 
         return (new SlackMessage)
             ->error()
-            ->content($this->member->name . ' has not logged in for some time!')
+            ->content('A member has not logged in for some time! Check corp tracking.')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Tracking Details', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporationID,
+                    'corporation_id' => $this->member->corporation_id,
                 ]))->fields([
-                    'Name'        => $this->member->name,
-                    'Last Logoff' => $this->member->logoffDateTime,
-                    'Location'    => $this->member->location,
-                    'Ship'        => $this->member->shipType,
+                    'Last Logoff' => $this->member->logoff_date,
+                    'Ship'        => $this->member->type->typeName,
                 ]);
             });
     }

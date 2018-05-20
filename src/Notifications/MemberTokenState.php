@@ -27,26 +27,25 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Class NewApiKey.
+ * Class MemberApiState.
  * @package Seat\Notifications\Notifications
  */
-class NewApiKey extends Notification
+class MemberTokenState extends Notification
 {
     /**
      * @var
      */
-    private $key;
+    private $member;
 
     /**
      * Create a new notification instance.
      *
-     * @param $key
+     * @param $member
      */
-    public function __construct($key)
+    public function __construct($member)
     {
 
-        $this->key = $key;
-
+        $this->member = $member;
     }
 
     /**
@@ -75,14 +74,15 @@ class NewApiKey extends Notification
         return (new MailMessage)
             ->success()
             ->greeting('Heads up!')
-            ->line('We have a new API key added to SeAT!')
             ->line(
-                'The key was added by ' . $this->key->owner->name . ' that last ' .
-                'logged in from ' . $this->key->owner->last_login_source . ' at ' .
-                $this->key->owner->last_login . '.'
+                'A corporation members token state has changed!'
+            )
+            ->line(
+                $this->member->name . '\'s API is now ' .
+                $this->member->enabled ? 'enabled' : 'disabled' . '!'
             )
             ->action('Check it out on SeAT', route('api.key.detail', [
-                'key_id' => $this->key->key_id,
+                'key_id' => $this->member->keyID,
             ]));
     }
 
@@ -97,17 +97,15 @@ class NewApiKey extends Notification
     {
 
         return (new SlackMessage)
-            ->success()
-            ->content('A new API key was added!')
+            ->error()
+            ->content('A corporation members token state has changed!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('API Key Details', route('api.key.detail', [
-                    'key_id' => $this->key->key_id,
+                $attachment->title('Key Details', route('corporation.view.tracking', [
+                    'key_id' => $this->member->corporation_id,
                 ]))->fields([
-                    'Key ID'                  => $this->key->key_id,
-                    'Key Owner'               => $this->key->owner->name,
-                    'Owner Last Login Source' => $this->key->owner->last_login_source,
-                    'Owner Last Login Time'   => $this->key->owner->last_login,
+                    'Character ID'  => $this->member->character_id,
+                    'New Key State' => $this->member->enabled ? 'Enabled' : 'Disabled',
                 ]);
             });
     }
@@ -123,10 +121,9 @@ class NewApiKey extends Notification
     {
 
         return [
-            'key_id'                  => $this->key->key_id,
-            'key_owner'               => $this->key->owner->name,
-            'owner_last_login_source' => $this->key->owner->last_login_source,
-            'owner_last_login_time'   => $this->key->owner->last_login,
+            'character_name'        => $this->member->name,
+            'character_corporation' => $this->member->corporationName,
+            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
         ];
     }
 }
