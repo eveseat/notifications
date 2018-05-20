@@ -23,7 +23,6 @@
 namespace Seat\Notifications\Alerts\Char;
 
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Character\MailMessage;
 use Seat\Eveapi\Models\Mail\MailHeader;
 use Seat\Notifications\Alerts\Base;
 
@@ -48,7 +47,7 @@ class NewMailMessage extends Base
      */
     protected function getData(): Collection
     {
-        
+
         return MailHeader::with('body')
             ->where('timestamp', '>', carbon('now')->subWeek())
             ->get();
