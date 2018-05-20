@@ -53,7 +53,6 @@ class MemberInactivity extends Base
     protected function getData(): Collection
     {
 
-
         return CorporationMemberTracking::with('type')->where(
             'logoff_date', '<', DB::raw('date_sub(NOW(), INTERVAL 3 MONTH)'))
             ->get();

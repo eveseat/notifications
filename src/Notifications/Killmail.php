@@ -25,7 +25,6 @@ namespace Seat\Notifications\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
-use Seat\Eveapi\Models\Corporation\CorporationSheet;
 
 /**
  * Class Killmail.
