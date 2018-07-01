@@ -81,9 +81,7 @@ class NewAccount extends Notification
                 'logged in from ' . $this->user->last_login_source . ' at ' .
                 $this->user->last_login . '.'
             )
-            ->action('Check it out on SeAT', route('api.key.detail', [
-                'key_id' => $this->user->id,
-            ]));
+            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
     }
 
     /**
@@ -91,7 +89,7 @@ class NewAccount extends Notification
      *
      * @param $notifiable
      *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
