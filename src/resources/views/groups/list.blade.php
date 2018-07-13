@@ -23,10 +23,9 @@
           </div>
 
           <div class="form-group">
-            <label for="text">{{ trans('notifications::notifications.group_type') }}</label>
+            <label for="notification-type">{{ trans('notifications::notifications.group_type') }}</label>
             <select name="type" class="form-control" id="notification-type">
               <option value="seat">SeAT</option>
-              <option value="eve">Eve</option>
               <option value="char">Character</option>
               <option value="corp">Corporation</option>
             </select>
