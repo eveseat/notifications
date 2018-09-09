@@ -81,8 +81,8 @@ class MemberTokenState extends Notification
                 $this->member->name . '\'s API is now ' .
                 $this->member->enabled ? 'enabled' : 'disabled' . '!'
             )
-            ->action('Check it out on SeAT', route('api.key.detail', [
-                'key_id' => $this->member->keyID,
+            ->action('Check it out on SeAT', route('corporation.view.tracking', [
+                'key_id' => $this->member->corporation_id,
             ]));
     }
 
@@ -91,7 +91,7 @@ class MemberTokenState extends Notification
      *
      * @param $notifiable
      *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
