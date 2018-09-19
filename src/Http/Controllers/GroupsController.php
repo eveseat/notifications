@@ -33,7 +33,7 @@ use Seat\Notifications\Models\NotificationGroup;
 use Seat\Services\Repositories\Character\Character;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Http\Controllers\Controller;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\DataTables;
 
 /**
  * Class GroupsController.
@@ -54,11 +54,12 @@ class GroupsController extends Controller
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getGroupsData()
     {
 
-        return Datatables::of(NotificationGroup::all())
+        return DataTables::of(NotificationGroup::all())
             ->addColumn('alerts', function ($row) {
 
                 return count($row->alerts);
@@ -76,6 +77,7 @@ class GroupsController extends Controller
                 return view('notifications::groups.partials.actions', compact('row'))
                     ->render();
             })
+            ->escapeColumns([])
             ->make(true);
     }
 
