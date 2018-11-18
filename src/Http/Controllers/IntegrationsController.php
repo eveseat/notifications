@@ -61,7 +61,7 @@ class IntegrationsController extends Controller
                     'notifications::integrations.partials.deleteintegration', compact('row')
                 )->render();
             })
-            ->escapeColumns([])
+            ->rawColumns(['actions'])
             ->make(true);
     }
 

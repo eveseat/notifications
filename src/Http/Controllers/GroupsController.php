@@ -77,7 +77,7 @@ class GroupsController extends Controller
                 return view('notifications::groups.partials.actions', compact('row'))
                     ->render();
             })
-            ->escapeColumns([])
+            ->rawColumns(['actions'])
             ->make(true);
     }
 
