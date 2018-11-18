@@ -20,7 +20,7 @@
     "laravel/framework": "5.5.*",
     "eveseat/eveapi": "~3",
     "eveseat/services": "~3",
-    "yajra/laravel-datatables-oracle": "~6"
+    "yajra/laravel-datatables-oracle": "~8"
   },
   "extra": {
     "laravel": {
