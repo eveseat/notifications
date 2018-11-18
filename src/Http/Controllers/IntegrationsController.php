@@ -26,7 +26,7 @@ use Seat\Notifications\Http\Validation\EmailIntegration;
 use Seat\Notifications\Http\Validation\SlackIntegration;
 use Seat\Notifications\Models\Integration;
 use Seat\Web\Http\Controllers\Controller;
-use Yajra\Datatables\Datatables;
+use Yajra\DataTables\DataTables;
 
 /**
  * Class IntegrationsController.
@@ -45,11 +45,12 @@ class IntegrationsController extends Controller
 
     /**
      * @return mixed
+     * @throws \Exception
      */
     public function getIntegrationsData()
     {
 
-        return Datatables::of(Integration::all())
+        return DataTables::of(Integration::all())
             ->editColumn('type', function ($row) {
 
                 return ucfirst($row->type);
@@ -60,6 +61,7 @@ class IntegrationsController extends Controller
                     'notifications::integrations.partials.deleteintegration', compact('row')
                 )->render();
             })
+            ->rawColumns(['actions'])
             ->make(true);
     }
 
