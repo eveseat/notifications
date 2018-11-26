@@ -111,7 +111,7 @@ class NotificationsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
     }
-    
+
     /**
      * Set the path for migrations which should
      * be migrated by laravel. More informations:
