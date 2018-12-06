@@ -50,7 +50,8 @@ class NotificationsServiceProvider extends ServiceProvider
 
         $this->add_views();
 
-        $this->add_publications();
+        // Inform Laravel how to load migrations
+        $this->add_migrations();
 
         $this->add_routes();
 
@@ -64,18 +65,6 @@ class NotificationsServiceProvider extends ServiceProvider
     {
 
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'notifications');
-    }
-
-    /**
-     * Set the paths for migrations and assets that
-     * should be published to the main application.
-     */
-    public function add_publications()
-    {
-
-        $this->publishes([
-            __DIR__ . '/database/migrations/' => database_path('migrations'),
-        ]);
     }
 
     /**
@@ -121,5 +110,15 @@ class NotificationsServiceProvider extends ServiceProvider
         // Include this packages menu items
         $this->mergeConfigFrom(
             __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
+    }
+
+    /**
+     * Set the path for migrations which should
+     * be migrated by laravel. More informations:
+     * https://laravel.com/docs/5.5/packages#migrations.
+     */
+    private function add_migrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
     }
 }
