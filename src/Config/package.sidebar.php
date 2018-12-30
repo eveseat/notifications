@@ -25,27 +25,27 @@ return [
     'notifications' => [
         'name'          => 'notifications',
         'label'         => 'Notifications',
-        'icon'          => 'fa-hand-stop-o',
+        'icon'          => 'far fa-hand-paper',
         'route_segment' => 'notifications',
         'entries'       => [
             [
                 'name'       => 'integrations',
                 'label'      => 'Integrations',
                 'permission' => 'notifications',
-                'icon'       => 'fa-toggle-on',
+                'icon'       => 'fas fa-toggle-on',
                 'route'      => 'notifications.integrations.list',
             ],
             [
                 'name'  => 'notifications',
                 'label' => 'My Notifications',
-                'icon'  => 'fa-envelope-square',
+                'icon'  => 'fas fa-envelope-square',
                 'route' => 'notifications.list',
             ],
             [
                 'name'       => 'notification.groups',
                 'label'      => 'Notifications Groups',
                 'permission' => 'notifications',
-                'icon'       => 'fa-object-group',
+                'icon'       => 'far fa-object-group',
                 'route'      => 'notifications.groups.list',
             ],
         ],
