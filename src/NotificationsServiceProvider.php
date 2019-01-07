@@ -22,14 +22,14 @@
 
 namespace Seat\Notifications;
 
-use Illuminate\Support\ServiceProvider;
 use Seat\Notifications\Commands\AlertsRun;
+use Seat\Services\AbstractSeatPlugin;
 
 /**
  * Class NotificationsServiceProvider.
  * @package Seat\Notifications
  */
-class NotificationsServiceProvider extends ServiceProvider
+class NotificationsServiceProvider extends AbstractSeatPlugin
 {
     /**
      * @var array
@@ -120,5 +120,55 @@ class NotificationsServiceProvider extends ServiceProvider
     private function add_migrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
+    }
+
+    /**
+     * Return the plugin public name as it should be displayed into settings.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'SeAT Notifications';
+    }
+
+    /**
+     * Return the plugin repository address.
+     *
+     * @return string
+     */
+    public function getPackageRepositoryUrl(): string
+    {
+        return 'https://github.com/eveseat/notifications';
+    }
+
+    /**
+     * Return the plugin technical name as published on package manager.
+     *
+     * @return string
+     */
+    public function getPackagistPackageName(): string
+    {
+        return 'notifications';
+    }
+
+    /**
+     * Return the plugin vendor tag as published on package manager.
+     *
+     * @return string
+     */
+    public function getPackagistVendorName(): string
+    {
+        return 'eveseat';
+    }
+
+    /**
+     * Return the plugin installed version.
+     *
+     * @return string
+     */
+    public function getVersion(): string
+    {
+        return config('notifications.config.version');
     }
 }
