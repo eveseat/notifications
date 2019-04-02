@@ -60,6 +60,7 @@ class MemberTokenState extends Base
         foreach ($this->getAllCorporations()->unique('corporation_id') as $corporation) {
 
             $this->getCorporationMemberTracking($corporation->corporation_id)
+                ->orderBy('character_id', 'asc')
                 ->each(function ($member) use (&$members) {
 
                     // Add the member to the collection.
