@@ -60,6 +60,7 @@ class Killmails extends Base
         foreach ($this->getAllCorporations()->unique('corporation_id') as $corporation) {
 
             $this->getCorporationKillmails($corporation->corporation_id)
+                ->orderBy('killmail_id', 'asc')
                 ->each(function ($killmail) use (&$killmails) {
 
                     // Add the killmail to the collection.
