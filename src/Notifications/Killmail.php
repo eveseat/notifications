@@ -115,8 +115,8 @@ class Killmail extends Notification
                         $field->title('System')
                             ->content($this->zKillBoardToSlackLink(
                                 'system',
-                                $this->killmail->itemID,
-                                $this->killmail->itemName . ' (' .
+                                $this->killmail->killmail_detail->solar_system_id,
+                                $this->killmail->killmail_detail->solar_system->itemName . ' (' .
                                 number_format($this->killmail->security, 2) . ')'));
                     })
                     ->fallback('Kill details')
