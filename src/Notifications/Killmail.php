@@ -78,13 +78,13 @@ class Killmail extends Notification
             )
             ->line(
                 'Lost a ' .
-                $this->killmail->typeName . ' in ' .
-                $this->killmail->itemName . ' (' .
-                number_format($this->killmail->security, 2) . ')'
+                $this->killmail->killmail_victim->ship_type->typeName . ' in ' .
+                $this->killmail->killmail_victim->ship_type->itemName . ' (' .
+                number_format($this->killmail->killmail_detail->solar_system->security, 2) . ')'
             )
             ->action(
                 'Check it out on zKillboard',
-                'https://zkillboard.com/kill/' . $this->killmail->killID . '/'
+                'https://zkillboard.com/kill/' . $this->killmail->killmail_id . '/'
             );
     }
 
