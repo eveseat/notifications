@@ -28,7 +28,6 @@ use Seat\Notifications\Alerts\Base;
 
 class StructureUnderAttack extends Base
 {
-
     /**
      * The field to use from the data when trying
      * to infer an affiliation.
