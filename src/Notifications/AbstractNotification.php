@@ -59,7 +59,7 @@ abstract class AbstractNotification extends Notification
     }
 
     /**
-     * Convert a campaign event enum type into an Type Name
+     * Convert a campaign event enum type into an Type Name.
      *
      * @param int $type
      * @return string
