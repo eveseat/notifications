@@ -35,6 +35,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
             'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
         ],
+        'sovstructuredestroyed' => [
+            'name'     => 'Sovereignty Structure Destroyed',
+            'alert'    => \Seat\Notifications\Alerts\Char\SovStructureDestroyed::class,
+            'notifier' => \Seat\Notifications\Notifications\SovStructureDestroyed::class,
+        ],
     ],
     'corp' => [
 
