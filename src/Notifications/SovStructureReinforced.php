@@ -116,4 +116,12 @@ class SovStructureReinforced extends AbstractNotification
                     });
             })->warning();
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return yaml_parse($this->notification->text);
+    }
 }
