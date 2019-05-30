@@ -104,4 +104,12 @@ class SovStructureDestroyed extends AbstractNotification
                 });
             })->error();
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return yaml_parse($this->notification->text);
+    }
 }
