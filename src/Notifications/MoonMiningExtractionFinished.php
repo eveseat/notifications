@@ -177,7 +177,7 @@ class MoonMiningExtractionFinished extends AbstractNotification
                 })->field(function ($field) use ($data) {
 
                     $field->title('Self Fractured')
-                        ->content($this->mssqlTimestampToDate($data['autoTime']));
+                        ->content($this->mssqlTimestampToDate($data['autoTime'])->toRfc7231String());
 
                 });
             });
