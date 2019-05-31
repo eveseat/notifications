@@ -106,6 +106,7 @@ class SovStructureDestroyed extends AbstractNotification
     }
 
     /**
+     * @param $notifiable
      * @return array
      */
     public function toArray($notifiable)
