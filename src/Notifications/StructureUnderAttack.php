@@ -22,9 +22,9 @@
 
 namespace Seat\Notifications\Notifications;
 
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
-use Seat\Eveapi\Models\Character\MailMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseStructure;
@@ -58,7 +58,7 @@ class StructureUnderAttack extends Notification
 
     /**
      * @param $notifiable
-     * @return mixed
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
@@ -88,7 +88,7 @@ class StructureUnderAttack extends Notification
 
     /**
      * @param $notifiable
-     * @return SlackMessage
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
