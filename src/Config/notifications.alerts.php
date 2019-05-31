@@ -35,6 +35,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
             'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
         ],
+        'structurefuelalert' => [
+            'name' => 'Structure Fuel Alert',
+            'alert' => \Seat\Notifications\Alerts\Char\StructureFuelAlert::class,
+            'notifier' => \Seat\Notifications\Notifications\StructureFuelAlert::class,
+        ],
     ],
     'corp' => [
 
