@@ -148,9 +148,10 @@ class CorpAllBillMsg extends AbstractNotification
     }
 
     /**
+     * @param $notifiable
      * @return array
      */
-    public function toArray()
+    public function toArray($notifiable)
     {
         return yaml_parse($this->notification->text);
     }
