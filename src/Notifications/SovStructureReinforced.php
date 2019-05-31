@@ -118,6 +118,7 @@ class SovStructureReinforced extends AbstractNotification
     }
 
     /**
+     * @param $notifiable
      * @return array
      */
     public function toArray($notifiable)
