@@ -174,6 +174,11 @@ class MoonMiningExtractionFinished extends AbstractNotification
                         ->content(
                             sprintf('%s (%s)', $data['structureName'], $type->typeName));
 
+                })->field(function ($field) use ($data) {
+
+                    $field->title('Self Fractured')
+                        ->content($this->mssqlTimestampToDate($data['autoTime']));
+
                 });
             });
 
