@@ -220,7 +220,7 @@
               <tr>
                 <td>
                   {!! img('auto', $affiliation->affiliation_id, 64, ['class' => 'img-circle eve-icon small-icon']) !!}
-                  <span rel="id-to-name">{{ $affiliation->affiliation_id }}</span>
+                  <span class="id-to-name" data-id="{{ $affiliation->affiliation_id }}">{{ trans('web::seat.unknown') }}</span>
                 </td>
                 <td>{{ ucfirst($affiliation->type) }}</td>
                 <td>
@@ -255,12 +255,14 @@
 
 @include('web::includes.javascript.id-to-name')
 
-<script>
+<script type="text/javascript">
 
   $("select#integration, " +
       "select#alerts, " +
       "select#available_corporations, " +
       "select#available_characters").select2();
+
+  ids_to_names();
 
 </script>
 
