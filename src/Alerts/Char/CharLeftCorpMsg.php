@@ -38,6 +38,7 @@ class CharLeftCorpMsg extends Base
     {
         return 'character_id';
     }
+
     /**
      * The required method to handle the Alert.
      *
@@ -49,6 +50,7 @@ class CharLeftCorpMsg extends Base
             ->where('type', 'CharLeftCorpMsg')
             ->get();
     }
+
     /**
      * The name of the alert. This is also the name
      * of the notifier to use.
@@ -59,6 +61,7 @@ class CharLeftCorpMsg extends Base
     {
         return 'charleftcorpmsg';
     }
+
     /**
      * The type of notification.
      *
@@ -68,6 +71,7 @@ class CharLeftCorpMsg extends Base
     {
         return 'char';
     }
+
     /**
      * Fields in a collection row that make the alert
      * unique.
