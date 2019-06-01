@@ -35,6 +35,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
             'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
         ],
+        'structureservicesofflines' => [
+            'name'     => 'Structure Services Offline',
+            'alert'    => \Seat\Notifications\Alerts\Char\StructureServicesOffline::class,
+            'notifier' => \Seat\Notifications\Notifications\StructureServicesOffline::class,
+        ],
     ],
     'corp' => [
 
