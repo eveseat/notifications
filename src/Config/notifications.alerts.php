@@ -35,6 +35,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
             'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
         ],
+        'charleftcorpmsg' => [
+            'name'     => 'Character Left Corporation',
+            'alert'    => \Seat\Notifications\Alerts\Char\CharLeftCorpMsg::class,
+            'notifier' => \Seat\Notifications\Notifications\CharLeftCorpMsg::class,
+        ],
     ],
     'corp' => [
 
