@@ -26,6 +26,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Symfony\Component\Yaml\Yaml;
 
 class SovStructureDestroyed extends AbstractNotification
 {
@@ -34,9 +35,15 @@ class SovStructureDestroyed extends AbstractNotification
      */
     private $notification;
 
+    /**
+     * @var mixed
+     */
+    private $content;
+
     public function __construct($notification)
     {
         $this->notification = $notification;
+        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -54,11 +61,9 @@ class SovStructureDestroyed extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
+        $type = InvType::find($this->content['structureTypeID']);
 
-        $type = InvType::find($data['structureTypeID']);
-
-        $system = MapDenormalize::find($data['solarSystemID']);
+        $system = MapDenormalize::find($this->content['solarSystemID']);
 
         return (new MailMessage)
             ->subject('Sovereignty Structure Destroyed Notification!')
@@ -75,16 +80,14 @@ class SovStructureDestroyed extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
         return (new SlackMessage)
             ->content('A sovereignty structure has been destroyed!')
             ->from('SeAT SovStructureDestroyed')
-            ->attachment(function ($attachment) use ($data) {
+            ->attachment(function ($attachment) {
 
-                $attachment->field(function ($field) use ($data) {
+                $attachment->field(function ($field) {
 
-                    $system = MapDenormalize::find($data['solarSystemID']);
+                    $system = MapDenormalize::find($this->content['solarSystemID']);
 
                     $field->title('System')
                         ->content(
@@ -95,9 +98,9 @@ class SovStructureDestroyed extends AbstractNotification
                             )
                         );
                 })
-                ->field(function ($field) use ($data) {
+                ->field(function ($field) {
 
-                    $type = InvType::find($data['structureTypeID']);
+                    $type = InvType::find($this->content['structureTypeID']);
 
                     $field->title('Structure')
                         ->content($type->typeName);
@@ -111,6 +114,6 @@ class SovStructureDestroyed extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return yaml_parse($this->notification->text);
+        return $this->content;
     }
 }
