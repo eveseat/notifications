@@ -26,6 +26,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Symfony\Component\Yaml\Yaml;
 
 class StructureServicesOffline extends AbstractNotification
 {
@@ -35,6 +36,11 @@ class StructureServicesOffline extends AbstractNotification
     private $notification;
 
     /**
+     * @var mixed
+     */
+    private $content;
+
+    /**
      * StructureServicesOffline constructor.
      *
      * @param $notification
@@ -42,6 +48,7 @@ class StructureServicesOffline extends AbstractNotification
     public function __construct($notification)
     {
         $this->notification = $notification;
+        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -59,9 +66,7 @@ class StructureServicesOffline extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
-        $system = MapDenormalize::find($data['solarsystemID']);
+        $system = MapDenormalize::find($this->content['solarsystemID']);
 
         $mail = (new MailMessage)
             ->subject('Structure Services Offline Notification!')
@@ -70,7 +75,7 @@ class StructureServicesOffline extends AbstractNotification
                     $system->itemName, number_format($system->security, 2)))
             ->line('The following modules are concerned :');
 
-        foreach ($data['listOfServiceModuleIDs'] as $type_id) {
+        foreach ($this->content['listOfServiceModuleIDs'] as $type_id) {
             $type = InvType::find($type_id);
 
             $mail->line(sprintf(' - %s', $type->typeName));
@@ -85,16 +90,14 @@ class StructureServicesOffline extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
         return (new SlackMessage)
             ->content('A structure service has been shutdown!')
             ->from('SeAT StructureServicesOffline')
-            ->attachment(function ($attachment) use ($data) {
+            ->attachment(function ($attachment) {
 
-                $attachment->field(function ($field) use ($data) {
+                $attachment->field(function ($field) {
 
-                    $system = MapDenormalize::find($data['solarsystemID']);
+                    $system = MapDenormalize::find($this->content['solarsystemID']);
 
                     $field->title('System')
                         ->content(
@@ -104,18 +107,18 @@ class StructureServicesOffline extends AbstractNotification
                                 sprintf('%s (%s)', $system->itemName, $system->security)
                             )
                         );
-                })->field(function ($field) use ($data) {
+                })->field(function ($field) {
 
-                    $type = InvType::find($data['structureShowInfoData'][1]);
+                    $type = InvType::find($this->content['structureShowInfoData'][1]);
 
                     $field->title('Structure')
                         ->content($type->typeName);
 
                 });
 
-            })->attachment(function ($attachment) use ($data) {
+            })->attachment(function ($attachment) {
 
-                foreach ($data['listOfServiceModuleIDs'] as $type_id) {
+                foreach ($this->content['listOfServiceModuleIDs'] as $type_id) {
                     $attachment->field(function ($field) use ($type_id) {
 
                             $type = InvType::find($type_id);
@@ -135,6 +138,6 @@ class StructureServicesOffline extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return yaml_parse($this->notification->text);
+        return $this->content;
     }
 }
