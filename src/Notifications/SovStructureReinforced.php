@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Symfony\Component\Yaml\Yaml;
 
 class SovStructureReinforced extends AbstractNotification
 {
@@ -34,6 +35,11 @@ class SovStructureReinforced extends AbstractNotification
     private $notification;
 
     /**
+     * @var mixed
+     */
+    private $content;
+
+    /**
      * SovStructureReinforced constructor.
      *
      * @param $notification
@@ -41,6 +47,7 @@ class SovStructureReinforced extends AbstractNotification
     public function __construct($notification)
     {
         $this->notification = $notification;
+        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -58,16 +65,14 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
-        $system = MapDenormalize::find($data['solarSystemID']);
+        $system = MapDenormalize::find($this->content['solarSystemID']);
 
         return (new MailMessage)
             ->subject('Sovereignty Structure Reinforced Notification!')
             ->line(
-                sprintf('A sovereignty structure has been reinforced (%s)!', $this->campaignEventType($data['campaignEventType'])))
+                sprintf('A sovereignty structure has been reinforced (%s)!', $this->campaignEventType($this->content['campaignEventType'])))
             ->line(
-                sprintf('Nodes will decloak at %s', $this->mssqlTimestampToDate($data['decloakTime'])->toRfc7231String())
+                sprintf('Nodes will decloak at %s', $this->mssqlTimestampToDate($this->content['decloakTime'])->toRfc7231String())
             )
             ->action(
                 sprintf('System : %s (%s)', $system->itemName, number_format($system->security, 2)),
@@ -80,14 +85,12 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
         return (new SlackMessage)
             ->content('A sovereignty structure has been reinforced!')
             ->from('SeAT SovStructureReinforced')
-            ->attachment(function ($attachment) use ($data) {
-                $attachment->field(function ($field) use ($data) {
-                        $system = MapDenormalize::find($data['solarSystemID']);
+            ->attachment(function ($attachment) {
+                $attachment->field(function ($field) {
+                        $system = MapDenormalize::find($this->content['solarSystemID']);
 
                         $field->title('System')
                             ->content(
@@ -98,19 +101,19 @@ class SovStructureReinforced extends AbstractNotification
                                 )
                             );
                     })
-                    ->field(function ($field) use ($data) {
+                    ->field(function ($field) {
 
                         $field->title('Structure')
                             ->content(
-                                $this->campaignEventType($data['campaignEventType'])
+                                $this->campaignEventType($this->content['campaignEventType'])
                             );
 
                     })
-                    ->field(function ($field) use ($data) {
+                    ->field(function ($field) {
 
                         $field->title('Node decloak')
                             ->content(
-                                $this->mssqlTimestampToDate($data['decloakTime'])->toRfc7231String()
+                                $this->mssqlTimestampToDate($this->content['decloakTime'])->toRfc7231String()
                             );
 
                     });
@@ -123,6 +126,6 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return yaml_parse($this->notification->text);
+        return $this->content;
     }
 }
