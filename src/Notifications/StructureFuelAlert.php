@@ -26,6 +26,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Symfony\Component\Yaml\Yaml;
 
 class StructureFuelAlert extends AbstractNotification
 {
@@ -33,6 +34,8 @@ class StructureFuelAlert extends AbstractNotification
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
+
+    private $content;
 
     /**
      * StructureFuelAlert constructor.
@@ -42,6 +45,7 @@ class StructureFuelAlert extends AbstractNotification
     public function __construct($notification)
     {
         $this->notification = $notification;
+        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -59,11 +63,9 @@ class StructureFuelAlert extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
+        $system = MapDenormalize::find($this->content['solarsystemID']);
 
-        $system = MapDenormalize::find($data['solarsystemID']);
-
-        $type = InvType::find($data['structureShowInfoData'][1]);
+        $type = InvType::find($this->content['structureShowInfoData'][1]);
 
         $mail = (new MailMessage)
             ->subject('Structure Fuel Alert Notification!')
@@ -75,7 +77,7 @@ class StructureFuelAlert extends AbstractNotification
             )
             ->line('Find bellow the remaining items :');
 
-        foreach ($data['listOfTypesAndQty'] as $item) {
+        foreach ($this->content['listOfTypesAndQty'] as $item) {
             $type = InvType::find($item[1]);
             $quantity = $item[0];
 
@@ -93,14 +95,12 @@ class StructureFuelAlert extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
         return (new SlackMessage)
             ->content('A structure is running low in fuel!')
             ->from('SeAT StructureFuelAlert')
-            ->attachment(function ($attachment) use ($data) {
-                $attachment->field(function ($field) use ($data) {
-                    $system = MapDenormalize::find($data['solarsystemID']);
+            ->attachment(function ($attachment) {
+                $attachment->field(function ($field) {
+                    $system = MapDenormalize::find($this->content['solarsystemID']);
 
                     $field->title('System')
                         ->content(
@@ -112,16 +112,16 @@ class StructureFuelAlert extends AbstractNotification
                         );
                 });
 
-                $attachment->field(function ($field) use ($data) {
-                    $type = InvType::find($data['structureShowInfoData'][1]);
+                $attachment->field(function ($field) {
+                    $type = InvType::find($this->content['structureShowInfoData'][1]);
 
                     $field->title('Structure')
                         ->content($type->typeName);
                 });
             })
-            ->attachment(function ($attachment) use ($data) {
+            ->attachment(function ($attachment) {
 
-                foreach ($data['listOfTypesAndQty'] as $item) {
+                foreach ($this->content['listOfTypesAndQty'] as $item) {
 
                     $attachment->field(function ($field) use ($item) {
                         $type = InvType::find($item[1]);
@@ -142,6 +142,6 @@ class StructureFuelAlert extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return yaml_parse($this->notification->text);
+        return $this->content;
     }
 }
