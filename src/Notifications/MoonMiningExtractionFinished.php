@@ -26,6 +26,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Symfony\Component\Yaml\Yaml;
 
 class MoonMiningExtractionFinished extends AbstractNotification
 {
@@ -35,6 +36,11 @@ class MoonMiningExtractionFinished extends AbstractNotification
     private $notification;
 
     /**
+     * @var mixed
+     */
+    private $content;
+
+    /**
      * MoonMiningExtractionFinished constructor.
      *
      * @param $notification
@@ -42,6 +48,7 @@ class MoonMiningExtractionFinished extends AbstractNotification
     public function __construct($notification)
     {
         $this->notification = $notification;
+        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -59,13 +66,11 @@ class MoonMiningExtractionFinished extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
+        $system = MapDenormalize::find($this->content['solarSystemID']);
 
-        $system = MapDenormalize::find($data['solarSystemID']);
+        $moon = MapDenormalize::find($this->content['moonID']);
 
-        $moon = MapDenormalize::find($data['moonID']);
-
-        $type = InvType::find($data['structureTypeID']);
+        $type = InvType::find($this->content['structureTypeID']);
 
         $mail = (new MailMessage)
             ->subject('Moon Mining Extraction Finished Notification!')
@@ -75,10 +80,10 @@ class MoonMiningExtractionFinished extends AbstractNotification
             )
         ->line(
             sprintf('The structure %s (%s) has reported the content bellow:',
-                $data['structureName'], $type->typeName)
+                $this->content['structureName'], $type->typeName)
         );
 
-        foreach ($data['oreVolumeByType'] as $type_id => $volume) {
+        foreach ($this->content['oreVolumeByType'] as $type_id => $volume) {
             $type = InvType::find($type_id);
 
             $mail->line(
@@ -88,7 +93,7 @@ class MoonMiningExtractionFinished extends AbstractNotification
 
         $mail->line(
             sprintf('Hurry up, you have until the %s to collect them!',
-                $this->mssqlTimestampToDate($data['autoTime'])->toRfc7231String())
+                $this->mssqlTimestampToDate($this->content['autoTime'])->toRfc7231String())
         );
 
         return $mail;
@@ -100,8 +105,6 @@ class MoonMiningExtractionFinished extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
         $ore_categories = [
             '#00a65a' => [],  // Gaz
             '#3c8dbc' => [],  // R8
@@ -112,7 +115,7 @@ class MoonMiningExtractionFinished extends AbstractNotification
         ];
 
         // build a color per category array
-        foreach ($data['oreVolumeByType'] as $type_id => $volume) {
+        foreach ($this->content['oreVolumeByType'] as $type_id => $volume) {
             $type = InvType::find($type_id);
 
             switch ($type->marketGroupID) {
@@ -145,11 +148,11 @@ class MoonMiningExtractionFinished extends AbstractNotification
         $message = (new SlackMessage)
             ->content('A Moon Mining Extraction has been successfully completed.')
             ->from('SeAT MoonMiningExtractionFinished')
-            ->attachment(function ($attachment) use ($data) {
+            ->attachment(function ($attachment) {
 
-                $attachment->field(function ($field) use ($data) {
+                $attachment->field(function ($field) {
 
-                    $system = MapDenormalize::find($data['solarSystemID']);
+                    $system = MapDenormalize::find($this->content['solarSystemID']);
 
                     $field->title('System')
                         ->content(
@@ -159,25 +162,25 @@ class MoonMiningExtractionFinished extends AbstractNotification
                                 sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
                             ));
 
-                })->field(function ($field) use ($data) {
+                })->field(function ($field) {
 
-                    $moon = MapDenormalize::find($data['moonID']);
+                    $moon = MapDenormalize::find($this->content['moonID']);
 
                     $field->title('Moon')
                         ->content($moon->itemName);
 
-                })->field(function ($field) use ($data) {
+                })->field(function ($field) {
 
-                    $type = InvType::find($data['structureTypeID']);
+                    $type = InvType::find($this->content['structureTypeID']);
 
                     $field->title('Structure')
                         ->content(
-                            sprintf('%s (%s)', $data['structureName'], $type->typeName));
+                            sprintf('%s (%s)', $this->content['structureName'], $type->typeName));
 
-                })->field(function ($field) use ($data) {
+                })->field(function ($field) {
 
                     $field->title('Self Fractured')
-                        ->content($this->mssqlTimestampToDate($data['autoTime'])->toRfc7231String());
+                        ->content($this->mssqlTimestampToDate($this->content['autoTime'])->toRfc7231String());
 
                 });
             });
@@ -214,6 +217,6 @@ class MoonMiningExtractionFinished extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return yaml_parse($this->notification->text);
+        return $this->content;
     }
 }
