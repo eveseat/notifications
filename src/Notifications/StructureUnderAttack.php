@@ -28,6 +28,7 @@ use Illuminate\Notifications\Notification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseStructure;
+use Symfony\Component\Yaml\Yaml;
 
 class StructureUnderAttack extends Notification
 {
@@ -38,12 +39,18 @@ class StructureUnderAttack extends Notification
     private $notification;
 
     /**
+     * @var mixed
+     */
+    private $content;
+
+    /**
      * StructureUnderAttack constructor.
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
     public function __construct($notification)
     {
         $this->notification = $notification;
+        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -62,10 +69,7 @@ class StructureUnderAttack extends Notification
      */
     public function toMail($notifiable)
     {
-
-        $data = yaml_parse($this->notification->text);
-
-        $system = MapDenormalize::find($data['solarsystemID']);
+        $system = MapDenormalize::find($this->content['solarsystemID']);
 
         return (new MailMessage)
             ->subject('Structure Under Attack Notification')
@@ -75,14 +79,14 @@ class StructureUnderAttack extends Notification
             )
             ->line(
                 sprintf('(%d shield, %d armor, %d hull)',
-                    $data['shieldPercentage'],
-                    $data['armorPercentage'],
-                    $data['hullPercentage'])
+                    $this->content['shieldPercentage'],
+                    $this->content['armorPercentage'],
+                    $this->content['hullPercentage'])
             )
             ->line(
                 sprintf('in %s by %s',
                     $system->itemName,
-                    $data['corpName'])
+                    $this->content['corpName'])
             );
     }
 
@@ -92,38 +96,35 @@ class StructureUnderAttack extends Notification
      */
     public function toSlack($notifiable)
     {
-
-        $data = yaml_parse($this->notification->text);
-
         return (new SlackMessage)
             ->content('A structure is under attack!')
             ->from('SeAT StructureUnderAttack')
-            ->attachment(function ($attachment) use ($data) {
-                $attachment->field(function ($field) use ($data) {
+            ->attachment(function ($attachment) {
+                $attachment->field(function ($field) {
                     $field->title('Attacker')
                         ->content(
                             $this->zKillBoardToSlackLink(
                                 'corporation',
-                                $data['corpLinkData'][2],
-                                $data['corpName']
+                                $this->content['corpLinkData'][2],
+                                $this->content['corpName']
                             ));
                     })
-                    ->field(function ($field) use ($data) {
+                    ->field(function ($field) {
 
-                        if (! array_key_exists('allianceID', $data))
+                        if (! array_key_exists('allianceID', $this->content))
                             return;
 
                         $field->title('Alliance')
                             ->content(
                                 $this->zKillBoardToSlackLink(
                                     'alliance',
-                                    $data['allianceID'],
-                                    $data['allianceName']
+                                    $this->content['allianceID'],
+                                    $this->content['allianceName']
                                 ));
                     })
-                    ->field(function ($field) use ($data) {
+                    ->field(function ($field) {
 
-                        $system = MapDenormalize::find($data['solarsystemID']);
+                        $system = MapDenormalize::find($this->content['solarsystemID']);
 
                         $field->title('System')
                             ->content(
@@ -133,11 +134,11 @@ class StructureUnderAttack extends Notification
                                     $system->itemName . ' (' . number_format($system->security, 2) . ')'
                                 ));
                     })
-                    ->field(function ($field) use ($data) {
+                    ->field(function ($field) {
 
-                        $structure = UniverseStructure::find($data['structureID']);
+                        $structure = UniverseStructure::find($this->content['structureID']);
 
-                        $type = InvType::find($data['structureShowInfoData'][1]);
+                        $type = InvType::find($this->content['structureShowInfoData'][1]);
 
                         $title = 'Structure';
 
@@ -148,40 +149,40 @@ class StructureUnderAttack extends Notification
                             ->content($type->typeName);
                     });
             })
-            ->attachment(function ($attachment) use ($data) {
-                $attachment->field(function ($field) use ($data) {
+            ->attachment(function ($attachment) {
+                $attachment->field(function ($field) {
                     $field->title('Shield')
-                        ->content(number_format($data['shieldPercentage'], 2));
+                        ->content(number_format($this->content['shieldPercentage'], 2));
                 })->color('good');
 
-                if ($data['shieldPercentage'] < 70)
+                if ($this->content['shieldPercentage'] < 70)
                     $attachment->color('warning');
 
-                if ($data['shieldPercentage'] < 40)
+                if ($this->content['shieldPercentage'] < 40)
                     $attachment->color('danger');
             })
-            ->attachment(function ($attachment) use ($data) {
-                $attachment->field(function ($field) use ($data) {
+            ->attachment(function ($attachment) {
+                $attachment->field(function ($field) {
                     $field->title('Armor')
-                        ->content(number_format($data['armorPercentage'], 2));
+                        ->content(number_format($this->content['armorPercentage'], 2));
                 })->color('good');
 
-                if ($data['armorPercentage'] < 70)
+                if ($this->content['armorPercentage'] < 70)
                     $attachment->color('warning');
 
-                if ($data['armorPercentage'] < 40)
+                if ($this->content['armorPercentage'] < 40)
                     $attachment->color('danger');
             })
-            ->attachment(function ($attachment) use ($data) {
-                $attachment->field(function ($field) use ($data) {
+            ->attachment(function ($attachment) {
+                $attachment->field(function ($field) {
                     $field->title('Hull')
-                        ->content(number_format($data['hullPercentage'], 2));
+                        ->content(number_format($this->content['hullPercentage'], 2));
                 })->color('good');
 
-                if ($data['hullPercentage'] < 70)
+                if ($this->content['hullPercentage'] < 70)
                     $attachment->color('warning');
 
-                if ($data['hullPercentage'] < 40)
+                if ($this->content['hullPercentage'] < 40)
                     $attachment->color('danger');
             });
     }
@@ -192,7 +193,7 @@ class StructureUnderAttack extends Notification
      */
     public function toArray($notifiable)
     {
-        return yaml_parse($this->notification->text);
+        return $this->content;
     }
 
     /**
