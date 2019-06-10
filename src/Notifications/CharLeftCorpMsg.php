@@ -27,6 +27,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
+use Symfony\Component\Yaml\Yaml;
 
 class CharLeftCorpMsg extends Notification
 {
@@ -36,6 +37,11 @@ class CharLeftCorpMsg extends Notification
     private $notification;
 
     /**
+     * @var mixed
+     */
+    private $content;
+
+    /**
      * CharLeftCorpMsg constructor.
      *
      * @param $notification
@@ -43,6 +49,7 @@ class CharLeftCorpMsg extends Notification
     public function __construct($notification)
     {
         $this->notification = $notification;
+        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -60,15 +67,13 @@ class CharLeftCorpMsg extends Notification
      */
     public function toMail($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
         $mail = (new MailMessage)
             ->subject('Character Left Corp Notification!')
             ->line('A character has left the corporation!');
 
-        $character = CharacterInfo::find($data['charID']);
+        $character = CharacterInfo::find($this->content['charID']);
 
-        $corporation = CorporationInfo::find($data['corpID']);
+        $corporation = CorporationInfo::find($this->content['corpID']);
 
         if (! is_null($corporation) && ! is_null($character)) {
 
@@ -96,15 +101,13 @@ class CharLeftCorpMsg extends Notification
      */
     public function toSlack($notifiable)
     {
-        $data = yaml_parse($this->notification->text);
-
         $message = (new SlackMessage)
             ->content('A character has left corporation!')
             ->from('SeAT CharLeftCorpMsg');
 
-        $character = CharacterInfo::find($data['charID']);
+        $character = CharacterInfo::find($this->content['charID']);
 
-        $corporation = CorporationInfo::find($data['corpID']);
+        $corporation = CorporationInfo::find($this->content['corpID']);
 
         if (! is_null($corporation) && ! is_null($character)) {
 
@@ -141,6 +144,6 @@ class CharLeftCorpMsg extends Notification
      */
     public function toArray($notifiable)
     {
-        return yaml_parse($this->notification->text);
+        return $this->content;
     }
 }
