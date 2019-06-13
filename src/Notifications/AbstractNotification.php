@@ -35,11 +35,46 @@ abstract class AbstractNotification extends Notification
      *
      * @return string
      */
-    protected function zKillBoardToSlackLink(string $type, int $id, string $name)
+    protected function zKillBoardToSlackLink(string $type, int $id, string $name): string
     {
         if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
             return '';
 
         return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
+    }
+
+    /**
+     * @param int $timestamp
+     * @return \Carbon\Carbon
+     * @author https://github.com/flakas/reconbot/blob/master/reconbot/notificationprinters/esi/printer.py#L317
+     */
+    protected function mssqlTimestampToDate(int $timestamp)
+    {
+        // Convert microsoft epoch to unix epoch
+        // Based on: http://www.wiki.eve-id.net/APIv2_Char_NotificationTexts_XML
+
+        $seconds = $timestamp / 10000000 - 11644473600;
+
+        return carbon()->createFromTimestamp($seconds, 'UTC');
+    }
+
+    /**
+     * Convert a campaign event enum type into an Type Name.
+     *
+     * @param int $type
+     * @return string
+     */
+    protected function campaignEventType(int $type): string
+    {
+        switch ($type) {
+            case 1:
+                return 'Territorial Claim Unit';
+            case 2:
+                return 'Infrastructure Hub';
+            case 3:
+                return 'Outpost';
+            default:
+                return 'Unknown';
+        }
     }
 }
