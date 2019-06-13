@@ -35,6 +35,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
             'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
         ],
+        'structureunderattack' => [
+            'name' => 'Structure Under Attack',
+            'alert' => \Seat\Notifications\Alerts\Char\StructureUnderAttack::class,
+            'notifier' => \Seat\Notifications\Notifications\StructureUnderAttack::class,
+        ],
     ],
     'corp' => [
 
