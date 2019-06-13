@@ -40,6 +40,16 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\SovStructureReinforced::class,
             'notifier' => \Seat\Notifications\Notifications\SovStructureReinforced::class,
         ],
+        'sovstructuredestroyed' => [
+            'name'     => 'Sovereignty Structure Destroyed',
+            'alert'    => \Seat\Notifications\Alerts\Char\SovStructureDestroyed::class,
+            'notifier' => \Seat\Notifications\Notifications\SovStructureDestroyed::class,
+        ],
+        'structureunderattack' => [
+            'name' => 'Structure Under Attack',
+            'alert' => \Seat\Notifications\Alerts\Char\StructureUnderAttack::class,
+            'notifier' => \Seat\Notifications\Notifications\StructureUnderAttack::class,
+        ],
     ],
     'corp' => [
 
