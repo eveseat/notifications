@@ -35,6 +35,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
             'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
         ],
+        'corpallbillmsg' => [
+            'name' => 'Corporation Bill',
+            'alert' => \Seat\Notifications\Alerts\Char\CorpAllBillMsg::class,
+            'notifier' => \Seat\Notifications\Notifications\CorpAllBillMsg::class,
+        ],
         'sovstructurereinforced' => [
             'name'     => 'Sovereignty Structure Reinforced',
             'alert'    => \Seat\Notifications\Alerts\Char\SovStructureReinforced::class,
