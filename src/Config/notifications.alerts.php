@@ -40,6 +40,36 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\StructureServicesOffline::class,
             'notifier' => \Seat\Notifications\Notifications\StructureServicesOffline::class,
         ],
+        'moonminingextractionfinished' => [
+            'name'     => 'Moon Extraction Finished',
+            'alert'    => \Seat\Notifications\Alerts\Char\MoonMiningExtractionFinished::class,
+            'notifier' => \Seat\Notifications\Notifications\MoonMiningExtractionFinished::class,
+        ],
+        'structurefuelalert' => [
+            'name' => 'Structure Fuel Alert',
+            'alert' => \Seat\Notifications\Alerts\Char\StructureFuelAlert::class,
+            'notifier' => \Seat\Notifications\Notifications\StructureFuelAlert::class,
+        ],
+        'corpallbillmsg' => [
+            'name' => 'Corporation Bill',
+            'alert' => \Seat\Notifications\Alerts\Char\CorpAllBillMsg::class,
+            'notifier' => \Seat\Notifications\Notifications\CorpAllBillMsg::class,
+        ],
+        'sovstructurereinforced' => [
+            'name'     => 'Sovereignty Structure Reinforced',
+            'alert'    => \Seat\Notifications\Alerts\Char\SovStructureReinforced::class,
+            'notifier' => \Seat\Notifications\Notifications\SovStructureReinforced::class,
+        ],
+        'sovstructuredestroyed' => [
+            'name'     => 'Sovereignty Structure Destroyed',
+            'alert'    => \Seat\Notifications\Alerts\Char\SovStructureDestroyed::class,
+            'notifier' => \Seat\Notifications\Notifications\SovStructureDestroyed::class,
+        ],
+        'structureunderattack' => [
+            'name' => 'Structure Under Attack',
+            'alert' => \Seat\Notifications\Alerts\Char\StructureUnderAttack::class,
+            'notifier' => \Seat\Notifications\Notifications\StructureUnderAttack::class,
+        ],
     ],
     'corp' => [
 
