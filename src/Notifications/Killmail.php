@@ -30,7 +30,7 @@ use Illuminate\Notifications\Notification;
  * Class Killmail.
  * @package Seat\Notifications\Notifications
  */
-class Killmail extends Notification
+class Killmail extends AbstractNotification
 {
     /**
      * @var
@@ -123,24 +123,6 @@ class Killmail extends Notification
                     ->footer('zKillboard')
                     ->footerIcon('https://zkillboard.com/img/wreck.png');
             });
-    }
-
-    /**
-     * Build a link to zKillboard using Slack message formatting.
-     *
-     * @param string $type (must be ship, character, corporation or alliance)
-     * @param int    $id   the type entity ID
-     * @param string $name the type name
-     *
-     * @return string
-     */
-    private function zKillBoardToSlackLink(string $type, int $id, string $name)
-    {
-
-        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
-            return '';
-
-        return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
     }
 
     /**
