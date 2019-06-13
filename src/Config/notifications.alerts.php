@@ -35,6 +35,11 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Char\NewMailMessage::class,
             'notifier' => \Seat\Notifications\Notifications\NewMailMessage::class,
         ],
+        'moonminingextractionfinished' => [
+            'name'     => 'Moon Extraction Finished',
+            'alert'    => \Seat\Notifications\Alerts\Char\MoonMiningExtractionFinished::class,
+            'notifier' => \Seat\Notifications\Notifications\MoonMiningExtractionFinished::class,
+        ],
         'structurefuelalert' => [
             'name' => 'Structure Fuel Alert',
             'alert' => \Seat\Notifications\Alerts\Char\StructureFuelAlert::class,
