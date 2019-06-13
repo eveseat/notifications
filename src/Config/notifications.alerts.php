@@ -77,7 +77,6 @@ return [
         ],
     ],
     'corp' => [
-
         'inactivemember'      => [
             'name'     => 'Inactive Corp Members',
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberInactivity::class,
