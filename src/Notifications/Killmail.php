@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
+use Seat\Services\Image\Eve;
 
 /**
  * Class Killmail.
@@ -98,17 +98,19 @@ class Killmail extends AbstractNotification
     public function toSlack($notifiable)
     {
 
-        return (new SlackMessage)
+        $icon_url = sprintf('https:%s',
+            (new Eve('type', $this->killmail->killmail_victim->ship_type_id, 64, [], false))->url(64));
+
+        $message = (new SlackMessage)
             ->content('A kill has been recorded for your corporation!')
-            ->from('SeAT Killmails',
-                'https://imageserver.eveonline.com/Type/' . $this->killmail->ship_type_id . '_64.png')
-            ->attachment(function ($attachment) {
+            ->from('SeAT Killmails', $icon_url)
+            ->attachment(function ($attachment) use ($icon_url) {
 
                 $attachment
                     ->timestamp(carbon($this->killmail->killmail_time))
                     ->fields([
-                        'Ship Type'   => $this->killmail->typeName,
-                        'zKB Link' => 'https://zkillboard.com/kill/' . $this->killmail->killmail_id,
+                        'Ship Type' => $this->killmail->killmail_victim->ship_type->typeName,
+                        'zKB Link'  => 'https://zkillboard.com/kill/' . $this->killmail->killmail_id,
                     ])
                     ->field(function ($field) {
 
@@ -119,10 +121,16 @@ class Killmail extends AbstractNotification
                                 $this->killmail->killmail_detail->solar_system->itemName . ' (' .
                                 number_format($this->killmail->security, 2) . ')'));
                     })
+                    ->thumb($icon_url)
                     ->fallback('Kill details')
                     ->footer('zKillboard')
                     ->footerIcon('https://zkillboard.com/img/wreck.png');
             });
+
+        ($this->killmail->corporation_id === $this->killmail->killmail_victim->corporation_id) ?
+            $message->error() : $message->success();
+
+        return $message;
     }
 
     /**
