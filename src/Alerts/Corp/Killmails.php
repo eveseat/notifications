@@ -69,7 +69,9 @@ class Killmails extends Base
                 });
         }
 
-        return $killmails;
+        return $killmails->filter(function ($killmail, $key) {
+            return carbon('now')->subWeek()->lte($killmail->killmail_detail->killmail_time);
+        });
     }
 
     /**
