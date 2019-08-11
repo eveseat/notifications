@@ -111,7 +111,7 @@ class StructureUnderAttack extends Notification
                     })
                     ->field(function ($field) {
 
-                        if (! array_key_exists('allianceID', $this->content))
+                        if (! array_key_exists('allianceID', $this->content) || is_null($this->content['allianceID']))
                             return;
 
                         $field->title('Alliance')
