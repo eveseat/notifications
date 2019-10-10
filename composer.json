@@ -16,12 +16,14 @@
   "minimum-stability": "alpha",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.1",
-    "laravel/framework": "5.5.*",
-    "eveseat/eveapi": "~3",
-    "eveseat/services": "~3",
-    "symfony/yaml": "^3.0",
-    "yajra/laravel-datatables-oracle": "~8"
+    "php": ">=7.2",
+    "fideloper/proxy": "^4.0",
+    "laravel/framework": "^6.2",
+    "laravel/tinker": "^1.0",
+    "eveseat/eveapi": "dev-4.0.x",
+    "eveseat/services": "dev-4.0.x",
+    "symfony/yaml": "^4.0",
+    "yajra/laravel-datatables-oracle": "~9"
   },
   "extra": {
     "laravel": {
