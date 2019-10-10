@@ -84,7 +84,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     public function add_translations()
     {
 
-        $this->loadTranslationsFrom(__DIR__ . '/lang', 'notifications');
+        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'notifications');
     }
 
     /**
