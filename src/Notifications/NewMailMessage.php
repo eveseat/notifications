@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
 
 /**
  * Class NewMailMessage.
@@ -78,7 +79,7 @@ class NewMailMessage extends Notification
                 'follows:'
             )
             ->line('"' .
-                str_limit(
+                Str::limit(
                     str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
                     2000) .
                 '"'
@@ -107,7 +108,7 @@ class NewMailMessage extends Notification
                 ]))->fields([
                     'Subject'   => $this->message->subject,
                     'Sent Date' => $this->message->timestamp,
-                    'Message'   => str_limit(
+                    'Message'   => Str::limit(
                         str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
                         2000),
                 ]);
