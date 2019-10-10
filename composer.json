@@ -20,8 +20,8 @@
     "fideloper/proxy": "^4.0",
     "laravel/framework": "^6.2",
     "laravel/tinker": "^1.0",
-    "eveseat/eveapi": "dev-4.0.x",
-    "eveseat/services": "dev-4.0.x",
+    "eveseat/eveapi": "4.0.x-dev",
+    "eveseat/services": "4.0.x-dev",
     "symfony/yaml": "^4.0",
     "yajra/laravel-datatables-oracle": "~9"
   },
