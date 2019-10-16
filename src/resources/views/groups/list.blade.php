@@ -5,11 +5,11 @@
 
 @section('left')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{ trans('notifications::notifications.new_group') }}</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ trans('notifications::notifications.new_group') }}</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
       <form role="form" action="{{ route('notifications.groups.new.post') }}" method="post">
         {{ csrf_field() }}
@@ -47,22 +47,22 @@
 
 @section('right')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{ trans_choice('notifications::notifications.group', 2) }}</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ trans_choice('notifications::notifications.group', 2) }}</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
-      <table class="table compact table-condensed table-hover table-responsive" id="groups">
+      <table class="table compact table-condensed table-hover" id="groups">
         <thead>
-        <tr>
-          <th>{{ trans('notifications::notifications.name') }}</th>
-          <th>{{ trans('notifications::notifications.type') }}</th>
-          <th>{{ trans_choice('notifications::notifications.alert', 2) }}</th>
-          <th>{{ trans_choice('notifications::notifications.integration', 2) }}</th>
-          <th>{{ trans_choice('notifications::notifications.affiliation', 2) }}</th>
-          <th></th>
-        </tr>
+          <tr>
+            <th>{{ trans('notifications::notifications.name') }}</th>
+            <th>{{ trans('notifications::notifications.type') }}</th>
+            <th>{{ trans_choice('notifications::notifications.alert', 2) }}</th>
+            <th>{{ trans_choice('notifications::notifications.integration', 2) }}</th>
+            <th>{{ trans_choice('notifications::notifications.affiliation', 2) }}</th>
+            <th></th>
+          </tr>
         </thead>
       </table>
 
@@ -89,6 +89,8 @@
         {data: 'actions', name: 'actions', searchable: false, orderable: false},
       ]
     });
+
+    $('select.form-control').select2();
   });
 
 </script>
