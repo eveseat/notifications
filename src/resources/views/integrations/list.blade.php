@@ -5,11 +5,11 @@
 
 @section('left')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{ trans('notifications::notifications.new_integration') }}</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ trans('notifications::notifications.new_integration') }}</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
       <p>
         {{ trans('notifications::notifications.new_integration_message') }}
@@ -18,9 +18,11 @@
       <p>
 
         <a href="{{ route('notifications.integrations.new.email') }}" class="btn btn-primary btn-block">
+          <i class="fas fa-envelope"></i>
           {{ trans('notifications::notifications.new_email') }}
         </a>
         <a href="{{ route('notifications.integrations.new.slack') }}" class="btn btn-primary btn-block">
+          <i class="fab fa-slack"></i>
           {{ trans('notifications::notifications.new_slack') }}
         </a>
 
@@ -33,20 +35,20 @@
 
 @section('right')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{ trans('notifications::notifications.configured_integrations') }}</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ trans('notifications::notifications.configured_integrations') }}</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
-      <table class="table compact table-condensed table-hover table-responsive"
-             id="integrations">
+      <table class="table compact table-condensed table-hover" id="integrations">
         <thead>
-        <tr>
-          <th>{{ trans('notifications::notifications.name') }}</th>
-          <th>{{ trans('notifications::notifications.type') }}</th>
-          <th>{{ trans('notifications::notifications.settings') }}</th>
-        </tr>
+          <tr>
+            <th>{{ trans('notifications::notifications.name') }}</th>
+            <th>{{ trans('notifications::notifications.type') }}</th>
+            <th>{{ trans('notifications::notifications.settings') }}</th>
+            <th></th>
+          </tr>
         </thead>
       </table>
 
@@ -84,7 +86,7 @@
           return return_string;
         }
         },
-        {data: 'actions', name: 'actions', searchable: false},
+        {data: 'actions', name: 'actions', searchable: false, sortable: false}
       ]
     });
   });
