@@ -1,18 +1,18 @@
 @extends('web::layouts.grids.12', ['viewname' => 'integrations'])
 
-@section('title', trans('web::seat.integrations'))
-@section('page_header', trans('web::seat.integrations'))
-@section('page_description', 'New Slack Integration')
+@section('title', trans_choice('notifications::notifications.integration', 0))
+@section('page_header', trans_choice('notifications::notifications.integration', 0))
+@section('page_description', trans('notifications::notifications.new_slack'))
 
 @section('content')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">New Slack Integration</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">New Slack Integration</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
-      <div class="col-md-4 col-md-offset-4">
+      <div class="col-md-4 offset-md-4">
         <form role="form" action="{{ route('notifications.integrations.new.slack.add') }}" method="post">
           {{ csrf_field() }}
 
@@ -43,7 +43,7 @@
             <a href="{{ route('notifications.integrations.list') }}">
               Back to Integrations
             </a>
-            <button type="submit" class="btn btn-primary pull-right">
+            <button type="submit" class="btn btn-primary float-right">
               Add
             </button>
           </div>
