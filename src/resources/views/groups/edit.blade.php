@@ -6,11 +6,11 @@
 
 @section('left')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{ trans_choice('notifications::notifications.integration', 2) }}</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ trans_choice('notifications::notifications.integration', 2) }}</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
       <form role="form" action="{{ route('notifications.groups.edit.integration.add') }}" method="post">
         {{ csrf_field() }}
@@ -42,13 +42,13 @@
         </div>
       </form>
 
-      <table class="table compact table-condensed table-hover table-responsive">
+      <table class="table compact table-condensed table-hover">
         <thead>
-        <tr>
-          <th>{{ trans('notifications::notifications.name') }}</th>
-          <th>{{ trans('notifications::notifications.type') }}</th>
-          <th></th>
-        </tr>
+          <tr>
+            <th>{{ trans('notifications::notifications.name') }}</th>
+            <th>{{ trans('notifications::notifications.type') }}</th>
+            <th></th>
+          </tr>
         </thead>
         <tbody>
 
@@ -71,7 +71,7 @@
       </table>
 
     </div>
-    <div class="panel-footer">
+    <div class="card-footer">
       {{ count($group->integrations) }}
       {{ trans_choice('notifications::notifications.integration', count($group->integrations)) }}
     </div>
@@ -82,11 +82,11 @@
 
 @section('center')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">{{ trans_choice('notifications::notifications.alert', 2) }}</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ trans_choice('notifications::notifications.alert', 2) }}</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
       <form role="form" action="{{ route('notifications.groups.edit.alert.add') }}" method="post">
         {{ csrf_field() }}
@@ -120,11 +120,11 @@
         </div>
       </form>
 
-      <table class="table compact table-condensed table-hover table-responsive">
+      <table class="table compact table-condensed table-hover">
         <thead>
-        <tr>
-          <th>{{ trans('notifications::notifications.name') }}</th>
-        </tr>
+          <tr>
+            <th>{{ trans('notifications::notifications.name') }}</th>
+          </tr>
         </thead>
         <tbody>
 
@@ -148,7 +148,7 @@
       </table>
 
     </div>
-    <div class="panel-footer">
+    <div class="card-footer">
       {{ count($group->alerts) }}
       {{ trans_choice('notifications::notifications.alert', count($group->alerts)) }}
       <span class="pull-right">{{ ucfirst($group->type) }}</span>
@@ -163,11 +163,11 @@
   {{-- only show affiliations for char & corp types --}}
   @if($group->type === 'char' || $group->type == 'corp')
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">{{ trans_choice('notifications::notifications.affiliation', 2) }}</h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">{{ trans_choice('notifications::notifications.affiliation', 2) }}</h3>
       </div>
-      <div class="panel-body">
+      <div class="card-body">
 
         <form role="form" action="{{ route('notifications.groups.edit.affiliations.add') }}" method="post">
           {{ csrf_field() }}
