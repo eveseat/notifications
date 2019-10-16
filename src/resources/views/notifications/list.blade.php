@@ -5,13 +5,13 @@
 
 @section('content')
 
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h3 class="panel-title">Notifications</h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Notifications</h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
 
-      <table class="table compact table-condensed table-hover table-responsive">
+      <table class="table compact table-condensed table-hover">
         <thead>
         <tr>
           <th>ID</th>
