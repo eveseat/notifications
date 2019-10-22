@@ -22,8 +22,8 @@
 
 namespace Seat\Notifications;
 
+use App\Providers\AbstractSeatPlugin;
 use Seat\Notifications\Commands\AlertsRun;
-use Seat\Services\AbstractSeatPlugin;
 
 /**
  * Class NotificationsServiceProvider.
@@ -104,8 +104,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
             __DIR__ . '/Config/notifications.alerts.php', 'notifications.alerts');
 
         // Add new permissions
-        $this->mergeConfigFrom(
-            __DIR__ . '/Config/notifications.permissions.php', 'web.permissions');
+        $this->registerPermissions(__DIR__ . '/Config/Permissions/notifications.php', 'notifications');
 
         // Include this packages menu items
         $this->mergeConfigFrom(
