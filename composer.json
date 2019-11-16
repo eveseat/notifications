@@ -16,7 +16,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.3",
     "fideloper/proxy": "^4.0",
     "laravel/framework": "^6.2",
     "laravel/slack-notification-channel": "^2.0",
