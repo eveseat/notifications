@@ -24,9 +24,10 @@ namespace Seat\Notifications\Notifications\Characters;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
+use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
-use Seat\Services\Image\Eve;
 
 /**
  * Class Killmail.
@@ -38,16 +39,16 @@ class Killmail extends AbstractNotification
     use NotificationTools;
 
     /**
-     * @var
+     * @var \Seat\Eveapi\Models\Killmails\KillmailDetail
      */
     private $killmail;
 
     /**
      * Create a new notification instance.
      *
-     * @param $killmail
+     * @param \Seat\Eveapi\Models\Killmails\KillmailDetail $killmail
      */
-    public function __construct($killmail)
+    public function __construct(KillmailDetail $killmail)
     {
 
         $this->killmail = $killmail;
@@ -57,20 +58,18 @@ class Killmail extends AbstractNotification
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -83,9 +82,9 @@ class Killmail extends AbstractNotification
             )
             ->line(
                 'Lost a ' .
-                $this->killmail->killmail_victim->ship_type->typeName . ' in ' .
-                $this->killmail->killmail_victim->ship_type->itemName . ' (' .
-                number_format($this->killmail->killmail_detail->solar_system->security, 2) . ')'
+                $this->killmail->victim->ship->typeName . ' in ' .
+                $this->killmail->system->itemName . ' (' .
+                number_format($this->killmail->system->security, 2) . ')'
             )
             ->action(
                 'Check it out on zKillboard',
@@ -97,24 +96,20 @@ class Killmail extends AbstractNotification
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
      * @return SlackMessage
      */
     public function toSlack($notifiable)
     {
 
-        $icon_url = sprintf('https:%s',
-            (new Eve('type', $this->killmail->killmail_victim->ship_type_id, 64, [], false))->url(64));
-
         $message = (new SlackMessage)
             ->content('A kill has been recorded for your corporation!')
-            ->from('SeAT Killmails', $icon_url)
-            ->attachment(function ($attachment) use ($icon_url) {
+            ->from('SeAT Killmails', $this->typeIconUrl($this->killmail->victim->ship_type_id))
+            ->attachment(function ($attachment) {
 
                 $attachment
                     ->timestamp(carbon($this->killmail->killmail_time))
                     ->fields([
-                        'Ship Type' => $this->killmail->killmail_victim->ship_type->typeName,
+                        'Ship Type' => $this->killmail->victim->ship->typeName,
                         'zKB Link'  => 'https://zkillboard.com/kill/' . $this->killmail->killmail_id,
                     ])
                     ->field(function ($field) {
@@ -122,17 +117,19 @@ class Killmail extends AbstractNotification
                         $field->title('System')
                             ->content($this->zKillBoardToSlackLink(
                                 'system',
-                                $this->killmail->killmail_detail->solar_system_id,
-                                $this->killmail->killmail_detail->solar_system->itemName . ' (' .
-                                number_format($this->killmail->security, 2) . ')'));
+                                $this->killmail->solar_system_id,
+                                $this->killmail->system->itemName . ' (' .
+                                number_format($this->killmail->system->security, 2) . ')'));
                     })
-                    ->thumb($icon_url)
+                    ->thumb($this->typeIconUrl($this->killmail->victim->ship_type_id))
                     ->fallback('Kill details')
                     ->footer('zKillboard')
                     ->footerIcon('https://zkillboard.com/img/wreck.png');
             });
 
-        ($this->killmail->corporation_id === $this->killmail->killmail_victim->corporation_id) ?
+        $allied_corporation_ids = CorporationInfo::select('corporation_id')->get()->pluck('corporation_id')->toArray();
+
+        (in_array($this->killmail->victim->corporation_id, $allied_corporation_ids)) ?
             $message->error() : $message->success();
 
         return $message;
@@ -142,18 +139,17 @@ class Killmail extends AbstractNotification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'characterName'   => $this->killmail->characterName,
-            'corporationName' => $this->killmail->corporationName,
-            'typeName'        => $this->killmail->typeName,
-            'itemName'        => $this->killmail->itemName,
-            'security'        => $this->killmail->security,
+            'characterName'   => $this->killmail->attacker->character->name,
+            'corporationName' => $this->killmail->attacker->corporation->name,
+            'typeName'        => $this->killmail->victim->ship->typeName,
+            'itemName'        => $this->killmail->system->itemName,
+            'security'        => $this->killmail->system->security,
         ];
     }
 }
