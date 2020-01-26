@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Seat\Eveapi\Models\Universe\UniverseName;
 
 /**
  * Class GroupAffiliation.
@@ -42,5 +43,17 @@ class GroupAffiliation extends Model
     {
 
         return $this->belongsTo(NotificationGroup::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function entity()
+    {
+        return $this->hasOne(UniverseName::class, 'entity_id', 'affiliation_id')
+            ->withDefault([
+                'name'      => trans('web::seat.unknown'),
+                'category'  => 'character',
+            ]);
     }
 }
