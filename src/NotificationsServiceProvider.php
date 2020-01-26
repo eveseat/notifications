@@ -24,8 +24,10 @@ namespace Seat\Notifications;
 
 use App\Providers\AbstractSeatPlugin;
 use Seat\Eveapi\Models\Character\CharacterNotification;
+use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Commands\AlertsRun;
 use Seat\Notifications\Observers\CharacterNotificationObserver;
+use Seat\Notifications\Observers\KillmailNotificationObserver;
 
 /**
  * Class NotificationsServiceProvider.
@@ -98,6 +100,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     private function add_events()
     {
         CharacterNotification::observe(CharacterNotificationObserver::class);
+        KillmailDetail::observe(KillmailNotificationObserver::class);
     }
 
     /**
