@@ -20,40 +20,39 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Seat;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class NewAccount.
- * @package Seat\Notifications\Notifications
+ * Class MemberTokenState.
+ *
+ * @package Seat\Notifications\Notifications\Seat
  */
-class NewAccount extends Notification
+class MemberTokenState extends AbstractNotification
 {
     /**
      * @var
      */
-    private $user;
+    private $member;
 
     /**
      * Create a new notification instance.
      *
-     * @param $user
+     * @param $member
      */
-    public function __construct($user)
+    public function __construct($member)
     {
 
-        $this->user = $user;
-
+        $this->member = $member;
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
@@ -66,7 +65,6 @@ class NewAccount extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -75,36 +73,37 @@ class NewAccount extends Notification
         return (new MailMessage)
             ->success()
             ->greeting('Heads up!')
-            ->line('We have a new account created on to SeAT!')
             ->line(
-                'The key was added by ' . $this->user->name . ' that last ' .
-                'logged in from ' . $this->user->last_login_source . ' at ' .
-                $this->user->last_login . '.'
+                'A corporation members token state has changed!'
             )
-            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
+            ->line(
+                $this->member->name . '\'s API is now ' .
+                $this->member->enabled ? 'enabled' : 'disabled' . '!'
+            )
+            ->action('Check it out on SeAT', route('corporation.view.tracking', [
+                'key_id' => $this->member->corporation_id,
+            ]));
     }
 
     /**
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
 
         return (new SlackMessage)
-            ->success()
-            ->content('A new SeAT account was created!')
+            ->error()
+            ->content('A corporation members token state has changed!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Account Details', route('configuration.users.edit', [
-                    'user_id' => $this->user->id,
+                $attachment->title('Key Details', route('corporation.view.tracking', [
+                    'key_id' => $this->member->corporation_id,
                 ]))->fields([
-                    'Account Name'            => $this->user->name,
-                    'Owner Last Login Source' => $this->user->last_login_source,
-                    'Owner Last Login Time'   => $this->user->last_login,
+                    'Character ID'  => $this->member->character_id,
+                    'New Key State' => $this->member->enabled ? 'Enabled' : 'Disabled',
                 ]);
             });
     }
@@ -113,17 +112,15 @@ class NewAccount extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'key_id'                  => $this->user->id,
-            'key_owner'               => $this->user->name,
-            'owner_last_login_source' => $this->user->last_login_source,
-            'owner_last_login_time'   => $this->user->last_login,
+            'character_name'        => $this->member->name,
+            'character_corporation' => $this->member->corporationName,
+            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
         ];
     }
 }

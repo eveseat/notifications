@@ -20,71 +20,71 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Characters;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
+use Illuminate\Support\Str;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class StarbaseFuel.
- * @package Seat\Notifications\Notifications
+ * Class NewMailMessage
+ *
+ * @package Seat\Notifications\Notifications\Characters
  */
-class StarbaseFuel extends Notification
+class NewMailMessage extends AbstractNotification
 {
     /**
      * @var
      */
-    private $starbase;
+    private $message;
 
     /**
      * Create a new notification instance.
      *
-     * @param $starbase
+     * @param $message
      */
-    public function __construct($starbase)
+    public function __construct($message)
     {
 
-        $this->starbase = $starbase;
+        $this->message = $message;
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['email', 'slack'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
 
         return (new MailMessage)
-            ->error()
-            ->greeting('Heads up!')
+            ->line('You have received a new EVEMail!')
             ->line(
-                'The starbase at ' . $this->starbase['location'] . ' is low on fuel!'
+                'Subject: ' . $this->message->subject . '. A snippet from the mail ' .
+                'follows:'
             )
-            ->line(
-                'The ' . $this->starbase['type'] .
-                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has ' . $this->starbase['fuel_blocks'] . ' fuel blocks left and is estimated to ' .
-                'go offline in ' . $this->starbase['hours_left'] . ' hours.'
+            ->line('"' .
+                Str::limit(
+                    str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
+                    2000) .
+                '"'
             )
-            ->action('Check it out on SeAT', route('corporation.view.starbases', [
-                'corporation_id' => $this->starbase['corporation_id'],
+            ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
+                'message_id' => $this->message->mail_id,
             ]));
     }
 
@@ -92,25 +92,23 @@ class StarbaseFuel extends Notification
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
 
         return (new SlackMessage)
-            ->error()
-            ->content('A starbase is low on fuel!')
+            ->content('New EVEMail Received!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Starbase Details', route('corporation.view.starbases', [
-                    'corporation_id' => $this->starbase['corporation_id'],
+                $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
+                    'message_id' => $this->message->mail_id,
                 ]))->fields([
-                    'Type'             => $this->starbase['type'],
-                    'Location'         => $this->starbase['location'],
-                    'Name'             => $this->starbase['name'],
-                    'Fuel Block Count' => $this->starbase['fuel_blocks'],
-                    'Hours Left'       => $this->starbase['hours_left'],
+                    'Subject'   => $this->message->subject,
+                    'Sent Date' => $this->message->timestamp,
+                    'Message'   => Str::limit(
+                        str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
+                        2000),
                 ]);
             });
     }
@@ -119,18 +117,15 @@ class StarbaseFuel extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'type'             => $this->starbase['type'],
-            'location'         => $this->starbase['location'],
-            'name'             => $this->starbase['name'],
-            'fuel_block_count' => $this->starbase['fuel_blocks'],
-            'hours_left'       => $this->starbase['hours_left'],
+            'from'      => $this->message->senderName,
+            'subject'   => $this->message->title,
+            'sent_date' => $this->message->sentDate,
         ];
     }
 }

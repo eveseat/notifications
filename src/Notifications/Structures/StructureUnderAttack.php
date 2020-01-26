@@ -20,18 +20,25 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Structures;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseStructure;
-use Symfony\Component\Yaml\Yaml;
+use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Traits\NotificationTools;
 
-class StructureUnderAttack extends Notification
+/**
+ * Class StructureUnderAttack.
+ *
+ * @package Seat\Notifications\Notifications\Structures
+ */
+class StructureUnderAttack extends AbstractNotification
 {
+    use NotificationTools;
 
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
@@ -39,18 +46,12 @@ class StructureUnderAttack extends Notification
     private $notification;
 
     /**
-     * @var mixed
-     */
-    private $content;
-
-    /**
      * StructureUnderAttack constructor.
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
-    public function __construct($notification)
+    public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
-        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -60,7 +61,7 @@ class StructureUnderAttack extends Notification
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
@@ -69,24 +70,24 @@ class StructureUnderAttack extends Notification
      */
     public function toMail($notifiable)
     {
-        $system = MapDenormalize::find($this->content['solarsystemID']);
+        $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
         return (new MailMessage)
             ->subject('Structure Under Attack Notification')
             ->line('A structure is under attack!')
             ->line(
-                sprintf('Citadel (%s, "%s" attacked')
+                sprintf('Citadel (%s, "%s") attacked')
             )
             ->line(
                 sprintf('(%d shield, %d armor, %d hull)',
-                    $this->content['shieldPercentage'],
-                    $this->content['armorPercentage'],
-                    $this->content['hullPercentage'])
+                    $this->notification->text['shieldPercentage'],
+                    $this->notification->text['armorPercentage'],
+                    $this->notification->text['hullPercentage'])
             )
             ->line(
                 sprintf('in %s by %s',
                     $system->itemName,
-                    $this->content['corpName'])
+                    $this->notification->text['corpName'])
             );
     }
 
@@ -105,26 +106,26 @@ class StructureUnderAttack extends Notification
                         ->content(
                             $this->zKillBoardToSlackLink(
                                 'corporation',
-                                $this->content['corpLinkData'][2],
-                                $this->content['corpName']
+                                $this->notification->text['corpLinkData'][2],
+                                $this->notification->text['corpName']
                             ));
                     })
                     ->field(function ($field) {
 
-                        if (! array_key_exists('allianceID', $this->content) || is_null($this->content['allianceID']))
+                        if (! array_key_exists('allianceID', $this->notification->text) || is_null($this->notification->text['allianceID']))
                             return;
 
                         $field->title('Alliance')
                             ->content(
                                 $this->zKillBoardToSlackLink(
                                     'alliance',
-                                    $this->content['allianceID'],
-                                    $this->content['allianceName']
+                                    $this->notification->text['allianceID'],
+                                    $this->notification->text['allianceName']
                                 ));
                     })
                     ->field(function ($field) {
 
-                        $system = MapDenormalize::find($this->content['solarsystemID']);
+                        $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                         $field->title('System')
                             ->content(
@@ -136,9 +137,9 @@ class StructureUnderAttack extends Notification
                     })
                     ->field(function ($field) {
 
-                        $structure = UniverseStructure::find($this->content['structureID']);
+                        $structure = UniverseStructure::find($this->notification->text['structureID']);
 
-                        $type = InvType::find($this->content['structureShowInfoData'][1]);
+                        $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                         $title = 'Structure';
 
@@ -152,37 +153,37 @@ class StructureUnderAttack extends Notification
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $field->title('Shield')
-                        ->content(number_format($this->content['shieldPercentage'], 2));
+                        ->content(number_format($this->notification->text['shieldPercentage'], 2));
                 })->color('good');
 
-                if ($this->content['shieldPercentage'] < 70)
+                if ($this->notification->text['shieldPercentage'] < 70)
                     $attachment->color('warning');
 
-                if ($this->content['shieldPercentage'] < 40)
+                if ($this->notification->text['shieldPercentage'] < 40)
                     $attachment->color('danger');
             })
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $field->title('Armor')
-                        ->content(number_format($this->content['armorPercentage'], 2));
+                        ->content(number_format($this->notification->text['armorPercentage'], 2));
                 })->color('good');
 
-                if ($this->content['armorPercentage'] < 70)
+                if ($this->notification->text['armorPercentage'] < 70)
                     $attachment->color('warning');
 
-                if ($this->content['armorPercentage'] < 40)
+                if ($this->notification->text['armorPercentage'] < 40)
                     $attachment->color('danger');
             })
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $field->title('Hull')
-                        ->content(number_format($this->content['hullPercentage'], 2));
+                        ->content(number_format($this->notification->text['hullPercentage'], 2));
                 })->color('good');
 
-                if ($this->content['hullPercentage'] < 70)
+                if ($this->notification->text['hullPercentage'] < 70)
                     $attachment->color('warning');
 
-                if ($this->content['hullPercentage'] < 40)
+                if ($this->notification->text['hullPercentage'] < 40)
                     $attachment->color('danger');
             });
     }
@@ -193,24 +194,6 @@ class StructureUnderAttack extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->content;
-    }
-
-    /**
-     * Build a link to zKillboard using Slack message formatting.
-     *
-     * @param string $type (must be ship, character, corporation or alliance)
-     * @param int    $id   the type entity ID
-     * @param string $name the type name
-     *
-     * @return string
-     */
-    private function zKillBoardToSlackLink(string $type, int $id, string $name)
-    {
-
-        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
-            return '';
-
-        return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
+        return $this->notification->text;
     }
 }

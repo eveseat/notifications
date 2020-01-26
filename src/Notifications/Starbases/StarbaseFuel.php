@@ -20,69 +20,71 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Starbases;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class MemberApiState.
- * @package Seat\Notifications\Notifications
+ * Class StarbaseFuel
+ *
+ * @package Seat\Notifications\Notifications\Starbases
+ * @deprecated 4.0.0
  */
-class MemberTokenState extends Notification
+class StarbaseFuel extends AbstractNotification
 {
     /**
      * @var
      */
-    private $member;
+    private $starbase;
 
     /**
      * Create a new notification instance.
      *
-     * @param $member
+     * @param $starbase
      */
-    public function __construct($member)
+    public function __construct($starbase)
     {
 
-        $this->member = $member;
+        $this->starbase = $starbase;
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
 
         return (new MailMessage)
-            ->success()
+            ->error()
             ->greeting('Heads up!')
             ->line(
-                'A corporation members token state has changed!'
+                'The starbase at ' . $this->starbase['location'] . ' is low on fuel!'
             )
             ->line(
-                $this->member->name . '\'s API is now ' .
-                $this->member->enabled ? 'enabled' : 'disabled' . '!'
+                'The ' . $this->starbase['type'] .
+                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
+                ' has ' . $this->starbase['fuel_blocks'] . ' fuel blocks left and is estimated to ' .
+                'go offline in ' . $this->starbase['hours_left'] . ' hours.'
             )
-            ->action('Check it out on SeAT', route('corporation.view.tracking', [
-                'key_id' => $this->member->corporation_id,
+            ->action('Check it out on SeAT', route('corporation.view.starbases', [
+                'corporation_id' => $this->starbase['corporation_id'],
             ]));
     }
 
@@ -90,7 +92,6 @@ class MemberTokenState extends Notification
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -98,14 +99,17 @@ class MemberTokenState extends Notification
 
         return (new SlackMessage)
             ->error()
-            ->content('A corporation members token state has changed!')
+            ->content('A starbase is low on fuel!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Key Details', route('corporation.view.tracking', [
-                    'key_id' => $this->member->corporation_id,
+                $attachment->title('Starbase Details', route('corporation.view.starbases', [
+                    'corporation_id' => $this->starbase['corporation_id'],
                 ]))->fields([
-                    'Character ID'  => $this->member->character_id,
-                    'New Key State' => $this->member->enabled ? 'Enabled' : 'Disabled',
+                    'Type'             => $this->starbase['type'],
+                    'Location'         => $this->starbase['location'],
+                    'Name'             => $this->starbase['name'],
+                    'Fuel Block Count' => $this->starbase['fuel_blocks'],
+                    'Hours Left'       => $this->starbase['hours_left'],
                 ]);
             });
     }
@@ -114,16 +118,17 @@ class MemberTokenState extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'character_name'        => $this->member->name,
-            'character_corporation' => $this->member->corporationName,
-            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
+            'type'             => $this->starbase['type'],
+            'location'         => $this->starbase['location'],
+            'name'             => $this->starbase['name'],
+            'fuel_block_count' => $this->starbase['fuel_blocks'],
+            'hours_left'       => $this->starbase['hours_left'],
         ];
     }
 }

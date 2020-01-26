@@ -30,6 +30,7 @@ use Seat\Services\Repositories\Corporation\Members;
 /**
  * Class MemberTokenState.
  * @package Seat\Notifications\Alerts\Corp
+ * @deprecated 4.0.0
  */
 class MemberTokenState extends Base
 {

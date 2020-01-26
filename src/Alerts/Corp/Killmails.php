@@ -30,6 +30,7 @@ use Seat\Services\Repositories\Corporation\Killmails as KillmailsRepository;
 /**
  * Class Killmails.
  * @package Seat\Notifications\Alerts\Corp
+ * @deprecated 4.0.0
  */
 class Killmails extends Base
 {
