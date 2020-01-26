@@ -30,7 +30,7 @@ use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class SovStructureReinforced
+ * Class SovStructureReinforced.
  *
  * @package Seat\Notifications\Notifications\Sovereignties
  */
