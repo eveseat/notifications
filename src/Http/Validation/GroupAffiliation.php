@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Http\Validation;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 
@@ -56,9 +57,9 @@ class GroupAffiliation extends FormRequest
         // value, which will signal a wild card for either all characters
         // or all corporations.
         $character_ids = implode(',',
-            array_prepend(CharacterInfo::pluck('character_id')->toArray(), 0));
+            Arr::prepend(CharacterInfo::pluck('character_id')->toArray(), 0));
         $corporation_ids = implode(',',
-            array_prepend(CorporationInfo::pluck('corporation_id')->toArray(), 0));
+            Arr::prepend(CorporationInfo::pluck('corporation_id')->toArray(), 0));
 
         return [
             'id'             => 'required|numeric|exists:notification_groups,id',
