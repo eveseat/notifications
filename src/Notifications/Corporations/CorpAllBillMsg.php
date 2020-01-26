@@ -20,25 +20,28 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Corporations;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Alliances\Alliance;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Symfony\Component\Yaml\Yaml;
+use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Traits\NotificationTools;
 
+/**
+ * Class CorpAllBillMsg
+ *
+ * @package Seat\Notifications\Notifications\Corporations
+ */
 class CorpAllBillMsg extends AbstractNotification
 {
+    use NotificationTools;
+
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
-
-    /**
-     * @var mixed
-     */
-    private $content;
 
     /**
      * CorpAllBillMsg constructor.
@@ -48,7 +51,6 @@ class CorpAllBillMsg extends AbstractNotification
     public function __construct($notification)
     {
         $this->notification = $notification;
-        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -57,7 +59,7 @@ class CorpAllBillMsg extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
@@ -71,24 +73,24 @@ class CorpAllBillMsg extends AbstractNotification
             ->line('A new corporation bill has been issued!')
             ->line(
                 sprintf('Amount: %s - Due on %s',
-                    number_format($this->content['amount'], 2),
-                    $this->mssqlTimestampToDate($this->content['dueDate'])->toRfc7231String())
+                    number_format($this->notification->text['amount'], 2),
+                    $this->mssqlTimestampToDate($this->notification->text['dueDate'])->toRfc7231String())
             );
 
-        $entity = Alliance::find($this->content['creditorID']);
+        $entity = Alliance::find($this->notification->text['creditorID']);
 
         if (is_null($entity))
-            CorporationInfo::find($this->content['creditorID']);
+            CorporationInfo::find($this->notification->text['creditorID']);
 
         if (! is_null($entity))
             $mail->action(
                 sprintf('Due to: %s', $entity->name),
                 sprintf('https://zkillboard.com/%s/%d', 'corporation', $entity->id));
 
-        $entity = Alliance::find($this->content['debtorID']);
+        $entity = Alliance::find($this->notification->text['debtorID']);
 
         if (is_null($entity))
-            CorporationInfo::find($this->content['debtorID']);
+            CorporationInfo::find($this->notification->text['debtorID']);
 
         if (! is_null($entity))
             $mail->action(
@@ -112,20 +114,20 @@ class CorpAllBillMsg extends AbstractNotification
                 $attachment->field(function ($field) {
 
                     $field->title('Amount')
-                        ->content(number_format($this->content['amount'], 2));
+                        ->content(number_format($this->notification->text['amount'], 2));
 
                 })
                 ->field(function ($field) {
 
                     $field->title('Due Date')
-                        ->content($this->mssqlTimestampToDate($this->content['dueDate'])->toRfc7231String());
+                        ->content($this->mssqlTimestampToDate($this->notification->text['dueDate'])->toRfc7231String());
 
                 });
 
-                $entity = Alliance::find($this->content['creditorID']);
+                $entity = Alliance::find($this->notification->text['creditorID']);
 
                 if (is_null($entity))
-                    CorporationInfo::find($this->content['creditorID']);
+                    CorporationInfo::find($this->notification->text['creditorID']);
 
                 if (! is_null($entity))
                     $attachment->field(function ($field) use ($entity) {
@@ -135,10 +137,10 @@ class CorpAllBillMsg extends AbstractNotification
 
                     });
 
-                $entity = Alliance::find($this->content['debtorID']);
+                $entity = Alliance::find($this->notification->text['debtorID']);
 
                 if (is_null($entity))
-                    CorporationInfo::find($this->content['debtorID']);
+                    CorporationInfo::find($this->notification->text['debtorID']);
 
                 if (! is_null($entity))
                     $attachment->field(function ($field) use ($entity) {
@@ -156,6 +158,6 @@ class CorpAllBillMsg extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return $this->content;
+        return $this->notification->text;
     }
 }

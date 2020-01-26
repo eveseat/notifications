@@ -27,6 +27,7 @@ use Illuminate\Console\Command;
 /**
  * Class AlertsRun.
  * @package Seat\Notifications\Commands
+ * @deprecated 4.0.0
  */
 class AlertsRun extends Command
 {

@@ -23,7 +23,9 @@
 namespace Seat\Notifications;
 
 use App\Providers\AbstractSeatPlugin;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Notifications\Commands\AlertsRun;
+use Seat\Notifications\Observers\CharacterNotificationObserver;
 
 /**
  * Class NotificationsServiceProvider.
@@ -56,6 +58,9 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         $this->add_routes();
 
         $this->add_translations();
+
+        // Add events listeners
+        $this->add_events();
     }
 
     /**
@@ -85,6 +90,14 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     {
 
         $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'notifications');
+    }
+
+    /**
+     * Register custom events that may be fire for this package.
+     */
+    private function add_events()
+    {
+        CharacterNotification::observe(CharacterNotificationObserver::class);
     }
 
     /**

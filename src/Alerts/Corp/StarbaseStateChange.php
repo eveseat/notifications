@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Alerts\Corp;
 
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Corporation\Starbase;
+use Seat\Eveapi\Models\Corporation\CorporationStarbase;
 use Seat\Notifications\Alerts\Base;
 use Seat\Services\Repositories\Corporation\Starbases;
 use Seat\Services\Repositories\Eve\EveRepository;
@@ -31,6 +31,7 @@ use Seat\Services\Repositories\Eve\EveRepository;
 /**
  * Class StarbaseStateChange.
  * @package Seat\Notifications\Alerts\Corp
+ * @deprecated 3.0.0
  */
 class StarbaseStateChange extends Base
 {
@@ -57,7 +58,7 @@ class StarbaseStateChange extends Base
     {
 
         // Get the corporations we know about.
-        $corporation_ids = Starbase::select('corporationID')
+        $corporation_ids = CorporationStarbase::select('corporationID')
             ->groupBy('corporationID')->pluck('corporationID');
 
         // Prepare the return collection.
