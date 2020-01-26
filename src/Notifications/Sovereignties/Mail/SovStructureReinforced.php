@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Sovereignties;
+namespace Seat\Notifications\Notifications\Sovereignties\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractNotification;
@@ -59,7 +58,7 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
+        return ['mail'];
     }
 
     /**
@@ -80,47 +79,6 @@ class SovStructureReinforced extends AbstractNotification
             ->action(
                 sprintf('System : %s (%s)', $system->itemName, number_format($system->security, 2)),
                 sprintf('https://zkillboard.com/%s/%d', 'system', $system->itemID));
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-            ->content('A sovereignty structure has been reinforced!')
-            ->from('SeAT SovStructureReinforced')
-            ->attachment(function ($attachment) {
-                $attachment->field(function ($field) {
-                        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
-
-                        $field->title('System')
-                            ->content(
-                                $this->zKillBoardToSlackLink(
-                                    'system',
-                                    $system->itemID,
-                                    sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
-                                )
-                            );
-                    })
-                    ->field(function ($field) {
-
-                        $field->title('Structure')
-                            ->content(
-                                $this->campaignEventType($this->notification->text['campaignEventType'])
-                            );
-
-                    })
-                    ->field(function ($field) {
-
-                        $field->title('Node decloak')
-                            ->content(
-                                $this->mssqlTimestampToDate($this->notification->text['decloakTime'])->toRfc7231String()
-                            );
-
-                    });
-            })->warning();
     }
 
     /**

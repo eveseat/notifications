@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Seat;
+namespace Seat\Notifications\Notifications\Seat\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
@@ -59,28 +58,7 @@ class NewAccount extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->success()
-            ->greeting('Heads up!')
-            ->line('We have a new account created on to SeAT!')
-            ->line(
-                'The key was added by ' . $this->user->name . ' that last ' .
-                'logged in from ' . $this->user->last_login_source . ' at ' .
-                $this->user->last_login . '.'
-            )
-            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
+        return ['slack'];
     }
 
     /**

@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Starbases;
+namespace Seat\Notifications\Notifications\Starbases\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
@@ -59,33 +58,7 @@ class StarbaseFuel extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->error()
-            ->greeting('Heads up!')
-            ->line(
-                'The starbase at ' . $this->starbase['location'] . ' is low on fuel!'
-            )
-            ->line(
-                'The ' . $this->starbase['type'] .
-                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has ' . $this->starbase['fuel_blocks'] . ' fuel blocks left and is estimated to ' .
-                'go offline in ' . $this->starbase['hours_left'] . ' hours.'
-            )
-            ->action('Check it out on SeAT', route('corporation.view.starbases', [
-                'corporation_id' => $this->starbase['corporation_id'],
-            ]));
+        return ['slack'];
     }
 
     /**

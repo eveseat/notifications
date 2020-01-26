@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Characters;
+namespace Seat\Notifications\Notifications\Characters\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Support\Str;
 use Seat\Notifications\Notifications\AbstractNotification;
@@ -59,33 +58,7 @@ class NewMailMessage extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['email', 'slack'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->line('You have received a new EVEMail!')
-            ->line(
-                'Subject: ' . $this->message->subject . '. A snippet from the mail ' .
-                'follows:'
-            )
-            ->line('"' .
-                Str::limit(
-                    str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                    2000) .
-                '"'
-            )
-            ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
-                'message_id' => $this->message->mail_id,
-            ]));
+        return ['slack'];
     }
 
     /**

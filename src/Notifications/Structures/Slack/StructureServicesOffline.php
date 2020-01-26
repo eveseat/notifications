@@ -20,30 +20,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Sovereignties;
+namespace Seat\Notifications\Notifications\Structures\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class SovStructureDestroyed.
+ * Class StructureServicesOffline.
  *
- * @package Seat\Notifications\Notifications\Sovereignties
+ * @package Seat\Notifications\Notifications\Structures
  */
-class SovStructureDestroyed extends AbstractNotification
+class StructureServicesOffline extends AbstractNotification
 {
-    use NotificationTools;
-
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
 
+    /**
+     * StructureServicesOffline constructor.
+     *
+     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
+     */
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
@@ -55,26 +56,7 @@ class SovStructureDestroyed extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $type = InvType::find($this->notification->text['structureTypeID']);
-
-        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
-
-        return (new MailMessage)
-            ->subject('Sovereignty Structure Destroyed Notification!')
-            ->line(
-                sprintf('A sovereignty structure has been destroyed (%s)!', $type->typeName))
-            ->action(
-                sprintf('System : %s (%s)', $system->itemName, number_format($system->security, 2)),
-                sprintf('https://zkillboard.com/%s/%d', 'system', $system->itemID));
+        return ['slack'];
     }
 
     /**
@@ -84,31 +66,45 @@ class SovStructureDestroyed extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->content('A sovereignty structure has been destroyed!')
-            ->from('SeAT SovStructureDestroyed')
+            ->content('A structure service has been shutdown!')
+            ->from('SeAT StructureServicesOffline')
             ->attachment(function ($attachment) {
 
                 $attachment->field(function ($field) {
 
-                    $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                    $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                     $field->title('System')
                         ->content(
                             $this->zKillBoardToSlackLink(
                                 'system',
                                 $system->itemID,
-                                sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
+                                sprintf('%s (%s)', $system->itemName, $system->security)
                             )
                         );
-                })
-                ->field(function ($field) {
+                })->field(function ($field) {
 
-                    $type = InvType::find($this->notification->text['structureTypeID']);
+                    $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                     $field->title('Structure')
                         ->content($type->typeName);
+
                 });
-            })->error();
+
+            })->attachment(function ($attachment) {
+
+                foreach ($this->notification->text['listOfServiceModuleIDs'] as $type_id) {
+                    $attachment->field(function ($field) use ($type_id) {
+
+                            $type = InvType::find($type_id);
+
+                            $field->content($type->typeName);
+
+                    });
+                }
+
+                $attachment->color('danger');
+            });
     }
 
     /**

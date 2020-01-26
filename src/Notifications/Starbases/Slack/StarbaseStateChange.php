@@ -20,11 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Starbases;
+namespace Seat\Notifications\Notifications\Starbases\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
@@ -60,32 +58,7 @@ class StarbaseStateChange extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->error()
-            ->greeting('Heads up!')
-            ->line(
-                'The starbase at ' . $this->starbase['location'] . ' has changed state!'
-            )
-            ->line(
-                'The ' . $this->starbase['type'] .
-                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' is now ' . $this->starbase['state_name'] . '.'
-            )
-            ->action('Check it out on SeAT', route('corporation.view.starbases', [
-                'corporation_id' => $this->starbase['corporation_id'],
-            ]));
+        return ['slack'];
     }
 
     /**
