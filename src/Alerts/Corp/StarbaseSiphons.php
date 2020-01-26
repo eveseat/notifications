@@ -29,7 +29,7 @@ use Seat\Services\Repositories\Corporation\Assets;
 use Seat\Services\Repositories\Corporation\Starbases;
 
 /**
- * Class StarbaseSiphons
+ * Class StarbaseSiphons.
  *
  * @package Seat\Notifications\Alerts\Corp
  * @deprecated 3.0.0

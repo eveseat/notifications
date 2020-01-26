@@ -27,7 +27,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class StarbaseSiphons
+ * Class StarbaseSiphons.
  *
  * @package Seat\Notifications\Notifications\Starbases
  * @deprecated 4.0.0

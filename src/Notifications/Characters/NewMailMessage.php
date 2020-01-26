@@ -28,7 +28,7 @@ use Illuminate\Support\Str;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class NewMailMessage
+ * Class NewMailMessage.
  *
  * @package Seat\Notifications\Notifications\Characters
  */

@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class InActiveCorpMember
+ * Class InActiveCorpMember.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
@@ -78,10 +78,9 @@ class InActiveCorpMember extends AbstractNotification
                 $this->member->name . ' logged off more than 3 months ago at ' .
                 $this->member->logoffDateTime . '.'
             )
-            ->action(
-                'View Corporation Tracking', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporationID,
-                ]))
+            ->action('View Corporation Tracking', route('corporation.view.tracking', [
+                'corporation_id' => $this->member->corporationID,
+            ]))
             ->line(
                 'Last seen at ' . $this->member->location . ' in a ' .
                 $this->member->shipType

@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Observers;
 
-use Error;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Notifications\Models\NotificationGroup;
@@ -30,7 +29,7 @@ use Seat\Notifications\Notifications\Structures\OwnershipTransferred;
 use Seat\Notifications\Notifications\Structures\StructureFuelAlert;
 
 /**
- * Class CharacterNotificationObserver
+ * Class CharacterNotificationObserver.
  *
  * @package Seat\Notifications\Observers
  */
@@ -45,7 +44,7 @@ class CharacterNotificationObserver
     }
 
     /**
-     * Queue notification based on notification kind
+     * Queue notification based on notification kind.
      *
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
@@ -84,7 +83,7 @@ class CharacterNotificationObserver
     }
 
     /**
-     * Provide a unique list of notification channels (including driver and route)
+     * Provide a unique list of notification channels (including driver and route).
      *
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      * @return \Illuminate\Support\Collection
