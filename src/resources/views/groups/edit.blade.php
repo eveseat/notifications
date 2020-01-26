@@ -219,8 +219,16 @@
 
               <tr>
                 <td>
-                  {!! img('auto', $affiliation->affiliation_id, 64, ['class' => 'img-circle eve-icon small-icon']) !!}
-                  <span class="id-to-name" data-id="{{ $affiliation->affiliation_id }}">{{ trans('web::seat.unknown') }}</span>
+                  @switch($affiliation->type)
+                    @case('char')
+                      @include('web::partials.character', ['character' => $affiliation->entity])
+                      @break
+                    @case('corp')
+                      @include('web::partials.corporation', ['corporation' => $affiliation->entity])
+                      @break
+                    @default
+                      <span>{{ trans('web::seat.unknown') }}</span>
+                  @endswitch
                 </td>
                 <td>{{ ucfirst($affiliation->type) }}</td>
                 <td>
