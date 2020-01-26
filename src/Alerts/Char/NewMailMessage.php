@@ -26,6 +26,12 @@ use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Mail\MailHeader;
 use Seat\Notifications\Alerts\Base;
 
+/**
+ * Class NewMailMessage.
+ *
+ * @package Seat\Notifications\Alerts\Char
+ * @deprecated 4.0.0
+ */
 class NewMailMessage extends Base
 {
     /**

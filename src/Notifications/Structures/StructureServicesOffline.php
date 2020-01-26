@@ -20,14 +20,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Structures;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Symfony\Component\Yaml\Yaml;
+use Seat\Notifications\Notifications\AbstractNotification;
 
+/**
+ * Class StructureServicesOffline.
+ *
+ * @package Seat\Notifications\Notifications\Structures
+ */
 class StructureServicesOffline extends AbstractNotification
 {
     /**
@@ -36,28 +42,22 @@ class StructureServicesOffline extends AbstractNotification
     private $notification;
 
     /**
-     * @var mixed
-     */
-    private $content;
-
-    /**
      * StructureServicesOffline constructor.
      *
-     * @param $notification
+     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
-    public function __construct($notification)
+    public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
-        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
      * @param $notifiable
-     * @return mixed
+     * @return array
      */
     public function via($notifiable)
     {
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
@@ -66,7 +66,7 @@ class StructureServicesOffline extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        $system = MapDenormalize::find($this->content['solarsystemID']);
+        $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
         $mail = (new MailMessage)
             ->subject('Structure Services Offline Notification!')
@@ -75,7 +75,7 @@ class StructureServicesOffline extends AbstractNotification
                     $system->itemName, number_format($system->security, 2)))
             ->line('The following modules are concerned :');
 
-        foreach ($this->content['listOfServiceModuleIDs'] as $type_id) {
+        foreach ($this->notification->text['listOfServiceModuleIDs'] as $type_id) {
             $type = InvType::find($type_id);
 
             $mail->line(sprintf(' - %s', $type->typeName));
@@ -97,7 +97,7 @@ class StructureServicesOffline extends AbstractNotification
 
                 $attachment->field(function ($field) {
 
-                    $system = MapDenormalize::find($this->content['solarsystemID']);
+                    $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                     $field->title('System')
                         ->content(
@@ -109,7 +109,7 @@ class StructureServicesOffline extends AbstractNotification
                         );
                 })->field(function ($field) {
 
-                    $type = InvType::find($this->content['structureShowInfoData'][1]);
+                    $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                     $field->title('Structure')
                         ->content($type->typeName);
@@ -118,7 +118,7 @@ class StructureServicesOffline extends AbstractNotification
 
             })->attachment(function ($attachment) {
 
-                foreach ($this->content['listOfServiceModuleIDs'] as $type_id) {
+                foreach ($this->notification->text['listOfServiceModuleIDs'] as $type_id) {
                     $attachment->field(function ($field) use ($type_id) {
 
                             $type = InvType::find($type_id);
@@ -138,6 +138,6 @@ class StructureServicesOffline extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return $this->content;
+        return $this->notification->text;
     }
 }

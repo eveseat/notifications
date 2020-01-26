@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019, 2020  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,59 +22,17 @@
 
 namespace Seat\Notifications\Notifications;
 
-use Illuminate\Notifications\Notification;
+use Seat\Notifications\Jobs\AbstractNotificationJob;
 
-abstract class AbstractNotification extends Notification
+/**
+ * Class AbstractNotification
+ *
+ * @package Seat\Notifications\Jobs
+ */
+abstract class AbstractNotification extends AbstractNotificationJob
 {
     /**
-     * Build a link to zKillboard using Slack message formatting.
-     *
-     * @param string $type (must be ship, character, corporation or alliance)
-     * @param int    $id   the type entity ID
-     * @param string $name the type name
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    protected function zKillBoardToSlackLink(string $type, int $id, string $name): string
-    {
-        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
-            return '';
-
-        return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
-    }
-
-    /**
-     * @param int $timestamp
-     * @return \Carbon\Carbon
-     * @author https://github.com/flakas/reconbot/blob/master/reconbot/notificationprinters/esi/printer.py#L317
-     */
-    protected function mssqlTimestampToDate(int $timestamp)
-    {
-        // Convert microsoft epoch to unix epoch
-        // Based on: http://www.wiki.eve-id.net/APIv2_Char_NotificationTexts_XML
-
-        $seconds = $timestamp / 10000000 - 11644473600;
-
-        return carbon()->createFromTimestamp($seconds, 'UTC');
-    }
-
-    /**
-     * Convert a campaign event enum type into an Type Name.
-     *
-     * @param int $type
-     * @return string
-     */
-    protected function campaignEventType(int $type): string
-    {
-        switch ($type) {
-            case 1:
-                return 'Territorial Claim Unit';
-            case 2:
-                return 'Infrastructure Hub';
-            case 3:
-                return 'Outpost';
-            default:
-                return 'Unknown';
-        }
-    }
+    public $queue = 'notifications';
 }

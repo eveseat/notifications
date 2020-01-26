@@ -23,10 +23,16 @@
 namespace Seat\Notifications\Alerts\Corp;
 
 use Illuminate\Support\Collection;
-use Seat\Eveapi\Models\Corporation\Starbase;
+use Seat\Eveapi\Models\Corporation\CorporationStarbase;
 use Seat\Notifications\Alerts\Base;
 use Seat\Services\Repositories\Corporation\Starbases;
 
+/**
+ * Class StarbaseFuel.
+ *
+ * @package Seat\Notifications\Alerts\Corp
+ * @deprecated 3.0.0
+ */
 class StarbaseFuel extends Base
 {
     use Starbases;
@@ -52,18 +58,18 @@ class StarbaseFuel extends Base
     {
 
         // Get the corporations we know about.
-        $corporation_ids = Starbase::select('corporationID')
+        $corporation_ids = CorporationStarbase::select('corporationID')
             ->groupBy('corporationID')->pluck('corporationID');
 
         // Prepare the return collection.
-        $low_feul = collect();
+        $low_fuel = collect();
 
         // Go over each corporation ...
-        $corporation_ids->each(function ($corporation_id) use (&$low_feul) {
+        $corporation_ids->each(function ($corporation_id) use (&$low_fuel) {
 
             // .. and check the details of each starbase
             $this->getCorporationStarbases($corporation_id)->each(
-                function ($starbase) use ($corporation_id, &$low_feul) {
+                function ($starbase) use ($corporation_id, &$low_fuel) {
 
                     $info = [
                         'corporation_id'    => $corporation_id,
@@ -82,12 +88,12 @@ class StarbaseFuel extends Base
 
                     // If the fuel is low, add it to the collection!
                     if ($info['hours_left'] < 24)
-                        $low_feul->push($info);
+                        $low_fuel->push($info);
                 });
 
         });
 
-        return $low_feul;
+        return $low_fuel;
 
     }
 

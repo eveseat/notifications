@@ -20,17 +20,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Starbases;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class StarbaseStateChange.
- * @package Seat\Notifications\Notifications
+ * Class StarbaseStateChange
+ *
+ * @package Seat\Notifications\Notifications\Starbases
+ * @deprecated 4.0.0
  */
-class StarbaseStateChange extends Notification
+class StarbaseStateChange extends AbstractNotification
 {
     /**
      * @var
@@ -52,20 +55,18 @@ class StarbaseStateChange extends Notification
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -91,8 +92,7 @@ class StarbaseStateChange extends Notification
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
@@ -117,7 +117,6 @@ class StarbaseStateChange extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)

@@ -20,97 +20,89 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Seat;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Str;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class NewMailMessage.
- * @package Seat\Notifications\Notifications
+ * Class NewAccount.
+ *
+ * @package Seat\Notifications\Notifications\Seat
  */
-class NewMailMessage extends Notification
+class NewAccount extends AbstractNotification
 {
     /**
      * @var
      */
-    private $message;
+    private $user;
 
     /**
      * Create a new notification instance.
      *
-     * @param $message
+     * @param $user
      */
-    public function __construct($message)
+    public function __construct($user)
     {
 
-        $this->message = $message;
+        $this->user = $user;
+
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
 
         return (new MailMessage)
-            ->line('You have received a new EVEMail!')
+            ->success()
+            ->greeting('Heads up!')
+            ->line('We have a new account created on to SeAT!')
             ->line(
-                'Subject: ' . $this->message->subject . '. A snippet from the mail ' .
-                'follows:'
+                'The key was added by ' . $this->user->name . ' that last ' .
+                'logged in from ' . $this->user->last_login_source . ' at ' .
+                $this->user->last_login . '.'
             )
-            ->line('"' .
-                Str::limit(
-                    str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                    2000) .
-                '"'
-            )
-            ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
-                'message_id' => $this->message->mail_id,
-            ]));
+            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
     }
 
     /**
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
 
         return (new SlackMessage)
-            ->content('New EVEMail Received!')
+            ->success()
+            ->content('A new SeAT account was created!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
-                    'message_id' => $this->message->mail_id,
+                $attachment->title('Account Details', route('configuration.users.edit', [
+                    'user_id' => $this->user->id,
                 ]))->fields([
-                    'Subject'   => $this->message->subject,
-                    'Sent Date' => $this->message->timestamp,
-                    'Message'   => Str::limit(
-                        str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                        2000),
+                    'Account Name'            => $this->user->name,
+                    'Owner Last Login Source' => $this->user->last_login_source,
+                    'Owner Last Login Time'   => $this->user->last_login,
                 ]);
             });
     }
@@ -119,16 +111,16 @@ class NewMailMessage extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
-            'sent_date' => $this->message->sentDate,
+            'key_id'                  => $this->user->id,
+            'key_owner'               => $this->user->name,
+            'owner_last_login_source' => $this->user->last_login_source,
+            'owner_last_login_time'   => $this->user->last_login,
         ];
     }
 }

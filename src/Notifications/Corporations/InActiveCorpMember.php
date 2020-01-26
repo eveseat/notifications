@@ -20,39 +20,39 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Corporations;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class StarbaseSiphons.
- * @package Seat\Notifications\Notifications
+ * Class InActiveCorpMember
+ *
+ * @package Seat\Notifications\Notifications\Corporations
  */
-class StarbaseSiphons extends Notification
+class InActiveCorpMember extends AbstractNotification
 {
     /**
      * @var
      */
-    private $starbase;
+    private $member;
 
     /**
      * Create a new notification instance.
      *
-     * @param $starbase
+     * @param $member
      */
-    public function __construct($starbase)
+    public function __construct($member)
     {
 
-        $this->starbase = $starbase;
+        $this->member = $member;
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
@@ -65,7 +65,6 @@ class StarbaseSiphons extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -74,42 +73,38 @@ class StarbaseSiphons extends Notification
         return (new MailMessage)
             ->error()
             ->greeting('Heads up!')
+            ->subject('Inactive Member Notification')
             ->line(
-                'The starbase at ' . $this->starbase['location'] . ' is possibly being Siphoned!'
+                $this->member->name . ' logged off more than 3 months ago at ' .
+                $this->member->logoffDateTime . '.'
             )
+            ->action(
+                'View Corporation Tracking', route('corporation.view.tracking', [
+                'corporation_id' => $this->member->corporationID,
+            ]))
             ->line(
-                'The ' . $this->starbase['type'] .
-                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has a silo with its contents not being divisible by 100. The number of items is' .
-                $this->starbase['total_items'] . '.'
-            )
-            ->action('Check it out on SeAT', route('corporation.view.starbases', [
-                'corporation_id' => $this->starbase['corporation_id'],
-            ]));
+                'Last seen at ' . $this->member->location . ' in a ' .
+                $this->member->shipType
+            );
     }
 
     /**
-     * Get the Slack representation of the notification.
-     *
      * @param $notifiable
-     *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
 
         return (new SlackMessage)
             ->error()
-            ->content('A starbase is possibly being Siphoned!')
+            ->content('A member has not logged in for some time! Check corp tracking.')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Starbase Details', route('corporation.view.starbases', [
-                    'corporation_id' => $this->starbase['corporation_id'],
+                $attachment->title('Tracking Details', route('corporation.view.tracking', [
+                    'corporation_id' => $this->member->corporation_id,
                 ]))->fields([
-                    'Type'        => $this->starbase['type'],
-                    'Location'    => $this->starbase['location'],
-                    'Name'        => $this->starbase['name'],
-                    'Silo Amount' => $this->starbase['total_items'],
+                    'Last Logoff' => $this->member->logoff_date,
+                    'Ship'        => $this->member->type->typeName,
                 ]);
             });
     }
@@ -118,17 +113,16 @@ class StarbaseSiphons extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'type'        => $this->starbase['type'],
-            'location'    => $this->starbase['location'],
-            'name'        => $this->starbase['name'],
-            'total_items' => $this->starbase['total_items'],
+            'name'        => $this->member->name,
+            'last_logoff' => $this->member->logoffDateTime,
+            'location'    => $this->member->location,
+            'ship'        => $this->member->shipType,
         ];
     }
 }

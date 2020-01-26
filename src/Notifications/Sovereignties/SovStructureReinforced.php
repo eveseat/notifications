@@ -20,34 +20,37 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Sovereignties;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Symfony\Component\Yaml\Yaml;
+use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Traits\NotificationTools;
 
+/**
+ * Class SovStructureReinforced
+ *
+ * @package Seat\Notifications\Notifications\Sovereignties
+ */
 class SovStructureReinforced extends AbstractNotification
 {
+    use NotificationTools;
+
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
 
     /**
-     * @var mixed
-     */
-    private $content;
-
-    /**
      * SovStructureReinforced constructor.
      *
      * @param $notification
      */
-    public function __construct($notification)
+    public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
-        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -56,7 +59,7 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
@@ -65,14 +68,14 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        $system = MapDenormalize::find($this->content['solarSystemID']);
+        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
 
         return (new MailMessage)
             ->subject('Sovereignty Structure Reinforced Notification!')
             ->line(
-                sprintf('A sovereignty structure has been reinforced (%s)!', $this->campaignEventType($this->content['campaignEventType'])))
+                sprintf('A sovereignty structure has been reinforced (%s)!', $this->campaignEventType($this->notification->text['campaignEventType'])))
             ->line(
-                sprintf('Nodes will decloak at %s', $this->mssqlTimestampToDate($this->content['decloakTime'])->toRfc7231String())
+                sprintf('Nodes will decloak at %s', $this->mssqlTimestampToDate($this->notification->text['decloakTime'])->toRfc7231String())
             )
             ->action(
                 sprintf('System : %s (%s)', $system->itemName, number_format($system->security, 2)),
@@ -90,7 +93,7 @@ class SovStructureReinforced extends AbstractNotification
             ->from('SeAT SovStructureReinforced')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                        $system = MapDenormalize::find($this->content['solarSystemID']);
+                        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
 
                         $field->title('System')
                             ->content(
@@ -105,7 +108,7 @@ class SovStructureReinforced extends AbstractNotification
 
                         $field->title('Structure')
                             ->content(
-                                $this->campaignEventType($this->content['campaignEventType'])
+                                $this->campaignEventType($this->notification->text['campaignEventType'])
                             );
 
                     })
@@ -113,7 +116,7 @@ class SovStructureReinforced extends AbstractNotification
 
                         $field->title('Node decloak')
                             ->content(
-                                $this->mssqlTimestampToDate($this->content['decloakTime'])->toRfc7231String()
+                                $this->mssqlTimestampToDate($this->notification->text['decloakTime'])->toRfc7231String()
                             );
 
                     });
@@ -126,6 +129,6 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function toArray($notifiable)
     {
-        return $this->content;
+        return $this->notification->text;
     }
 }

@@ -26,6 +26,12 @@ use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Notifications\Alerts\Base;
 
+/**
+ * Class StructureFuelAlert.
+ *
+ * @package Seat\Notifications\Alerts\Char
+ * @deprecated 4.0.0
+ */
 class StructureFuelAlert extends Base
 {
     /**
