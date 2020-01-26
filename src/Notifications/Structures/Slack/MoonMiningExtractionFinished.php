@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures;
+namespace Seat\Notifications\Notifications\Structures\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
@@ -59,46 +58,7 @@ class MoonMiningExtractionFinished extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
-
-        $moon = MapDenormalize::find($this->notification->text['moonID']);
-
-        $type = InvType::find($this->notification->text['structureTypeID']);
-
-        $mail = (new MailMessage)
-            ->subject('Moon Mining Extraction Finished Notification!')
-            ->line(
-                sprintf('A Moon Mining Extraction operated on %s (%s) - %s has been successfully completed.',
-                    $system->itemName, number_format($system->security, 2), $moon->itemName)
-            )
-        ->line(
-            sprintf('The structure %s (%s) has reported the content bellow:',
-                $this->notification->text['structureName'], $type->typeName)
-        );
-
-        foreach ($this->notification->text['oreVolumeByType'] as $type_id => $volume) {
-            $type = InvType::find($type_id);
-
-            $mail->line(
-                sprintf(' - %s : %s', $type->typeName, number_format($volume, 2))
-            );
-        }
-
-        $mail->line(
-            sprintf('Hurry up, you have until the %s to collect them!',
-                $this->mssqlTimestampToDate($this->notification->text['autoTime'])->toRfc7231String())
-        );
-
-        return $mail;
+        return ['slack'];
     }
 
     /**

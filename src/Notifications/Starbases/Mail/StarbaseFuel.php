@@ -20,20 +20,18 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Starbases;
+namespace Seat\Notifications\Notifications\Starbases\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class StarbaseStateChange.
+ * Class StarbaseFuel.
  *
  * @package Seat\Notifications\Notifications\Starbases
  * @deprecated 4.0.0
  */
-class StarbaseStateChange extends AbstractNotification
+class StarbaseFuel extends AbstractNotification
 {
     /**
      * @var
@@ -60,7 +58,7 @@ class StarbaseStateChange extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
+        return ['mail'];
     }
 
     /**
@@ -76,41 +74,17 @@ class StarbaseStateChange extends AbstractNotification
             ->error()
             ->greeting('Heads up!')
             ->line(
-                'The starbase at ' . $this->starbase['location'] . ' has changed state!'
+                'The starbase at ' . $this->starbase['location'] . ' is low on fuel!'
             )
             ->line(
                 'The ' . $this->starbase['type'] .
                 (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' is now ' . $this->starbase['state_name'] . '.'
+                ' has ' . $this->starbase['fuel_blocks'] . ' fuel blocks left and is estimated to ' .
+                'go offline in ' . $this->starbase['hours_left'] . ' hours.'
             )
             ->action('Check it out on SeAT', route('corporation.view.starbases', [
                 'corporation_id' => $this->starbase['corporation_id'],
             ]));
-    }
-
-    /**
-     * Get the Slack representation of the notification.
-     *
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-
-        return (new SlackMessage)
-            ->error()
-            ->content('A starbase has changed state!')
-            ->attachment(function ($attachment) {
-
-                $attachment->title('Starbase Details', route('corporation.view.starbases', [
-                    'corporation_id' => $this->starbase['corporation_id'],
-                ]))->fields([
-                    'Type'      => $this->starbase['type'],
-                    'Location'  => $this->starbase['location'],
-                    'Name'      => $this->starbase['name'],
-                    'New State' => $this->starbase['state_name'],
-                ]);
-            });
     }
 
     /**
@@ -123,10 +97,11 @@ class StarbaseStateChange extends AbstractNotification
     {
 
         return [
-            'type'       => $this->starbase['type'],
-            'location'   => $this->starbase['location'],
-            'name'       => $this->starbase['name'],
-            'new _state' => $this->starbase['state_name'],
+            'type'             => $this->starbase['type'],
+            'location'         => $this->starbase['location'],
+            'name'             => $this->starbase['name'],
+            'fuel_block_count' => $this->starbase['fuel_blocks'],
+            'hours_left'       => $this->starbase['hours_left'],
         ];
     }
 }

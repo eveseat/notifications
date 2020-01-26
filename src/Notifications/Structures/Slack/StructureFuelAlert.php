@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015, 2016, 2017, 2018, 2019, 2020  Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,22 +20,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures;
+namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class OwnershipTransferred.
+ * Class StructureFuelAlert.
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class OwnershipTransferred extends AbstractNotification
+class StructureFuelAlert extends AbstractNotification
 {
     use NotificationTools;
 
@@ -45,7 +44,7 @@ class OwnershipTransferred extends AbstractNotification
     private $notification;
 
     /**
-     * OwnershipTransferred constructor.
+     * StructureFuelAlert constructor.
      *
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
@@ -57,8 +56,8 @@ class OwnershipTransferred extends AbstractNotification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
-     * @return array
+     * @param mixed $notifiable
+     * @return array;
      */
     public function via($notifiable)
     {
@@ -72,45 +71,52 @@ class OwnershipTransferred extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->content('A structure has been transferred!')
-            ->from('SeAT OwnershipTransferred Alert')
+            ->content('A structure is running low in fuel!')
+            ->from('SeAT StructureFuelAlert')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                    $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                    $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                     $field->title('System')
                         ->content(
-                            $this->zKillBoardToSlackLink('system', $system->itemID, sprintf('%s (%s)', $system->itemName, number_format($system->security, 2)))
+                            $this->zKillBoardToSlackLink(
+                                'system',
+                                $system->itemID,
+                                sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
+                            )
                         );
                 });
 
                 $attachment->field(function ($field) {
-                    $type = InvType::find($this->notification->text['structureTypeID']);
+                    $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                     $field->title('Structure')
-                        ->content(sprintf('%s | %s', $type->typeName, $this->notification->text['structureName']));
+                        ->content($type->typeName);
                 });
             })
             ->attachment(function ($attachment) {
-                $attachment->field(function ($field) {
-                    $old = UniverseName::firstOrNew(
-                        ['entity_id' => $this->notification->text['oldOwnerCorpID']],
-                        ['name' => trans('web::seat.unknown')]
-                    );
 
-                    $field->title('Old Corporation')
-                        ->content($this->zKillBoardToSlackLink('corporation', $old->entity_id, $old->name));
-                });
+                foreach ($this->notification->text['listOfTypesAndQty'] as $item) {
 
-                $attachment->field(function ($field) {
-                    $new = UniverseName::firstOrNew(
-                        ['entity_id' => $this->notification->text['newOwnerCorpID']],
-                        ['name' => trans('web::seat.unknown')]
-                    );
+                    $attachment->field(function ($field) use ($item) {
+                        $type = InvType::find($item[1]);
+                        $quantity = $item[0];
 
-                    $field->title('New Corporation')
-                        ->content($this->zKillBoardToSlackLink('corporation', $new->entity_id, $new->name));
-                });
+                        $field->title($type->typeName)
+                            ->content($quantity);
+                    });
+                }
+
+                $attachment->color('#439fe0');
             });
+    }
+
+    /**
+     * @param $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return $this->notification->text;
     }
 }

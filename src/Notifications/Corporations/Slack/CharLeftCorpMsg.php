@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Corporations;
+namespace Seat\Notifications\Notifications\Corporations\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Character\CharacterNotification;
@@ -57,41 +56,7 @@ class CharLeftCorpMsg extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $mail = (new MailMessage)
-            ->subject('Character Left Corp Notification!')
-            ->line('A character has left the corporation!');
-
-        $character = CharacterInfo::find($this->notification->text['charID']);
-
-        $corporation = CorporationInfo::find($this->notification->text['corpID']);
-
-        if (! is_null($corporation) && ! is_null($character)) {
-
-            if (! is_null($corporation)) {
-
-                $mail->line(
-                    sprintf('Corporation: %s', $corporation->name)
-                );
-            }
-
-            if (! is_null($character)) {
-
-                $mail->line(
-                    sprintf('Character: %s', $character->name)
-                );
-            }
-        }
-
-        return $mail;
+        return ['slack'];
     }
 
     /**

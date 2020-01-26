@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Corporations;
+namespace Seat\Notifications\Notifications\Corporations\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
@@ -58,33 +57,7 @@ class InActiveCorpMember extends AbstractNotification
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->error()
-            ->greeting('Heads up!')
-            ->subject('Inactive Member Notification')
-            ->line(
-                $this->member->name . ' logged off more than 3 months ago at ' .
-                $this->member->logoffDateTime . '.'
-            )
-            ->action('View Corporation Tracking', route('corporation.view.tracking', [
-                'corporation_id' => $this->member->corporationID,
-            ]))
-            ->line(
-                'Last seen at ' . $this->member->location . ' in a ' .
-                $this->member->shipType
-            );
+        return ['slack'];
     }
 
     /**

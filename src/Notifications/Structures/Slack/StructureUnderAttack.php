@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures;
+namespace Seat\Notifications\Notifications\Structures\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
@@ -61,34 +60,7 @@ class StructureUnderAttack extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $system = MapDenormalize::find($this->notification->text['solarsystemID']);
-
-        return (new MailMessage)
-            ->subject('Structure Under Attack Notification')
-            ->line('A structure is under attack!')
-            ->line(
-                sprintf('Citadel (%s, "%s") attacked')
-            )
-            ->line(
-                sprintf('(%d shield, %d armor, %d hull)',
-                    $this->notification->text['shieldPercentage'],
-                    $this->notification->text['armorPercentage'],
-                    $this->notification->text['hullPercentage'])
-            )
-            ->line(
-                sprintf('in %s by %s',
-                    $system->itemName,
-                    $this->notification->text['corpName'])
-            );
+        return ['slack'];
     }
 
     /**
