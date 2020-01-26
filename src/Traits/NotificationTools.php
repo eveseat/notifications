@@ -22,6 +22,9 @@
 
 namespace Seat\Notifications\Traits;
 
+use Seat\Services\Exceptions\EveImageException;
+use Seat\Services\Image\Eve;
+
 /**
  * Trait NotificationTools.
  *
@@ -29,6 +32,26 @@ namespace Seat\Notifications\Traits;
  */
 trait NotificationTools
 {
+    /**
+     * Build a link to Eve Type.
+     *
+     * @param int $type_id
+     * @return string
+     */
+    public function typeIconUrl(int $type_id): string
+    {
+        try {
+            $icon = new Eve('types', 'icon', $type_id, 64, [], false);
+        } catch (EveImageException $e) {
+            logger()->error($e->getMessage());
+            report($e);
+
+            return '';
+        }
+
+        return sprintf('https:%s', $icon->url(64));
+    }
+
     /**
      * Build a link to zKillboard using Slack message formatting.
      *
