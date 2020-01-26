@@ -20,10 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Sovereignties;
+namespace Seat\Notifications\Notifications\Sovereignties\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
@@ -55,7 +54,7 @@ class SovStructureDestroyed extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
+        return ['mail'];
     }
 
     /**
@@ -75,40 +74,6 @@ class SovStructureDestroyed extends AbstractNotification
             ->action(
                 sprintf('System : %s (%s)', $system->itemName, number_format($system->security, 2)),
                 sprintf('https://zkillboard.com/%s/%d', 'system', $system->itemID));
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-            ->content('A sovereignty structure has been destroyed!')
-            ->from('SeAT SovStructureDestroyed')
-            ->attachment(function ($attachment) {
-
-                $attachment->field(function ($field) {
-
-                    $system = MapDenormalize::find($this->notification->text['solarSystemID']);
-
-                    $field->title('System')
-                        ->content(
-                            $this->zKillBoardToSlackLink(
-                                'system',
-                                $system->itemID,
-                                sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
-                            )
-                        );
-                })
-                ->field(function ($field) {
-
-                    $type = InvType::find($this->notification->text['structureTypeID']);
-
-                    $field->title('Structure')
-                        ->content($type->typeName);
-                });
-            })->error();
     }
 
     /**

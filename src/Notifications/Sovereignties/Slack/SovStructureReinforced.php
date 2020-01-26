@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Sovereignties;
+namespace Seat\Notifications\Notifications\Sovereignties\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
@@ -59,27 +58,7 @@ class SovStructureReinforced extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
-
-        return (new MailMessage)
-            ->subject('Sovereignty Structure Reinforced Notification!')
-            ->line(
-                sprintf('A sovereignty structure has been reinforced (%s)!', $this->campaignEventType($this->notification->text['campaignEventType'])))
-            ->line(
-                sprintf('Nodes will decloak at %s', $this->mssqlTimestampToDate($this->notification->text['decloakTime'])->toRfc7231String())
-            )
-            ->action(
-                sprintf('System : %s (%s)', $system->itemName, number_format($system->security, 2)),
-                sprintf('https://zkillboard.com/%s/%d', 'system', $system->itemID));
+        return ['slack'];
     }
 
     /**

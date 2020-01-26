@@ -20,10 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Corporations;
+namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Alliances\Alliance;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Notifications\Notifications\AbstractNotification;
@@ -59,7 +58,7 @@ class CorpAllBillMsg extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
+        return ['mail'];
     }
 
     /**
@@ -98,58 +97,6 @@ class CorpAllBillMsg extends AbstractNotification
                 sprintf('https://zkillboard.com/%s/%d', 'corporation', $entity->id));
 
         return $mail;
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        return (new SlackMessage)
-            ->content('A new corporation bill has been issued!')
-            ->from('SeAT CorpAllBillMsg')
-            ->attachment(function ($attachment) {
-
-                $attachment->field(function ($field) {
-
-                    $field->title('Amount')
-                        ->content(number_format($this->notification->text['amount'], 2));
-
-                })
-                ->field(function ($field) {
-
-                    $field->title('Due Date')
-                        ->content($this->mssqlTimestampToDate($this->notification->text['dueDate'])->toRfc7231String());
-
-                });
-
-                $entity = Alliance::find($this->notification->text['creditorID']);
-
-                if (is_null($entity))
-                    CorporationInfo::find($this->notification->text['creditorID']);
-
-                if (! is_null($entity))
-                    $attachment->field(function ($field) use ($entity) {
-
-                        $field->title('Due To')
-                            ->content($entity->name);
-
-                    });
-
-                $entity = Alliance::find($this->notification->text['debtorID']);
-
-                if (is_null($entity))
-                    CorporationInfo::find($this->notification->text['debtorID']);
-
-                if (! is_null($entity))
-                    $attachment->field(function ($field) use ($entity) {
-
-                        $field->title('Due By')
-                            ->content($entity->name);
-
-                    });
-            });
     }
 
     /**

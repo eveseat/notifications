@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Seat;
+namespace Seat\Notifications\Notifications\Seat\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
@@ -58,31 +57,7 @@ class MemberTokenState extends AbstractNotification
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->success()
-            ->greeting('Heads up!')
-            ->line(
-                'A corporation members token state has changed!'
-            )
-            ->line(
-                $this->member->name . '\'s API is now ' .
-                $this->member->enabled ? 'enabled' : 'disabled' . '!'
-            )
-            ->action('Check it out on SeAT', route('corporation.view.tracking', [
-                'key_id' => $this->member->corporation_id,
-            ]));
+        return ['slack'];
     }
 
     /**

@@ -20,34 +20,33 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Seat;
+namespace Seat\Notifications\Notifications\Starbases\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class NewAccount.
+ * Class StarbaseFuel.
  *
- * @package Seat\Notifications\Notifications\Seat
+ * @package Seat\Notifications\Notifications\Starbases
+ * @deprecated 4.0.0
  */
-class NewAccount extends AbstractNotification
+class StarbaseFuel extends AbstractNotification
 {
     /**
      * @var
      */
-    private $user;
+    private $starbase;
 
     /**
      * Create a new notification instance.
      *
-     * @param $user
+     * @param $starbase
      */
-    public function __construct($user)
+    public function __construct($starbase)
     {
 
-        $this->user = $user;
-
+        $this->starbase = $starbase;
     }
 
     /**
@@ -59,28 +58,7 @@ class NewAccount extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->success()
-            ->greeting('Heads up!')
-            ->line('We have a new account created on to SeAT!')
-            ->line(
-                'The key was added by ' . $this->user->name . ' that last ' .
-                'logged in from ' . $this->user->last_login_source . ' at ' .
-                $this->user->last_login . '.'
-            )
-            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
+        return ['slack'];
     }
 
     /**
@@ -93,16 +71,18 @@ class NewAccount extends AbstractNotification
     {
 
         return (new SlackMessage)
-            ->success()
-            ->content('A new SeAT account was created!')
+            ->error()
+            ->content('A starbase is low on fuel!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Account Details', route('configuration.users.edit', [
-                    'user_id' => $this->user->id,
+                $attachment->title('Starbase Details', route('corporation.view.starbases', [
+                    'corporation_id' => $this->starbase['corporation_id'],
                 ]))->fields([
-                    'Account Name'            => $this->user->name,
-                    'Owner Last Login Source' => $this->user->last_login_source,
-                    'Owner Last Login Time'   => $this->user->last_login,
+                    'Type'             => $this->starbase['type'],
+                    'Location'         => $this->starbase['location'],
+                    'Name'             => $this->starbase['name'],
+                    'Fuel Block Count' => $this->starbase['fuel_blocks'],
+                    'Hours Left'       => $this->starbase['hours_left'],
                 ]);
             });
     }
@@ -117,10 +97,11 @@ class NewAccount extends AbstractNotification
     {
 
         return [
-            'key_id'                  => $this->user->id,
-            'key_owner'               => $this->user->name,
-            'owner_last_login_source' => $this->user->last_login_source,
-            'owner_last_login_time'   => $this->user->last_login,
+            'type'             => $this->starbase['type'],
+            'location'         => $this->starbase['location'],
+            'name'             => $this->starbase['name'],
+            'fuel_block_count' => $this->starbase['fuel_blocks'],
+            'hours_left'       => $this->starbase['hours_left'],
         ];
     }
 }

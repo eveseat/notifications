@@ -20,32 +20,28 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures;
+namespace Seat\Notifications\Notifications\Structures\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class StructureFuelAlert.
+ * Class StructureServicesOffline.
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class StructureFuelAlert extends AbstractNotification
+class StructureServicesOffline extends AbstractNotification
 {
-    use NotificationTools;
-
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
 
     /**
-     * StructureFuelAlert constructor.
+     * StructureServicesOffline constructor.
      *
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
@@ -55,46 +51,12 @@ class StructureFuelAlert extends AbstractNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     * @return array;
+     * @param $notifiable
+     * @return array
      */
     public function via($notifiable)
     {
         return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $system = MapDenormalize::find($this->notification->text['solarsystemID']);
-
-        $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
-
-        $mail = (new MailMessage)
-            ->subject('Structure Fuel Alert Notification!')
-            ->line(
-                sprintf('A structure (%s) is running low in fuel in the system %s (%s).',
-                    $type->typeName,
-                    $system->itemName,
-                    number_format($system->security, 2))
-            )
-            ->line('Find bellow the remaining items :');
-
-        foreach ($this->notification->text['listOfTypesAndQty'] as $item) {
-            $type = InvType::find($item[1]);
-            $quantity = $item[0];
-
-            $mail->line(
-                sprintf(' - %s : %d', $type->typeName, $quantity)
-            );
-        }
-
-        return $mail;
     }
 
     /**
@@ -104,10 +66,12 @@ class StructureFuelAlert extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->content('A structure is running low in fuel!')
-            ->from('SeAT StructureFuelAlert')
+            ->content('A structure service has been shutdown!')
+            ->from('SeAT StructureServicesOffline')
             ->attachment(function ($attachment) {
+
                 $attachment->field(function ($field) {
+
                     $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                     $field->title('System')
@@ -115,32 +79,31 @@ class StructureFuelAlert extends AbstractNotification
                             $this->zKillBoardToSlackLink(
                                 'system',
                                 $system->itemID,
-                                sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
+                                sprintf('%s (%s)', $system->itemName, $system->security)
                             )
                         );
-                });
+                })->field(function ($field) {
 
-                $attachment->field(function ($field) {
                     $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                     $field->title('Structure')
                         ->content($type->typeName);
+
                 });
-            })
-            ->attachment(function ($attachment) {
 
-                foreach ($this->notification->text['listOfTypesAndQty'] as $item) {
+            })->attachment(function ($attachment) {
 
-                    $attachment->field(function ($field) use ($item) {
-                        $type = InvType::find($item[1]);
-                        $quantity = $item[0];
+                foreach ($this->notification->text['listOfServiceModuleIDs'] as $type_id) {
+                    $attachment->field(function ($field) use ($type_id) {
 
-                        $field->title($type->typeName)
-                            ->content($quantity);
+                            $type = InvType::find($type_id);
+
+                            $field->content($type->typeName);
+
                     });
                 }
 
-                $attachment->color('#439fe0');
+                $attachment->color('danger');
             });
     }
 

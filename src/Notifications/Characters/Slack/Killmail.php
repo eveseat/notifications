@@ -20,9 +20,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Characters;
+namespace Seat\Notifications\Notifications\Characters\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
@@ -63,33 +62,7 @@ class Killmail extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->subject('Killmail Notification')
-            ->line(
-                'A new killmail has been recorded!'
-            )
-            ->line(
-                'Lost a ' .
-                $this->killmail->victim->ship->typeName . ' in ' .
-                $this->killmail->system->itemName . ' (' .
-                number_format($this->killmail->system->security, 2) . ')'
-            )
-            ->action(
-                'Check it out on zKillboard',
-                'https://zkillboard.com/kill/' . $this->killmail->killmail_id . '/'
-            );
+        return ['slack'];
     }
 
     /**
