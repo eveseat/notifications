@@ -25,7 +25,7 @@ namespace Seat\Notifications\Notifications;
 use Seat\Notifications\Jobs\AbstractNotificationJob;
 
 /**
- * Class AbstractNotification
+ * Class AbstractNotification.
  *
  * @package Seat\Notifications\Jobs
  */

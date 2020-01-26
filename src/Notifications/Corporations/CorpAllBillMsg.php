@@ -30,7 +30,7 @@ use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class CorpAllBillMsg
+ * Class CorpAllBillMsg.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */

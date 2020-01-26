@@ -27,7 +27,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class InActiveCorpMember
+ * Class InActiveCorpMember.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
@@ -78,8 +78,7 @@ class InActiveCorpMember extends AbstractNotification
                 $this->member->name . ' logged off more than 3 months ago at ' .
                 $this->member->logoffDateTime . '.'
             )
-            ->action(
-                'View Corporation Tracking', route('corporation.view.tracking', [
+            ->action('View Corporation Tracking', route('corporation.view.tracking', [
                 'corporation_id' => $this->member->corporationID,
             ]))
             ->line(
