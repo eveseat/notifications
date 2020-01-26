@@ -20,48 +20,53 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Starbases;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
+use Seat\Notifications\Notifications\AbstractNotification;
 
-class InActiveCorpMember extends Notification
+/**
+ * Class StarbaseStateChange
+ *
+ * @package Seat\Notifications\Notifications\Starbases
+ * @deprecated 4.0.0
+ */
+class StarbaseStateChange extends AbstractNotification
 {
     /**
      * @var
      */
-    private $member;
+    private $starbase;
 
     /**
      * Create a new notification instance.
      *
-     * @param $member
+     * @param $starbase
      */
-    public function __construct($member)
+    public function __construct($starbase)
     {
 
-        $this->member = $member;
+        $this->starbase = $starbase;
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -70,39 +75,40 @@ class InActiveCorpMember extends Notification
         return (new MailMessage)
             ->error()
             ->greeting('Heads up!')
-            ->subject('Inactive Member Notification')
             ->line(
-                $this->member->name . ' logged off more than 3 months ago at ' .
-                $this->member->logoffDateTime . '.'
+                'The starbase at ' . $this->starbase['location'] . ' has changed state!'
             )
-            ->action(
-                'View Corporation Tracking', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporationID,
-                ]))
             ->line(
-                'Last seen at ' . $this->member->location . ' in a ' .
-                $this->member->shipType
-            );
+                'The ' . $this->starbase['type'] .
+                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
+                ' is now ' . $this->starbase['state_name'] . '.'
+            )
+            ->action('Check it out on SeAT', route('corporation.view.starbases', [
+                'corporation_id' => $this->starbase['corporation_id'],
+            ]));
     }
 
     /**
-     * @param $notifiable
+     * Get the Slack representation of the notification.
      *
-     * @return $this
+     * @param $notifiable
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
 
         return (new SlackMessage)
             ->error()
-            ->content('A member has not logged in for some time! Check corp tracking.')
+            ->content('A starbase has changed state!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Tracking Details', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporation_id,
+                $attachment->title('Starbase Details', route('corporation.view.starbases', [
+                    'corporation_id' => $this->starbase['corporation_id'],
                 ]))->fields([
-                    'Last Logoff' => $this->member->logoff_date,
-                    'Ship'        => $this->member->type->typeName,
+                    'Type'      => $this->starbase['type'],
+                    'Location'  => $this->starbase['location'],
+                    'Name'      => $this->starbase['name'],
+                    'New State' => $this->starbase['state_name'],
                 ]);
             });
     }
@@ -111,17 +117,16 @@ class InActiveCorpMember extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'name'        => $this->member->name,
-            'last_logoff' => $this->member->logoffDateTime,
-            'location'    => $this->member->location,
-            'ship'        => $this->member->shipType,
+            'type'       => $this->starbase['type'],
+            'location'   => $this->starbase['location'],
+            'name'       => $this->starbase['name'],
+            'new _state' => $this->starbase['state_name'],
         ];
     }
 }

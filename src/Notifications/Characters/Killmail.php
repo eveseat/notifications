@@ -20,18 +20,23 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Characters;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Traits\NotificationTools;
 use Seat\Services\Image\Eve;
 
 /**
  * Class Killmail.
- * @package Seat\Notifications\Notifications
+ *
+ * @package Seat\Notifications\Notifications\Characters
  */
 class Killmail extends AbstractNotification
 {
+    use NotificationTools;
+
     /**
      * @var
      */

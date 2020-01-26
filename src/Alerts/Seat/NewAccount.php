@@ -29,6 +29,7 @@ use Seat\Web\Models\User;
 /**
  * Class NewAccount.
  * @package Seat\Notifications\Alerts\Seat
+ * @deprecated 4.0.0
  */
 class NewAccount extends Base
 {

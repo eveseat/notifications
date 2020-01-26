@@ -22,14 +22,15 @@
 
 namespace Seat\Notifications\Alerts\Corp;
 
-use DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Notifications\Alerts\Base;
 
 /**
  * Class MemberInactivity.
  * @package Seat\Notifications\Alerts\Corp
+ * @deprecated 4.0.0
  */
 class MemberInactivity extends Base
 {

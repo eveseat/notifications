@@ -20,39 +20,39 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Seat;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class StarbaseSiphons.
- * @package Seat\Notifications\Notifications
+ * Class MemberTokenState.
+ *
+ * @package Seat\Notifications\Notifications\Seat
  */
-class StarbaseSiphons extends Notification
+class MemberTokenState extends AbstractNotification
 {
     /**
      * @var
      */
-    private $starbase;
+    private $member;
 
     /**
      * Create a new notification instance.
      *
-     * @param $starbase
+     * @param $member
      */
-    public function __construct($starbase)
+    public function __construct($member)
     {
 
-        $this->starbase = $starbase;
+        $this->member = $member;
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
@@ -65,26 +65,23 @@ class StarbaseSiphons extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
 
         return (new MailMessage)
-            ->error()
+            ->success()
             ->greeting('Heads up!')
             ->line(
-                'The starbase at ' . $this->starbase['location'] . ' is possibly being Siphoned!'
+                'A corporation members token state has changed!'
             )
             ->line(
-                'The ' . $this->starbase['type'] .
-                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
-                ' has a silo with its contents not being divisible by 100. The number of items is' .
-                $this->starbase['total_items'] . '.'
+                $this->member->name . '\'s API is now ' .
+                $this->member->enabled ? 'enabled' : 'disabled' . '!'
             )
-            ->action('Check it out on SeAT', route('corporation.view.starbases', [
-                'corporation_id' => $this->starbase['corporation_id'],
+            ->action('Check it out on SeAT', route('corporation.view.tracking', [
+                'key_id' => $this->member->corporation_id,
             ]));
     }
 
@@ -92,24 +89,21 @@ class StarbaseSiphons extends Notification
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
 
         return (new SlackMessage)
             ->error()
-            ->content('A starbase is possibly being Siphoned!')
+            ->content('A corporation members token state has changed!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Starbase Details', route('corporation.view.starbases', [
-                    'corporation_id' => $this->starbase['corporation_id'],
+                $attachment->title('Key Details', route('corporation.view.tracking', [
+                    'key_id' => $this->member->corporation_id,
                 ]))->fields([
-                    'Type'        => $this->starbase['type'],
-                    'Location'    => $this->starbase['location'],
-                    'Name'        => $this->starbase['name'],
-                    'Silo Amount' => $this->starbase['total_items'],
+                    'Character ID'  => $this->member->character_id,
+                    'New Key State' => $this->member->enabled ? 'Enabled' : 'Disabled',
                 ]);
             });
     }
@@ -118,17 +112,15 @@ class StarbaseSiphons extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'type'        => $this->starbase['type'],
-            'location'    => $this->starbase['location'],
-            'name'        => $this->starbase['name'],
-            'total_items' => $this->starbase['total_items'],
+            'character_name'        => $this->member->name,
+            'character_corporation' => $this->member->corporationName,
+            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
         ];
     }
 }

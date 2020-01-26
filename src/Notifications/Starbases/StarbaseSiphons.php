@@ -20,72 +20,71 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Starbases;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Str;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class NewMailMessage.
- * @package Seat\Notifications\Notifications
+ * Class StarbaseSiphons
+ *
+ * @package Seat\Notifications\Notifications\Starbases
+ * @deprecated 4.0.0
  */
-class NewMailMessage extends Notification
+class StarbaseSiphons extends AbstractNotification
 {
     /**
      * @var
      */
-    private $message;
+    private $starbase;
 
     /**
      * Create a new notification instance.
      *
-     * @param $message
+     * @param $starbase
      */
-    public function __construct($message)
+    public function __construct($starbase)
     {
 
-        $this->message = $message;
+        $this->starbase = $starbase;
     }
 
     /**
      * Get the notification's delivery channels.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
      * Get the mail representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
 
         return (new MailMessage)
-            ->line('You have received a new EVEMail!')
+            ->error()
+            ->greeting('Heads up!')
             ->line(
-                'Subject: ' . $this->message->subject . '. A snippet from the mail ' .
-                'follows:'
+                'The starbase at ' . $this->starbase['location'] . ' is possibly being Siphoned!'
             )
-            ->line('"' .
-                Str::limit(
-                    str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                    2000) .
-                '"'
+            ->line(
+                'The ' . $this->starbase['type'] .
+                (count($this->starbase['name']) > 0 ? ' ( ' . $this->starbase['name'] . ' )' : '') .
+                ' has a silo with its contents not being divisible by 100. The number of items is' .
+                $this->starbase['total_items'] . '.'
             )
-            ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
-                'message_id' => $this->message->mail_id,
+            ->action('Check it out on SeAT', route('corporation.view.starbases', [
+                'corporation_id' => $this->starbase['corporation_id'],
             ]));
     }
 
@@ -93,24 +92,23 @@ class NewMailMessage extends Notification
      * Get the Slack representation of the notification.
      *
      * @param $notifiable
-     *
-     * @return $this
+     * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
 
         return (new SlackMessage)
-            ->content('New EVEMail Received!')
+            ->error()
+            ->content('A starbase is possibly being Siphoned!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
-                    'message_id' => $this->message->mail_id,
+                $attachment->title('Starbase Details', route('corporation.view.starbases', [
+                    'corporation_id' => $this->starbase['corporation_id'],
                 ]))->fields([
-                    'Subject'   => $this->message->subject,
-                    'Sent Date' => $this->message->timestamp,
-                    'Message'   => Str::limit(
-                        str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
-                        2000),
+                    'Type'        => $this->starbase['type'],
+                    'Location'    => $this->starbase['location'],
+                    'Name'        => $this->starbase['name'],
+                    'Silo Amount' => $this->starbase['total_items'],
                 ]);
             });
     }
@@ -119,16 +117,16 @@ class NewMailMessage extends Notification
      * Get the array representation of the notification.
      *
      * @param  mixed $notifiable
-     *
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
-            'sent_date' => $this->message->sentDate,
+            'type'        => $this->starbase['type'],
+            'location'    => $this->starbase['location'],
+            'name'        => $this->starbase['name'],
+            'total_items' => $this->starbase['total_items'],
         ];
     }
 }

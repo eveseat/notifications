@@ -31,6 +31,7 @@ use Seat\Notifications\Models\NotificationHistory;
 /**
  * Class Base.
  * @package Seat\Notifications\Alerts
+ * @deprecated 4.0.0
  */
 abstract class Base
 {

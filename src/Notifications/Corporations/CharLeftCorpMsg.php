@@ -20,16 +20,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
+namespace Seat\Notifications\Notifications\Corporations;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Illuminate\Notifications\Notification;
 use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Symfony\Component\Yaml\Yaml;
+use Seat\Notifications\Notifications\AbstractNotification;
 
-class CharLeftCorpMsg extends Notification
+/**
+ * Class CharLeftCorpMsg.
+ *
+ * @package Seat\Notifications\Notifications\Corporations
+ */
+class CharLeftCorpMsg extends AbstractNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
@@ -37,19 +42,13 @@ class CharLeftCorpMsg extends Notification
     private $notification;
 
     /**
-     * @var mixed
-     */
-    private $content;
-
-    /**
      * CharLeftCorpMsg constructor.
      *
      * @param $notification
      */
-    public function __construct($notification)
+    public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
-        $this->content = Yaml::parse($this->notification->text);
     }
 
     /**
@@ -58,7 +57,7 @@ class CharLeftCorpMsg extends Notification
      */
     public function via($notifiable)
     {
-        return $notifiable->notificationChannels();
+        return ['mail', 'slack'];
     }
 
     /**
@@ -71,9 +70,9 @@ class CharLeftCorpMsg extends Notification
             ->subject('Character Left Corp Notification!')
             ->line('A character has left the corporation!');
 
-        $character = CharacterInfo::find($this->content['charID']);
+        $character = CharacterInfo::find($this->notification->text['charID']);
 
-        $corporation = CorporationInfo::find($this->content['corpID']);
+        $corporation = CorporationInfo::find($this->notification->text['corpID']);
 
         if (! is_null($corporation) && ! is_null($character)) {
 
@@ -105,9 +104,9 @@ class CharLeftCorpMsg extends Notification
             ->content('A character has left corporation!')
             ->from('SeAT CharLeftCorpMsg');
 
-        $character = CharacterInfo::find($this->content['charID']);
+        $character = CharacterInfo::find($this->notification->text['charID']);
 
-        $corporation = CorporationInfo::find($this->content['corpID']);
+        $corporation = CorporationInfo::find($this->notification->text['corpID']);
 
         if (! is_null($corporation) && ! is_null($character)) {
 
@@ -144,6 +143,6 @@ class CharLeftCorpMsg extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->content;
+        return $this->notification->text;
     }
 }
