@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Corporations;
+namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
@@ -57,7 +56,7 @@ class CharLeftCorpMsg extends AbstractNotification
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
+        return ['mail'];
     }
 
     /**
@@ -92,49 +91,6 @@ class CharLeftCorpMsg extends AbstractNotification
         }
 
         return $mail;
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        $message = (new SlackMessage)
-            ->content('A character has left corporation!')
-            ->from('SeAT CharLeftCorpMsg');
-
-        $character = CharacterInfo::find($this->notification->text['charID']);
-
-        $corporation = CorporationInfo::find($this->notification->text['corpID']);
-
-        if (! is_null($corporation) && ! is_null($character)) {
-
-            $message->attachment(function ($attachment) use ($character, $corporation) {
-
-                if (! is_null($corporation)) {
-
-                    $attachment->field(function ($field) use ($corporation) {
-
-                        $field->title('Corporation')
-                            ->content($corporation->name);
-                    });
-                }
-
-                if (! is_null($character)) {
-
-                    $attachment->field(function ($field) use ($character) {
-
-                        $field->title('Character')
-                            ->content($character->name);
-
-                    });
-                }
-            });
-
-        }
-
-        return $message;
     }
 
     /**

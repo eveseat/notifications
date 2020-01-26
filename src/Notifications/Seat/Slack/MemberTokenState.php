@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
+ * Copyright (C) 2015 to 2020 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Corporations;
+namespace Seat\Notifications\Notifications\Seat\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class InActiveCorpMember.
+ * Class MemberTokenState.
  *
- * @package Seat\Notifications\Notifications\Corporations
+ * @package Seat\Notifications\Notifications\Seat
  */
-class InActiveCorpMember extends AbstractNotification
+class MemberTokenState extends AbstractNotification
 {
     /**
      * @var
@@ -58,36 +57,12 @@ class InActiveCorpMember extends AbstractNotification
     public function via($notifiable)
     {
 
-        return $notifiable->notificationChannels();
+        return ['slack'];
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Get the Slack representation of the notification.
      *
-     * @param  mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-
-        return (new MailMessage)
-            ->error()
-            ->greeting('Heads up!')
-            ->subject('Inactive Member Notification')
-            ->line(
-                $this->member->name . ' logged off more than 3 months ago at ' .
-                $this->member->logoffDateTime . '.'
-            )
-            ->action('View Corporation Tracking', route('corporation.view.tracking', [
-                'corporation_id' => $this->member->corporationID,
-            ]))
-            ->line(
-                'Last seen at ' . $this->member->location . ' in a ' .
-                $this->member->shipType
-            );
-    }
-
-    /**
      * @param $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
@@ -96,14 +71,14 @@ class InActiveCorpMember extends AbstractNotification
 
         return (new SlackMessage)
             ->error()
-            ->content('A member has not logged in for some time! Check corp tracking.')
+            ->content('A corporation members token state has changed!')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Tracking Details', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporation_id,
+                $attachment->title('Key Details', route('corporation.view.tracking', [
+                    'key_id' => $this->member->corporation_id,
                 ]))->fields([
-                    'Last Logoff' => $this->member->logoff_date,
-                    'Ship'        => $this->member->type->typeName,
+                    'Character ID'  => $this->member->character_id,
+                    'New Key State' => $this->member->enabled ? 'Enabled' : 'Disabled',
                 ]);
             });
     }
@@ -118,10 +93,9 @@ class InActiveCorpMember extends AbstractNotification
     {
 
         return [
-            'name'        => $this->member->name,
-            'last_logoff' => $this->member->logoffDateTime,
-            'location'    => $this->member->location,
-            'ship'        => $this->member->shipType,
+            'character_name'        => $this->member->name,
+            'character_corporation' => $this->member->corporationName,
+            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
         ];
     }
 }

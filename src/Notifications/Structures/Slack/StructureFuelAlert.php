@@ -20,29 +20,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures;
+namespace Seat\Notifications\Notifications\Structures\Slack;
 
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class StructureServicesOffline.
+ * Class StructureFuelAlert.
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class StructureServicesOffline extends AbstractNotification
+class StructureFuelAlert extends AbstractNotification
 {
+    use NotificationTools;
+
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
 
     /**
-     * StructureServicesOffline constructor.
+     * StructureFuelAlert constructor.
      *
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
@@ -52,36 +54,14 @@ class StructureServicesOffline extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return array
+     * Get the notification's delivery channels.
+     *
+     * @param mixed $notifiable
+     * @return array;
      */
     public function via($notifiable)
     {
-        return ['mail', 'slack'];
-    }
-
-    /**
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        $system = MapDenormalize::find($this->notification->text['solarsystemID']);
-
-        $mail = (new MailMessage)
-            ->subject('Structure Services Offline Notification!')
-            ->line(
-                sprintf('A structure service has been shutdown in the system %s (%s)!',
-                    $system->itemName, number_format($system->security, 2)))
-            ->line('The following modules are concerned :');
-
-        foreach ($this->notification->text['listOfServiceModuleIDs'] as $type_id) {
-            $type = InvType::find($type_id);
-
-            $mail->line(sprintf(' - %s', $type->typeName));
-        }
-
-        return $mail;
+        return ['slack'];
     }
 
     /**
@@ -91,12 +71,10 @@ class StructureServicesOffline extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->content('A structure service has been shutdown!')
-            ->from('SeAT StructureServicesOffline')
+            ->content('A structure is running low in fuel!')
+            ->from('SeAT StructureFuelAlert')
             ->attachment(function ($attachment) {
-
                 $attachment->field(function ($field) {
-
                     $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                     $field->title('System')
@@ -104,31 +82,32 @@ class StructureServicesOffline extends AbstractNotification
                             $this->zKillBoardToSlackLink(
                                 'system',
                                 $system->itemID,
-                                sprintf('%s (%s)', $system->itemName, $system->security)
+                                sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
                             )
                         );
-                })->field(function ($field) {
+                });
 
+                $attachment->field(function ($field) {
                     $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                     $field->title('Structure')
                         ->content($type->typeName);
-
                 });
+            })
+            ->attachment(function ($attachment) {
 
-            })->attachment(function ($attachment) {
+                foreach ($this->notification->text['listOfTypesAndQty'] as $item) {
 
-                foreach ($this->notification->text['listOfServiceModuleIDs'] as $type_id) {
-                    $attachment->field(function ($field) use ($type_id) {
+                    $attachment->field(function ($field) use ($item) {
+                        $type = InvType::find($item[1]);
+                        $quantity = $item[0];
 
-                            $type = InvType::find($type_id);
-
-                            $field->content($type->typeName);
-
+                        $field->title($type->typeName)
+                            ->content($quantity);
                     });
                 }
 
-                $attachment->color('danger');
+                $attachment->color('#439fe0');
             });
     }
 

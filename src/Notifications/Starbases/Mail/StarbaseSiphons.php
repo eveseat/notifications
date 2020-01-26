@@ -20,10 +20,9 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Starbases;
+namespace Seat\Notifications\Notifications\Starbases\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
@@ -59,7 +58,7 @@ class StarbaseSiphons extends AbstractNotification
     public function via($notifiable)
     {
 
-        return ['mail', 'slack'];
+        return ['mail'];
     }
 
     /**
@@ -86,31 +85,6 @@ class StarbaseSiphons extends AbstractNotification
             ->action('Check it out on SeAT', route('corporation.view.starbases', [
                 'corporation_id' => $this->starbase['corporation_id'],
             ]));
-    }
-
-    /**
-     * Get the Slack representation of the notification.
-     *
-     * @param $notifiable
-     * @return \Illuminate\Notifications\Messages\SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-
-        return (new SlackMessage)
-            ->error()
-            ->content('A starbase is possibly being Siphoned!')
-            ->attachment(function ($attachment) {
-
-                $attachment->title('Starbase Details', route('corporation.view.starbases', [
-                    'corporation_id' => $this->starbase['corporation_id'],
-                ]))->fields([
-                    'Type'        => $this->starbase['type'],
-                    'Location'    => $this->starbase['location'],
-                    'Name'        => $this->starbase['name'],
-                    'Silo Amount' => $this->starbase['total_items'],
-                ]);
-            });
     }
 
     /**
