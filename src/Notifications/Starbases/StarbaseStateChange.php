@@ -28,7 +28,7 @@ use Illuminate\Notifications\Notification;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class StarbaseStateChange
+ * Class StarbaseStateChange.
  *
  * @package Seat\Notifications\Notifications\Starbases
  * @deprecated 4.0.0

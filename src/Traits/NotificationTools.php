@@ -38,7 +38,7 @@ trait NotificationTools
      *
      * @return string
      */
-    function zKillBoardToSlackLink(string $type, int $id, string $name): string
+    public function zKillBoardToSlackLink(string $type, int $id, string $name): string
     {
         if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
             return '';
@@ -51,7 +51,7 @@ trait NotificationTools
      * @return \Carbon\Carbon
      * @author https://github.com/flakas/reconbot/blob/master/reconbot/notificationprinters/esi/printer.py#L317
      */
-    function mssqlTimestampToDate(int $timestamp)
+    public function mssqlTimestampToDate(int $timestamp)
     {
         // Convert microsoft epoch to unix epoch
         // Based on: http://www.wiki.eve-id.net/APIv2_Char_NotificationTexts_XML
@@ -67,7 +67,7 @@ trait NotificationTools
      * @param int $type
      * @return string
      */
-    function campaignEventType(int $type): string
+    public function campaignEventType(int $type): string
     {
         switch ($type) {
             case 1:
