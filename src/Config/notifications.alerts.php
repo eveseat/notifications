@@ -42,7 +42,9 @@ return [
         ],
         'AllAnchoringMsg' => [
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\AllAnchoringMsg::class,
+            ],
         ],
         'AllMaintenanceBillMsg' =>[
             'label'   => 'notifications.',
@@ -62,11 +64,15 @@ return [
         ],
         'AllWarDeclaredMsg' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarDeclaredMsg::class,
+            ],
         ],
         'AllWarInvalidatedMsg' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarInvalidatedMsg::class,
+            ],
         ],
         'AllWarRetractedMsg' =>[
             'label'   => 'notifications.',
@@ -78,7 +84,9 @@ return [
         ],
         'AllianceCapitalChanged' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Alliances\Slack\AllianceCapitalChanged::class,
+            ],
         ],
         'AllianceWarDeclaredV2' =>[
             'label'   => 'notifications.',
@@ -90,15 +98,21 @@ return [
         ],
         'AllyJoinedWarAggressorMsg' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAggressorMsg::class,
+            ],
         ],
         'AllyJoinedWarAllyMsg' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAllyMsg::class,
+            ],
         ],
         'AllyJoinedWarDefenderMsg' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarDefenderMsg::class,
+            ],
         ],
         'BattlePunishFriendlyFire' =>[
             'label'   => 'notifications.',
@@ -110,7 +124,9 @@ return [
         ],
         'BillPaidCorpAllMsg' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Corporations\Slack\BillPaidCorpAllMsg::class,
+            ],
         ],
         'BountyClaimMsg' =>[
             'label'   => 'notifications.',
@@ -224,7 +240,9 @@ return [
         ],
         'CorpAppNewMsg' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CorpAppNewMsg::class,
+            ],
         ],
         'CorpAppRejectCustomMsg' =>[
             'label'   => 'notifications.',
