@@ -577,7 +577,10 @@ return [
         ],
         'MoonminingExtractionStarted' =>[
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'mail' => \Seat\Notifications\Notifications\Structures\Mail\MoonMiningExtractionStarted::class,
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\MoonMiningExtractionStarted::class,
+            ],
         ],
         'MoonminingLaserFired' =>[
             'label'   => 'notifications.',
