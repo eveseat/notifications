@@ -33,6 +33,8 @@ use Seat\Notifications\Models\NotificationGroup;
  */
 class CharacterNotificationObserver
 {
+    const EXPIRATION_DELAY = 3600;
+
     /**
      * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
@@ -48,6 +50,10 @@ class CharacterNotificationObserver
      */
     private function dispatch(CharacterNotification $notification)
     {
+        // ignore any notification created since more than 60 minutes
+        if (carbon()->diffInSeconds($notification->timestamp) > self::EXPIRATION_DELAY)
+            return;
+
         // detect handlers setup for the current notification
         $handlers = config(sprintf('notifications.alerts.char.%s.handlers', $notification->type), []);
 
