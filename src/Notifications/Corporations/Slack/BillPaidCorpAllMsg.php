@@ -67,7 +67,7 @@ class BillPaidCorpAllMsg extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->from('SeAT Corporation Accounting')
+            ->from('SeAT Corporation Accountant')
             ->content('A bill has been honored!')
             ->attachment(function ($attachment) {
                 $attachment
@@ -82,8 +82,13 @@ class BillPaidCorpAllMsg extends AbstractNotification
             })
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                    $field->title('Corporation')
+                    $field->title('Character')
                         ->content($this->notification->recipient->name);
+                });
+
+                $attachment->field(function ($field) {
+                    $field->title('Corporation')
+                        ->content($this->notification->recipient->affiliation->corporation->name);
                 });
             });
     }

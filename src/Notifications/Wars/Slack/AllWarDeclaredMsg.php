@@ -65,7 +65,7 @@ class AllWarDeclaredMsg extends AbstractNotification
     public function toSlack($notifiable)
     {
         $message = (new SlackMessage())
-            ->from('SeAT War Declared')
+            ->from('SeAT War Observer')
             ->content('A new War has been declared !')
             ->attachment(function ($attachment) {
                 $attachment

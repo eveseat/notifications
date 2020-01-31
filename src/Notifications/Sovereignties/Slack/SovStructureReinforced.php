@@ -69,7 +69,7 @@ class SovStructureReinforced extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A sovereignty structure has been reinforced!')
-            ->from('SeAT SovStructureReinforced')
+            ->from('SeAT Sovereignty Health')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                         $system = MapDenormalize::find($this->notification->text['solarSystemID']);

@@ -70,6 +70,7 @@ class StructureUnanchoring extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A new Structure is un-anchoring!')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $system = MapDenormalize::firstOrNew(

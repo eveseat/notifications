@@ -76,7 +76,7 @@ class Killmail extends AbstractNotification
 
         $message = (new SlackMessage)
             ->content('A kill has been recorded for your corporation!')
-            ->from('SeAT Killmails', $this->typeIconUrl($this->killmail->victim->ship_type_id))
+            ->from('SeAT Papmeter', $this->typeIconUrl($this->killmail->victim->ship_type_id))
             ->attachment(function ($attachment) {
 
                 $attachment
