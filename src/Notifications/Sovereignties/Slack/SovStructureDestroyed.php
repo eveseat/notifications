@@ -65,7 +65,7 @@ class SovStructureDestroyed extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A sovereignty structure has been destroyed!')
-            ->from('SeAT SovStructureDestroyed')
+            ->from('SeAT Sovereignty Health')
             ->attachment(function ($attachment) {
 
                 $attachment->field(function ($field) {

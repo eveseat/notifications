@@ -71,7 +71,7 @@ class StructureUnderAttack extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A structure is under attack!')
-            ->from('SeAT StructureUnderAttack')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $field->title('Attacker')

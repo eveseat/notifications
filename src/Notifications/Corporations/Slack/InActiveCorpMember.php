@@ -70,6 +70,7 @@ class InActiveCorpMember extends AbstractNotification
         return (new SlackMessage)
             ->error()
             ->content('A member has not logged in for some time! Check corp tracking.')
+            ->from('SeAT Corporation Supervisor')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Tracking Details', route('corporation.view.tracking', [

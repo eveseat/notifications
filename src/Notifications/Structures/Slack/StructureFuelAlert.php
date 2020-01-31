@@ -72,7 +72,7 @@ class StructureFuelAlert extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A structure is running low in fuel!')
-            ->from('SeAT StructureFuelAlert')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $system = MapDenormalize::find($this->notification->text['solarsystemID']);

@@ -73,6 +73,7 @@ class StarbaseFuel extends AbstractNotification
         return (new SlackMessage)
             ->error()
             ->content('A starbase is low on fuel!')
+            ->from('SeAT Death Star')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Starbase Details', route('corporation.view.starbases', [

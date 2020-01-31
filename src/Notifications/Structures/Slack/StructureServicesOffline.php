@@ -67,7 +67,7 @@ class StructureServicesOffline extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A structure service has been shutdown!')
-            ->from('SeAT StructureServicesOffline')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
 
                 $attachment->field(function ($field) {

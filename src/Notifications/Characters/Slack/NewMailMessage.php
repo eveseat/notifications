@@ -72,6 +72,7 @@ class NewMailMessage extends AbstractNotification
 
         return (new SlackMessage)
             ->content('New EVEMail Received!')
+            ->from('SeAT Personal Agent')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [

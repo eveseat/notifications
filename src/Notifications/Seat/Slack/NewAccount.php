@@ -73,6 +73,7 @@ class NewAccount extends AbstractNotification
         return (new SlackMessage)
             ->success()
             ->content('A new SeAT account was created!')
+            ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Account Details', route('configuration.users.edit', [
