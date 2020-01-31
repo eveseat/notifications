@@ -69,7 +69,7 @@ class AllianceCapitalChanged extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->from('SeAT Alliance Notifications')
+            ->from('SeAT Alliance Weather')
             ->content('Capital has been modified!')
             ->attachment(function ($attachment) {
                 $attachment

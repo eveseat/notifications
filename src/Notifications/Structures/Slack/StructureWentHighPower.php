@@ -70,6 +70,7 @@ class StructureWentHighPower extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A Structure went into High Power!')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $system = MapDenormalize::firstOrNew(

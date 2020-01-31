@@ -70,6 +70,7 @@ class StructureLostArmor extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A Structure lost Armor!')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $system = MapDenormalize::firstOrNew(

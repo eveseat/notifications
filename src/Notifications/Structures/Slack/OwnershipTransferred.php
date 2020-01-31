@@ -73,7 +73,7 @@ class OwnershipTransferred extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A structure has been transferred!')
-            ->from('SeAT OwnershipTransferred Alert')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $system = MapDenormalize::find($this->notification->text['solarSystemID']);

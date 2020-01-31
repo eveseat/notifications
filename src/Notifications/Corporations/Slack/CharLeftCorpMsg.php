@@ -67,7 +67,7 @@ class CharLeftCorpMsg extends AbstractNotification
     {
         $message = (new SlackMessage)
             ->content('A character has left corporation!')
-            ->from('SeAT CharLeftCorpMsg');
+            ->from('SeAT Corporation Supervisor');
 
         $character = CharacterInfo::find($this->notification->text['charID']);
 

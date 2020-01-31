@@ -71,7 +71,7 @@ class AllAnchoringMsg extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A structure is anchoring!')
-            ->from('SeAT Structure Anchoring')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment
                     ->field(function ($field) {
