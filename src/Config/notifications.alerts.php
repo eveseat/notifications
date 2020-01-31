@@ -46,865 +46,889 @@ return [
                 'slack' => \Seat\Notifications\Notifications\Structures\Slack\AllAnchoringMsg::class,
             ],
         ],
-        'AllMaintenanceBillMsg' =>[
+        'AllMaintenanceBillMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllStrucInvulnerableMsg' =>[
+        'AllStrucInvulnerableMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllStructVulnerableMsg' =>[
+        'AllStructVulnerableMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllWarCorpJoinedAllianceMsg' =>[
+        'AllWarCorpJoinedAllianceMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllWarDeclaredMsg' =>[
+        'AllWarDeclaredMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarDeclaredMsg::class,
             ],
         ],
-        'AllWarInvalidatedMsg' =>[
+        'AllWarInvalidatedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarInvalidatedMsg::class,
             ],
         ],
-        'AllWarRetractedMsg' =>[
+        'AllWarRetractedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllWarSurrenderMsg' =>[
+        'AllWarSurrenderMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllianceCapitalChanged' =>[
+        'AllianceCapitalChanged' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Alliances\Slack\AllianceCapitalChanged::class,
             ],
         ],
-        'AllianceWarDeclaredV2' =>[
+        'AllianceWarDeclaredV2' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllyContractCancelled' =>[
+        'AllyContractCancelled' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'AllyJoinedWarAggressorMsg' =>[
+        'AllyJoinedWarAggressorMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAggressorMsg::class,
             ],
         ],
-        'AllyJoinedWarAllyMsg' =>[
+        'AllyJoinedWarAllyMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAllyMsg::class,
             ],
         ],
-        'AllyJoinedWarDefenderMsg' =>[
+        'AllyJoinedWarDefenderMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarDefenderMsg::class,
             ],
         ],
-        'BattlePunishFriendlyFire' =>[
+        'BattlePunishFriendlyFire' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BillOutOfMoneyMsg' =>[
+        'BillOutOfMoneyMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BillPaidCorpAllMsg' =>[
+        'BillPaidCorpAllMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Corporations\Slack\BillPaidCorpAllMsg::class,
             ],
         ],
-        'BountyClaimMsg' =>[
+        'BountyClaimMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BountyESSShared' =>[
+        'BountyESSShared' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BountyESSTaken' =>[
+        'BountyESSTaken' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BountyPlacedAlliance' =>[
+        'BountyPlacedAlliance' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BountyPlacedChar' =>[
+        'BountyPlacedChar' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BountyPlacedCorp' =>[
+        'BountyPlacedCorp' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BountyYourBountyClaimed' =>[
+        'BountyYourBountyClaimed' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'BuddyConnectContactAdd' =>[
+        'BuddyConnectContactAdd' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CharAppAcceptMsg' =>[
+        'CharAppAcceptMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CharAppRejectMsg' =>[
+        'CharAppRejectMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CharAppWithdrawMsg' =>[
+        'CharAppWithdrawMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CharLeftCorpMsg' =>[
+        'CharLeftCorpMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Corporations\Mail\CharLeftCorpMsg::class,
                 'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CharLeftCorpMsg::class,
             ],
         ],
-        'CharMedalMsg' =>[
+        'CharMedalMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CharTerminationMsg' =>[
+        'CharTerminationMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CloneActivationMsg' =>[
+        'CloneActivationMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CloneActivationMsg2' =>[
+        'CloneActivationMsg2' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CloneMovedMsg' =>[
+        'CloneMovedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CloneRevokedMsg1' =>[
+        'CloneRevokedMsg1' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CloneRevokedMsg2' =>[
+        'CloneRevokedMsg2' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CombatOperationFinished' =>[
+        'CombatOperationFinished' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'ContactAdd' =>[
+        'ContactAdd' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'ContactEdit' =>[
+        'ContactEdit' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'ContainerPasswordMsg' =>[
+        'ContainerPasswordMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpAllBillMsg' =>[
+        'CorpAllBillMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Corporations\Mail\CorpAllBillMsg::class,
                 'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CorpAllBillMsg::class,
             ],
         ],
-        'CorpAppAcceptMsg' =>[
+        'CorpAppAcceptMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpAppInvitedMsg' =>[
+        'CorpAppInvitedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpAppNewMsg' =>[
+        'CorpAppNewMsg' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CorpAppNewMsg::class,
             ],
         ],
-        'CorpAppRejectCustomMsg' =>[
+        'CorpAppRejectCustomMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpAppRejectMsg' =>[
+        'CorpAppRejectMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpBecameWarEligible' =>[
+        'CorpBecameWarEligible' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpDividendMsg' =>[
+        'CorpDividendMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpFriendlyFireDisableTimerCompleted' =>[
+        'CorpFriendlyFireDisableTimerCompleted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpFriendlyFireDisableTimerStarted' =>[
+        'CorpFriendlyFireDisableTimerStarted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpFriendlyFireEnableTimerCompleted' =>[
+        'CorpFriendlyFireEnableTimerCompleted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpFriendlyFireEnableTimerStarted' =>[
+        'CorpFriendlyFireEnableTimerStarted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpKicked' =>[
+        'CorpKicked' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpLiquidationMsg' =>[
+        'CorpLiquidationMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpNewCEOMsg' =>[
+        'CorpNewCEOMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpNewsMsg' =>[
+        'CorpNewsMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpNoLongerWarEligible' =>[
+        'CorpNoLongerWarEligible' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpOfficeExpirationMsg' =>[
+        'CorpOfficeExpirationMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpStructLostMsg' =>[
+        'CorpStructLostMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpTaxChangeMsg' =>[
+        'CorpTaxChangeMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpVoteCEORevokedMsg' =>[
+        'CorpVoteCEORevokedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpVoteMsg' =>[
+        'CorpVoteMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpWarDeclaredMsg' =>[
+        'CorpWarDeclaredMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpWarDeclaredV2' =>[
+        'CorpWarDeclaredV2' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpWarFightingLegalMsg' =>[
+        'CorpWarFightingLegalMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpWarInvalidatedMsg' =>[
+        'CorpWarInvalidatedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpWarRetractedMsg' =>[
+        'CorpWarRetractedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CorpWarSurrenderMsg' =>[
+        'CorpWarSurrenderMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'CustomsMsg' =>[
+        'CustomsMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'DeclareWar' =>[
+        'DeclareWar' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'DistrictAttacked' =>[
+        'DistrictAttacked' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'DustAppAcceptedMsg' =>[
+        'DustAppAcceptedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'EntosisCaptureStarted' =>[
+        'EntosisCaptureStarted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWAllianceKickMsg' =>[
+        'FWAllianceKickMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWAllianceWarningMsg' =>[
+        'FWAllianceWarningMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCharKickMsg' =>[
+        'FWCharKickMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCharRankGainMsg' =>[
+        'FWCharRankGainMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCharRankLossMsg' =>[
+        'FWCharRankLossMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCharWarningMsg' =>[
+        'FWCharWarningMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCorpJoinMsg' =>[
+        'FWCorpJoinMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCorpKickMsg' =>[
+        'FWCorpKickMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCorpLeaveMsg' =>[
+        'FWCorpLeaveMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FWCorpWarningMsg' =>[
+        'FWCorpWarningMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarCorpJoinRequestMsg' =>[
+        'FacWarCorpJoinRequestMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarCorpJoinWithdrawMsg' =>[
+        'FacWarCorpJoinWithdrawMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarCorpLeaveRequestMsg' =>[
+        'FacWarCorpLeaveRequestMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarCorpLeaveWithdrawMsg' =>[
+        'FacWarCorpLeaveWithdrawMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarLPDisqualifiedEvent' =>[
+        'FacWarLPDisqualifiedEvent' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarLPDisqualifiedKill' =>[
+        'FacWarLPDisqualifiedKill' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarLPPayoutEvent' =>[
+        'FacWarLPPayoutEvent' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'FacWarLPPayoutKill' =>[
+        'FacWarLPPayoutKill' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'GameTimeAdded' =>[
+        'GameTimeAdded' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'GameTimeReceived' =>[
+        'GameTimeReceived' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'GameTimeSent' =>[
+        'GameTimeSent' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'GiftReceived' =>[
+        'GiftReceived' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'IHubDestroyedByBillFailure' =>[
+        'IHubDestroyedByBillFailure' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'IncursionCompletedMsg' =>[
+        'IncursionCompletedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'IndustryOperationFinished' =>[
+        'IndustryOperationFinished' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'IndustryTeamAuctionLost' =>[
+        'IndustryTeamAuctionLost' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'IndustryTeamAuctionWon' =>[
+        'IndustryTeamAuctionWon' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'InfrastructureHubBillAboutToExpire' =>[
+        'InfrastructureHubBillAboutToExpire' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'InsuranceExpirationMsg' =>[
+        'InsuranceExpirationMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'InsuranceFirstShipMsg' =>[
+        'InsuranceFirstShipMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'InsuranceInvalidatedMsg' =>[
+        'InsuranceInvalidatedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'InsuranceIssuedMsg' =>[
+        'InsuranceIssuedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'InsurancePayoutMsg' =>[
+        'InsurancePayoutMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'InvasionSystemLogin' =>[
+        'InvasionSystemLogin' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'JumpCloneDeletedMsg1' =>[
+        'JumpCloneDeletedMsg1' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'JumpCloneDeletedMsg2' =>[
+        'JumpCloneDeletedMsg2' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillReportFinalBlow' =>[
+        'KillReportFinalBlow' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillReportVictim' =>[
+        'KillReportVictim' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillRightAvailable' =>[
+        'KillRightAvailable' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillRightAvailableOpen' =>[
+        'KillRightAvailableOpen' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillRightEarned' =>[
+        'KillRightEarned' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillRightUnavailable' =>[
+        'KillRightUnavailable' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillRightUnavailableOpen' =>[
+        'KillRightUnavailableOpen' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'KillRightUsed' =>[
+        'KillRightUsed' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'LocateCharMsg' =>[
+        'LocateCharMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MadeWarMutual' =>[
+        'MadeWarMutual' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MercOfferRetractedMsg' =>[
+        'MercOfferRetractedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MercOfferedNegotiationMsg' =>[
+        'MercOfferedNegotiationMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MissionOfferExpirationMsg' =>[
+        'MissionOfferExpirationMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MissionTimeoutMsg' =>[
+        'MissionTimeoutMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MoonminingAutomaticFracture' =>[
+        'MoonminingAutomaticFracture' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MoonminingExtractionCancelled' =>[
+        'MoonminingExtractionCancelled' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MoonminingExtractionFinished' =>[
+        'MoonminingExtractionFinished' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Structures\Mail\MoonMiningExtractionFinished::class,
                 'slack' => \Seat\Notifications\Notifications\Structures\Slack\MoonMiningExtractionFinished::class,
             ],
         ],
-        'MoonminingExtractionStarted' =>[
+        'MoonminingExtractionStarted' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Structures\Mail\MoonMiningExtractionStarted::class,
                 'slack' => \Seat\Notifications\Notifications\Structures\Slack\MoonMiningExtractionStarted::class,
             ],
         ],
-        'MoonminingLaserFired' =>[
+        'MoonminingLaserFired' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MutualWarExpired' =>[
+        'MutualWarExpired' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MutualWarInviteAccepted' =>[
+        'MutualWarInviteAccepted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MutualWarInviteRejected' =>[
+        'MutualWarInviteRejected' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'MutualWarInviteSent' =>[
+        'MutualWarInviteSent' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'NPCStandingsGained' =>[
+        'NPCStandingsGained' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'NPCStandingsLost' =>[
+        'NPCStandingsLost' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OfferToAllyRetracted' =>[
+        'OfferToAllyRetracted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OfferedSurrender' =>[
+        'OfferedSurrender' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OfferedToAlly' =>[
+        'OfferedToAlly' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OldLscMessages' =>[
+        'OldLscMessages' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OperationFinished' =>[
+        'OperationFinished' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OrbitalAttacked' =>[
+        'OrbitalAttacked' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OrbitalReinforced' =>[
+        'OrbitalReinforced' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'OwnershipTransferred' =>[
+        'OwnershipTransferred' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Structures\Mail\OwnershipTransferred::class,
                 'slack' => \Seat\Notifications\Notifications\Structures\Slack\OwnershipTransferred::class,
             ],
         ],
-        'RaffleCreated' =>[
+        'RaffleCreated' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Characters\Slack\RaffleCreated::class,
+            ],
+        ],
+        'RaffleExpired' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Characters\Slack\RaffleExpired::class,
+            ],
+        ],
+        'RaffleFinished' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Characters\Slack\RaffleFinished::class,
+            ],
+        ],
+        'ReimbursementMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'RaffleExpired' =>[
+        'ResearchMissionAvailableMsg' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Characters\Slack\ResearchMissionAvailableMsg::class,
+            ],
+        ],
+        'RetractsWar' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'RaffleFinished' =>[
+        'SeasonalChallengeCompleted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'ReimbursementMsg' =>[
+        'SovAllClaimAquiredMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'ResearchMissionAvailableMsg' =>[
+        'SovAllClaimLostMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'RetractsWar' =>[
+        'SovCommandNodeEventStarted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SeasonalChallengeCompleted' =>[
+        'SovCorpBillLateMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovAllClaimAquiredMsg' =>[
+        'SovCorpClaimFailMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovAllClaimLostMsg' =>[
+        'SovDisruptorMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovCommandNodeEventStarted' =>[
+        'SovStationEnteredFreeport' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovCorpBillLateMsg' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'SovCorpClaimFailMsg' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'SovDisruptorMsg' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'SovStationEnteredFreeport' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'SovStructureDestroyed' =>[
+        'SovStructureDestroyed' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\SovStructureDestroyed::class,
                 'slack' => \Seat\Notifications\Notifications\Sovereignties\Slack\SovStructureDestroyed::class,
             ],
         ],
-        'SovStructureReinforced' =>[
+        'SovStructureReinforced' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\SovStructureReinforced::class,
                 'slack' => \Seat\Notifications\Notifications\Sovereignties\Slack\SovStructureReinforced::class,
             ],
         ],
-        'SovStructureSelfDestructCancel' =>[
+        'SovStructureSelfDestructCancel' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovStructureSelfDestructFinished' =>[
+        'SovStructureSelfDestructFinished' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovStructureSelfDestructRequested' =>[
+        'SovStructureSelfDestructRequested' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovereigntyIHDamageMsg' =>[
+        'SovereigntyIHDamageMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovereigntySBUDamageMsg' =>[
+        'SovereigntySBUDamageMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'SovereigntyTCUDamageMsg' =>[
+        'SovereigntyTCUDamageMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StationAggressionMsg1' =>[
+        'StationAggressionMsg1' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StationAggressionMsg2' =>[
+        'StationAggressionMsg2' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StationConquerMsg' =>[
+        'StationConquerMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StationServiceDisabled' =>[
+        'StationServiceDisabled' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StationServiceEnabled' =>[
+        'StationServiceEnabled' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StationStateChangeMsg' =>[
+        'StationStateChangeMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StoryLineMissionAvailableMsg' =>[
+        'StoryLineMissionAvailableMsg' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Characters\Slack\StoryLineMissionAvailableMsg::class,
+            ],
+        ],
+        'StructureAnchoring' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureAnchoring::class,
+            ],
+        ],
+        'StructureCourierContractChanged' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructureAnchoring' =>[
+        'StructureDestroyed' => [
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureDestroyed::class,
+            ],
         ],
-        'StructureCourierContractChanged' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'StructureDestroyed' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'StructureFuelAlert' =>[
+        'StructureFuelAlert' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureFuelAlert::class,
                 'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureFuelAlert::class,
             ],
         ],
-        'StructureItemsDelivered' =>[
+        'StructureItemsDelivered' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructureItemsMovedToSafety' =>[
+        'StructureItemsMovedToSafety' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructureLostArmor' =>[
+        'StructureLostArmor' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureLostArmor::class,
+            ],
+        ],
+        'StructureLostShields' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureLostShields::class,
+            ],
+        ],
+        'StructureOnline' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructureLostShields' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'StructureOnline' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'StructureServicesOffline' =>[
+        'StructureServicesOffline' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureServicesOffline::class,
                 'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureServicesOffline::class,
             ],
         ],
-        'StructureUnanchoring' =>[
+        'StructureUnanchoring' => [
             'label'   => 'notifications.',
-            'handlers' => [],
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureUnanchoring::class,
+            ],
         ],
-        'StructureUnderAttack' =>[
+        'StructureUnderAttack' => [
             'label'   => 'notifications.',
             'handlers' => [
                 'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureUnderAttack::class,
                 'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureUnderAttack::class,
             ],
         ],
-        'StructureWentHighPower' =>[
+        'StructureWentHighPower' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureWentHighPower::class,
+            ],
+        ],
+        'StructureWentLowPower' => [
+            'label'   => 'notifications.',
+            'handlers' => [
+                'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureWentLowPower::class,
+            ],
+        ],
+        'StructuresJobsCancelled' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructureWentLowPower' =>[
+        'StructuresJobsPaused' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructuresJobsCancelled' =>[
+        'StructuresReinforcementChanged' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructuresJobsPaused' =>[
+        'TowerAlertMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'StructuresReinforcementChanged' =>[
+        'TowerResourceAlertMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'TowerAlertMsg' =>[
+        'TransactionReversalMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'TowerResourceAlertMsg' =>[
+        'TutorialMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'TransactionReversalMsg' =>[
+        'WarAdopted ' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'TutorialMsg' =>[
+        'WarAllyInherited' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarAdopted ' =>[
+        'WarAllyOfferDeclinedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarAllyInherited' =>[
+        'WarConcordInvalidates' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarAllyOfferDeclinedMsg' =>[
+        'WarDeclared' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarConcordInvalidates' =>[
+        'WarHQRemovedFromSpace' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarDeclared' =>[
+        'WarInherited' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarHQRemovedFromSpace' =>[
+        'WarInvalid' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarInherited' =>[
+        'WarRetracted' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarInvalid' =>[
+        'WarRetractedByConcord' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarRetracted' =>[
+        'WarSurrenderDeclinedMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
-        'WarRetractedByConcord' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'WarSurrenderDeclinedMsg' =>[
-            'label'   => 'notifications.',
-            'handlers' => [],
-        ],
-        'WarSurrenderOfferMsg' =>[
+        'WarSurrenderOfferMsg' => [
             'label'   => 'notifications.',
             'handlers' => [],
         ],
