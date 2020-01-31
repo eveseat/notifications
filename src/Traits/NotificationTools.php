@@ -63,7 +63,7 @@ trait NotificationTools
      */
     public function zKillBoardToSlackLink(string $type, int $id, string $name): string
     {
-        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system']))
+        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system', 'location']))
             return '';
 
         return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
