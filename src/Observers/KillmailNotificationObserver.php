@@ -25,16 +25,17 @@ namespace Seat\Notifications\Observers;
 use Illuminate\Notifications\AnonymousNotifiable;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Models\NotificationGroup;
-use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Notifications\Notifications\Characters\Killmail;
+use Seat\Notifications\Notifications\Characters\Slack\Killmail;
 
 /**
  * Class KillmailNotificationObserver.
  *
  * @package Seat\Notifications\Observers
  */
-class KillmailNotificationObserver extends AbstractNotification
+class KillmailNotificationObserver
 {
+    const EXPIRATION_DELAY = 3600;
+
     /**
      * @param \Seat\Eveapi\Models\Killmails\KillmailDetail $killmail
      */
@@ -48,6 +49,10 @@ class KillmailNotificationObserver extends AbstractNotification
      */
     private function dispatch(KillmailDetail $killmail)
     {
+        // ignore any notification created since more than 60 minutes
+        if (carbon()->diffInSeconds($killmail->killmail_time) > self::EXPIRATION_DELAY)
+            return;
+
         // ask Laravel to enqueue the notification
         $manager = new AnonymousNotifiable();
 
