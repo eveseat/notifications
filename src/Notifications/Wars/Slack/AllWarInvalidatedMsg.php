@@ -66,7 +66,7 @@ class AllWarInvalidatedMsg extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->from('SeAT War Invalidated')
+            ->from('SeAT War Observer')
             ->content('A war has been invalidated!')
             ->attachment(function ($attachment) {
                 $attachment
@@ -91,7 +91,7 @@ class AllWarInvalidatedMsg extends AbstractNotification
             })
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                    $field->title('Start in')
+                    $field->title('Ends in')
                         ->content(sprintf('%d hours', $this->notification->text['delayHours']));
                 });
             });

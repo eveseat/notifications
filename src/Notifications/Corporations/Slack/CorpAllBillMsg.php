@@ -69,7 +69,7 @@ class CorpAllBillMsg extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A new corporation bill has been issued!')
-            ->from('SeAT CorpAllBillMsg')
+            ->from('SeAT Corporation Accountant')
             ->attachment(function ($attachment) {
 
                 $attachment->field(function ($field) {

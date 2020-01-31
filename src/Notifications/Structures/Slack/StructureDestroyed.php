@@ -70,6 +70,7 @@ class StructureDestroyed extends AbstractNotification
     {
         return (new SlackMessage)
             ->content('A Structure has been destroyed!')
+            ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $system = MapDenormalize::firstOrNew(

@@ -72,6 +72,7 @@ class MemberTokenState extends AbstractNotification
         return (new SlackMessage)
             ->error()
             ->content('A corporation members token state has changed!')
+            ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Key Details', route('corporation.view.tracking', [

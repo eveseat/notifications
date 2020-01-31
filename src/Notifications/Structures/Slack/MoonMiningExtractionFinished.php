@@ -109,7 +109,7 @@ class MoonMiningExtractionFinished extends AbstractNotification
 
         $message = (new SlackMessage)
             ->content('A Moon Mining Extraction has been successfully completed.')
-            ->from('SeAT MoonMiningExtractionFinished')
+            ->from('SeAT Moon Tracker')
             ->attachment(function ($attachment) {
 
                 $attachment->field(function ($field) {

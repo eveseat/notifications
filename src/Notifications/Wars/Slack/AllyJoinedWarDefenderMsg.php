@@ -65,7 +65,7 @@ class AllyJoinedWarDefenderMsg extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->from('Slack War Updated')
+            ->from('Slack War Observer')
             ->content('A new member has been enroll in a war!')
             ->attachment(function ($attachment) {
                 $attachment

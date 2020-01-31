@@ -73,6 +73,7 @@ class StarbaseStateChange extends AbstractNotification
         return (new SlackMessage)
             ->error()
             ->content('A starbase has changed state!')
+            ->from('SeAT Death Star')
             ->attachment(function ($attachment) {
 
                 $attachment->title('Starbase Details', route('corporation.view.starbases', [
