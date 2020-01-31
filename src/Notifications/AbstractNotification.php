@@ -35,4 +35,12 @@ abstract class AbstractNotification extends AbstractNotificationJob
      * {@inheritdoc}
      */
     public $queue = 'notifications';
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param $notifiable
+     * @return array
+     */
+    abstract public function via($notifiable);
 }
