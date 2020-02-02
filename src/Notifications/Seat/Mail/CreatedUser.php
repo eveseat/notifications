@@ -24,28 +24,28 @@ namespace Seat\Notifications\Notifications\Seat\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Web\Models\User;
 
 /**
- * Class MemberTokenState.
+ * Class NewAccount.
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class MemberTokenState extends AbstractNotification
+class CreatedUser extends AbstractNotification
 {
     /**
-     * @var
+     * @var \Seat\Web\Models\User
      */
-    private $member;
+    private $user;
 
     /**
-     * Create a new notification instance.
+     * CreatedUser constructor.
      *
-     * @param $member
+     * @param \Seat\Web\Models\User $user
      */
-    public function __construct($member)
+    public function __construct(User $user)
     {
-
-        $this->member = $member;
+        $this->user = $user;
     }
 
     /**
@@ -56,7 +56,6 @@ class MemberTokenState extends AbstractNotification
      */
     public function via($notifiable)
     {
-
         return ['mail'];
     }
 
@@ -68,35 +67,15 @@ class MemberTokenState extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-
         return (new MailMessage)
             ->success()
             ->greeting('Heads up!')
+            ->line('We have a new account created onto SeAT!')
             ->line(
-                'A corporation members token state has changed!'
+                'The key was added by ' . $this->user->name . ' that last ' .
+                'logged in from ' . $this->user->last_login_source . ' at ' .
+                $this->user->last_login . '.'
             )
-            ->line(
-                $this->member->name . '\'s API is now ' .
-                $this->member->enabled ? 'enabled' : 'disabled' . '!'
-            )
-            ->action('Check it out on SeAT', route('corporation.view.tracking', [
-                'key_id' => $this->member->corporation_id,
-            ]));
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'character_name'        => $this->member->name,
-            'character_corporation' => $this->member->corporationName,
-            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
-        ];
+            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
     }
 }
