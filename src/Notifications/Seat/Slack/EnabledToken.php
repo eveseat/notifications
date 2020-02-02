@@ -23,29 +23,30 @@
 namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Eveapi\Models\RefreshToken;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Web\Models\User;
 
 /**
- * Class MemberTokenState.
+ * Class EnabledToken
  *
- * @package Seat\Notifications\Notifications\Seat
+ * @package Seat\Notifications\Notifications\Seat\Slack
  */
-class MemberTokenState extends AbstractNotification
+class EnabledToken extends AbstractNotification
 {
     /**
-     * @var
+     * @var \Seat\Eveapi\Models\RefreshToken
      */
-    private $member;
+    private $token;
 
     /**
-     * Create a new notification instance.
+     * EnabledToken constructor.
      *
-     * @param $member
+     * @param \Seat\Eveapi\Models\RefreshToken $token
      */
-    public function __construct($member)
+    public function __construct(RefreshToken $token)
     {
-
-        $this->member = $member;
+        $this->token = $token;
     }
 
     /**
@@ -56,7 +57,6 @@ class MemberTokenState extends AbstractNotification
      */
     public function via($notifiable)
     {
-
         return ['slack'];
     }
 
@@ -68,35 +68,20 @@ class MemberTokenState extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-
         return (new SlackMessage)
-            ->error()
-            ->content('A corporation members token state has changed!')
+            ->success()
+            ->content('A corporation members token has been enabled!')
             ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
+                $owner = User::where('id', $this->token->user_id)
+                    ->first();
 
-                $attachment->title('Key Details', route('corporation.view.tracking', [
-                    'key_id' => $this->member->corporation_id,
+                $attachment->title('Token Details', route('corporation.view.tracking', [
+                    'corporation_id' => $this->token->affiliation->corporation_id,
                 ]))->fields([
-                    'Character ID'  => $this->member->character_id,
-                    'New Key State' => $this->member->enabled ? 'Enabled' : 'Disabled',
+                    'Character Name' => $this->token->character->name,
+                    'Main Character' => $owner->name,
                 ]);
             });
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'character_name'        => $this->member->name,
-            'character_corporation' => $this->member->corporationName,
-            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
-        ];
     }
 }
