@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
+ * Copyright (C) 2015 to 2020 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,32 +20,33 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Corporations\Slack;
+namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
+use Seat\Eveapi\Models\RefreshToken;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Web\Models\User;
 
 /**
- * Class InActiveCorpMember.
+ * Class DisabledToken.
  *
- * @package Seat\Notifications\Notifications\Corporations
+ * @package Seat\Notifications\Notifications\Seat
  */
-class InActiveCorpMember extends AbstractNotification
+class DisabledToken extends AbstractNotification
 {
     /**
-     * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
+     * @var \Seat\Eveapi\Models\RefreshToken
      */
-    private $member;
+    private $token;
 
     /**
-     * InActiveCorpMember constructor.
+     * DisabledToken constructor.
      *
-     * @param \Seat\Eveapi\Models\Corporation\CorporationMemberTracking $member
+     * @param \Seat\Eveapi\Models\RefreshToken $token
      */
-    public function __construct(CorporationMemberTracking $member)
+    public function __construct(RefreshToken $token)
     {
-        $this->member = $member;
+        $this->token = $token;
     }
 
     /**
@@ -60,30 +61,27 @@ class InActiveCorpMember extends AbstractNotification
     }
 
     /**
+     * Get the Slack representation of the notification.
+     *
      * @param $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
     {
-        $message = (new SlackMessage)
-            ->content('A member has not logged in for some time! Check corp tracking.')
-            ->from('SeAT Corporation Supervisor')
+        return (new SlackMessage)
+            ->error()
+            ->content('A corporation members token has been revoked!')
+            ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
+                $owner = User::where('id', $this->token->user_id)
+                    ->first();
 
-                $attachment->title('Tracking Details', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporation_id,
+                $attachment->title('Token Details', route('corporation.view.tracking', [
+                    'corporation_id' => $this->token->affiliation->corporation_id,
                 ]))->fields([
-                    'Last Logoff' => $this->member->logoff_date,
-                    'Ship'        => $this->member->ship->typeName,
+                    'Character Name' => $this->token->character->name,
+                    'Main Character' => $owner->name,
                 ]);
             });
-
-        if (carbon()->diffInMonths($this->member->logon_date) > 1)
-            $message->warning();
-
-        if (carbon()->diffInMonths($this->member->logon_date) > 2)
-            $message->error();
-
-        return $message;
     }
 }

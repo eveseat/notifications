@@ -24,28 +24,28 @@ namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Web\Models\User;
 
 /**
- * Class MemberTokenState.
+ * Class NewAccount.
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class MemberTokenState extends AbstractNotification
+class CreatedUser extends AbstractNotification
 {
     /**
-     * @var
+     * @var \Seat\Web\Models\User
      */
-    private $member;
+    private $user;
 
     /**
-     * Create a new notification instance.
+     * CreatedUser constructor.
      *
-     * @param $member
+     * @param \Seat\Web\Models\User $user
      */
-    public function __construct($member)
+    public function __construct(User $user)
     {
-
-        $this->member = $member;
+        $this->user = $user;
     }
 
     /**
@@ -56,7 +56,6 @@ class MemberTokenState extends AbstractNotification
      */
     public function via($notifiable)
     {
-
         return ['slack'];
     }
 
@@ -68,35 +67,19 @@ class MemberTokenState extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-
         return (new SlackMessage)
-            ->error()
-            ->content('A corporation members token state has changed!')
+            ->success()
+            ->content('A new SeAT account was created!')
             ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Key Details', route('corporation.view.tracking', [
-                    'key_id' => $this->member->corporation_id,
+                $attachment->title('Account Details', route('configuration.users.edit', [
+                    'user_id' => $this->user->id,
                 ]))->fields([
-                    'Character ID'  => $this->member->character_id,
-                    'New Key State' => $this->member->enabled ? 'Enabled' : 'Disabled',
+                    'Account Name'            => $this->user->name,
+                    'Owner Last Login Source' => $this->user->last_login_source,
+                    'Owner Last Login Time'   => $this->user->last_login,
                 ]);
             });
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'character_name'        => $this->member->name,
-            'character_corporation' => $this->member->corporationName,
-            'new_key_state'         => $this->member->enabled ? 'Enabled' : 'Disabled',
-        ];
     }
 }

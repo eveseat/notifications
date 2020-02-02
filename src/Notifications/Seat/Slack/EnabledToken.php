@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,30 +23,30 @@
 namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Eveapi\Models\RefreshToken;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Web\Models\User;
 
 /**
- * Class NewAccount.
+ * Class EnabledToken
  *
- * @package Seat\Notifications\Notifications\Seat
+ * @package Seat\Notifications\Notifications\Seat\Slack
  */
-class NewAccount extends AbstractNotification
+class EnabledToken extends AbstractNotification
 {
     /**
-     * @var
+     * @var \Seat\Eveapi\Models\RefreshToken
      */
-    private $user;
+    private $token;
 
     /**
-     * Create a new notification instance.
+     * EnabledToken constructor.
      *
-     * @param $user
+     * @param \Seat\Eveapi\Models\RefreshToken $token
      */
-    public function __construct($user)
+    public function __construct(RefreshToken $token)
     {
-
-        $this->user = $user;
-
+        $this->token = $token;
     }
 
     /**
@@ -57,7 +57,6 @@ class NewAccount extends AbstractNotification
      */
     public function via($notifiable)
     {
-
         return ['slack'];
     }
 
@@ -69,37 +68,20 @@ class NewAccount extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-
         return (new SlackMessage)
             ->success()
-            ->content('A new SeAT account was created!')
+            ->content('A corporation members token has been enabled!')
             ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
+                $owner = User::where('id', $this->token->user_id)
+                    ->first();
 
-                $attachment->title('Account Details', route('configuration.users.edit', [
-                    'user_id' => $this->user->id,
+                $attachment->title('Token Details', route('corporation.view.tracking', [
+                    'corporation_id' => $this->token->affiliation->corporation_id,
                 ]))->fields([
-                    'Account Name'            => $this->user->name,
-                    'Owner Last Login Source' => $this->user->last_login_source,
-                    'Owner Last Login Time'   => $this->user->last_login,
+                    'Character Name' => $this->token->character->name,
+                    'Main Character' => $owner->name,
                 ]);
             });
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'key_id'                  => $this->user->id,
-            'key_owner'               => $this->user->name,
-            'owner_last_login_source' => $this->user->last_login_source,
-            'owner_last_login_time'   => $this->user->last_login,
-        ];
     }
 }
