@@ -24,29 +24,28 @@ namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Web\Models\User;
 
 /**
  * Class NewAccount.
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class NewAccount extends AbstractNotification
+class CreatedUser extends AbstractNotification
 {
     /**
-     * @var
+     * @var \Seat\Web\Models\User
      */
     private $user;
 
     /**
-     * Create a new notification instance.
+     * CreatedUser constructor.
      *
-     * @param $user
+     * @param \Seat\Web\Models\User $user
      */
-    public function __construct($user)
+    public function __construct(User $user)
     {
-
         $this->user = $user;
-
     }
 
     /**
@@ -57,7 +56,6 @@ class NewAccount extends AbstractNotification
      */
     public function via($notifiable)
     {
-
         return ['slack'];
     }
 
@@ -69,7 +67,6 @@ class NewAccount extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-
         return (new SlackMessage)
             ->success()
             ->content('A new SeAT account was created!')
@@ -84,22 +81,5 @@ class NewAccount extends AbstractNotification
                     'Owner Last Login Time'   => $this->user->last_login,
                 ]);
             });
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'key_id'                  => $this->user->id,
-            'key_owner'               => $this->user->name,
-            'owner_last_login_source' => $this->user->last_login_source,
-            'owner_last_login_time'   => $this->user->last_login,
-        ];
     }
 }
