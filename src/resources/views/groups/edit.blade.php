@@ -99,9 +99,9 @@
             <label for="alerts">Alert</label>
             <select name="alerts[]" id="alerts" class="form-control" multiple>
 
-              @foreach(config('notifications.alerts.' . $group->type) as $name => $class)
+              @foreach(config('notifications.alerts.' . $group->type, []) as $name => $notification)
 
-                <option value="{{ $name }}">{{ $class['name'] }}</option>
+                  <option value="{{ $name }}">{{ trans($notification['label']) }}</option>
 
               @endforeach
 
@@ -124,6 +124,7 @@
         <thead>
           <tr>
             <th>{{ trans('notifications::notifications.name') }}</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -132,7 +133,7 @@
 
           <tr>
             <td>
-              {{ config('notifications.alerts.' . $group->type . '.' . $alert->alert . '.name') }}
+              {{ trans(config('notifications.alerts.' . $group->type . '.' . $alert->alert . '.label', $alert->alert)) }}
             </td>
             <td>
               <a href="{{ route('notifications.groups.edit.alert.delete', ['group_id' => $group->id, 'alert_id' => $alert->id]) }}"
