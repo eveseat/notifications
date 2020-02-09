@@ -52,7 +52,6 @@ class Group extends FormRequest
         return [
 
             'name' => 'required|max:255|unique:notification_groups,name',
-            'type' => 'required|in:seat,eve,char,corp',
         ];
     }
 }

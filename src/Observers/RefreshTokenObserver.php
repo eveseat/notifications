@@ -56,7 +56,7 @@ class RefreshTokenObserver
     private function dispatch(RefreshToken $token, string $type)
     {
         // detect handlers setup for the current notification
-        $handlers = config(sprintf('notifications.alerts.seat.%s.handlers', $type), []);
+        $handlers = config(sprintf('notifications.alerts.%s.handlers', $type), []);
 
         // retrieve routing candidates for the current notification
         $routes = $this->getRoutingCandidates($token, $type);

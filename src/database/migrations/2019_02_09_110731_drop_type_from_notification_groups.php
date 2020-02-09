@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,40 +20,36 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Http\Validation;
-
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class GroupAlert.
- * @package Seat\Notifications\Http\Validation
+ * Class DropTypeFromNotificationGroups
  */
-class GroupAlert extends FormRequest
+class DropTypeFromNotificationGroups extends Migration
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the migrations.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function up()
     {
-
-        return true;
+        Schema::table('notification_groups', function (Blueprint $table) {
+            $table->dropColumn('type');
+        });
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reverse the migrations.
      *
-     * @return array
+     * @return void
      */
-    public function rules()
+    public function down()
     {
-
-        return [
-
-            'alerts.*' => 'required|in:' . implode(
-                    ',', array_keys(config('notifications.alerts'))),
-            'id'       => 'required|numeric|exists:notification_groups,id',
-        ];
+        Schema::table('notification_groups', function (Blueprint $table) {
+            $table->string('type');
+        });
     }
 }
