@@ -26,23 +26,14 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Notifications\Traits\NotificationTools;
 
 /**
  * Class MoonMiningExtractionFinished.
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class MoonMiningExtractionFinished extends AbstractNotification
+class MoonMiningExtractionFinished extends AbstractMoonMiningExtraction
 {
-    use NotificationTools;
-
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
     /**
      * MoonMiningExtractionFinished constructor.
      *
@@ -67,46 +58,6 @@ class MoonMiningExtractionFinished extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-        $ore_categories = [
-            '#00a65a' => [],  // Gaz
-            '#3c8dbc' => [],  // R8
-            '#00c0ef' => [],  // R16
-            '#f39c12' => [],  // R32
-            '#dd4b39' => [],  // R64
-            '#d2d6de' => [],  // Ore
-        ];
-
-        // build a color per category array
-        foreach ($this->notification->text['oreVolumeByType'] as $type_id => $volume) {
-            $type = InvType::find($type_id);
-
-            switch ($type->marketGroupID) {
-                // Gaz
-                case 2396:
-                    $ore_categories['#00a65a'][$type_id] = $volume;
-                    break;
-                // R8
-                case 2397:
-                    $ore_categories['#3c8dbc'][$type_id] = $volume;
-                    break;
-                // R16
-                case 2398:
-                    $ore_categories['#00c0ef'][$type_id] = $volume;
-                    break;
-                // R32
-                case 2400:
-                    $ore_categories['#f39c12'][$type_id] = $volume;
-                    break;
-                // R64
-                case 2401:
-                    $ore_categories['#dd4b39'][$type_id] = $volume;
-                    break;
-                // Ore
-                default:
-                    $ore_categories['#d2d6de'][$type_id] = $volume;
-            }
-        }
-
         $message = (new SlackMessage)
             ->content('A Moon Mining Extraction has been successfully completed.')
             ->from('SeAT Moon Tracker')
@@ -147,28 +98,7 @@ class MoonMiningExtractionFinished extends AbstractNotification
                 });
             });
 
-        foreach ($ore_categories as $color => $ore) {
-            if (! empty($ore)) {
-
-                $message->attachment(function ($attachment) use ($color, $ore) {
-
-                    $attachment->color($color);
-
-                    foreach ($ore as $type_id => $volume) {
-
-                        $attachment->field(function ($field) use ($type_id, $volume) {
-
-                            $type = InvType::find($type_id);
-
-                            $field->title($type->typeName)
-                                ->content(
-                                    sprintf('%s m3', number_format($volume, 2)));
-
-                        });
-                    }
-                });
-            }
-        }
+        $this->addOreAttachments($message);
 
         return $message;
     }
