@@ -40,22 +40,12 @@ use Seat\Web\Models\User;
 class NotificationsServiceProvider extends AbstractSeatPlugin
 {
     /**
-     * @var array
-     */
-    protected $available_commands = [
-        AlertsRun::class,
-    ];
-
-    /**
      * Bootstrap the application services.
      *
      * @return void
      */
     public function boot()
     {
-
-        $this->commands($this->available_commands);
-
         $this->add_views();
 
         // Inform Laravel how to load migrations
