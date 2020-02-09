@@ -60,7 +60,7 @@ class CorporationMemberTrackingObserver
             return;
 
         // detect handlers setup for the current notification
-        $handlers = config('notifications.alerts.corp.inactive_member.handlers', []);
+        $handlers = config('notifications.alerts.inactive_member.handlers', []);
 
         // retrieve routing candidates for the current notification
         $routes = $this->getRoutingCandidates($member);

@@ -49,7 +49,7 @@ class UserObserver
     private function dispatch(User $user)
     {
         // detect handlers setup for the current notification
-        $handlers = config('notifications.alerts.seat.created_user.handlers', []);
+        $handlers = config('notifications.alerts.created_user.handlers', []);
 
         // retrieve routing candidates for the current notification
         $routes = $this->getRoutingCandidates();

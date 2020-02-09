@@ -91,7 +91,6 @@
       <form role="form" action="{{ route('notifications.groups.edit.alert.add') }}" method="post">
         {{ csrf_field() }}
         <input name="id" value="{{ $group->id }}" type="hidden">
-        <input name="type" value="{{ $group->type }}" type="hidden">
 
         <div class="box-body">
 
@@ -133,7 +132,7 @@
 
           <tr>
             <td>
-              {{ trans(config('notifications.alerts.' . $group->type . '.' . $alert->alert . '.label', $alert->alert)) }}
+              {{ trans(config('notifications.alerts.' . $alert->alert . '.label', $alert->alert)) }}
             </td>
             <td>
               <a href="{{ route('notifications.groups.edit.alert.delete', ['group_id' => $group->id, 'alert_id' => $alert->id]) }}"
@@ -152,7 +151,6 @@
     <div class="card-footer">
       {{ count($group->alerts) }}
       {{ trans_choice('notifications::notifications.alert', count($group->alerts)) }}
-      <span class="pull-right">{{ ucfirst($group->type) }}</span>
     </div>
   </div>
 
@@ -161,108 +159,103 @@
 
 @section('right')
 
-  {{-- only show affiliations for char & corp types --}}
-  @if($group->type === 'char' || $group->type == 'corp')
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{{ trans_choice('notifications::notifications.affiliation', 2) }}</h3>
+    </div>
+    <div class="card-body">
 
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">{{ trans_choice('notifications::notifications.affiliation', 2) }}</h3>
-      </div>
-      <div class="card-body">
+      <form role="form" action="{{ route('notifications.groups.edit.affiliations.add') }}" method="post">
+        {{ csrf_field() }}
+        <input name="id" value="{{ $group->id }}" type="hidden">
 
-        <form role="form" action="{{ route('notifications.groups.edit.affiliations.add') }}" method="post">
-          {{ csrf_field() }}
-          <input name="id" value="{{ $group->id }}" type="hidden">
+        <div class="form-group">
+          <label for="corporations">{{ trans('web::seat.available_corporations') }}</label>
+          <select name="corporations[]" id="available_corporations" style="width: 100%" multiple>
 
-          <div class="form-group">
-            <label for="corporations">{{ trans('web::seat.available_corporations') }}</label>
-            <select name="corporations[]" id="available_corporations" style="width: 100%" multiple>
-
-              @foreach($all_corporations as $corporation)
-                <option value="{{ $corporation->corporation_id }}">
-                  {{ $corporation->name }}
-                </option>
-              @endforeach
-
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="characters">{{ trans('web::seat.available_characters') }}</label>
-            <select name="characters[]" id="available_characters" style="width: 100%" multiple>
-
-              @foreach($all_characters as $character)
-                <option value="{{ $character->character_id }}">
-                  {{ $character->name }}
-                </option>
-              @endforeach
-
-            </select>
-
-          </div>
-
-          <button type="submit" class="btn btn-success btn-block">
-            {{ trans('web::seat.add_affiliations') }}
-          </button>
-
-        </form>
-
-        @if($group->affiliations->count() > 0)
-
-          <table class="table table-hover table-condensed">
-            <tbody>
-
-            <tr>
-              <th colspan="4" class="text-center">{{ trans('web::seat.current_affiliations') }}</th>
-            </tr>
-
-            @foreach($group->affiliations as $affiliation)
-
-              <tr>
-                <td>
-                  @switch($affiliation->type)
-                    @case('char')
-                      @include('web::partials.character', ['character' => $affiliation->entity])
-                      @break
-                    @case('corp')
-                      @include('web::partials.corporation', ['corporation' => $affiliation->entity])
-                      @break
-                    @default
-                      <span>{{ trans('web::seat.unknown') }}</span>
-                  @endswitch
-                </td>
-                <td>{{ ucfirst($affiliation->type) }}</td>
-                <td>
-                  <a href="{{ route('notifications.groups.edit.affiliation.delete', ['group_id' => $group->id, 'affiliation_id' => $affiliation->id]) }}"
-                     type="button" class="btn btn-danger btn-xs pull-right">
-                    {{ trans('web::seat.remove') }}
-                  </a>
-                </td>
-              </tr>
-
+            @foreach($all_corporations as $corporation)
+              <option value="{{ $corporation->corporation_id }}">
+                {{ $corporation->name }}
+              </option>
             @endforeach
 
-            </tbody>
-          </table>
+          </select>
+        </div>
 
-        @else
+        <div class="form-group">
+          <label for="characters">{{ trans('web::seat.available_characters') }}</label>
+          <select name="characters[]" id="available_characters" style="width: 100%" multiple>
 
-          <p>
-            {{ trans('notifications::notifications.no_affiliation_notice') }}
-          </p>
+            @foreach($all_characters as $character)
+              <option value="{{ $character->character_id }}">
+                {{ $character->name }}
+              </option>
+            @endforeach
 
-        @endif
+          </select>
 
-      </div>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">
+          {{ trans('web::seat.add_affiliations') }}
+        </button>
+
+      </form>
+
+      @if($group->affiliations->count() > 0)
+
+        <table class="table table-hover table-condensed">
+          <tbody>
+
+          <tr>
+            <th colspan="4" class="text-center">{{ trans('web::seat.current_affiliations') }}</th>
+          </tr>
+
+          @foreach($group->affiliations as $affiliation)
+
+            <tr>
+              <td>
+                @switch($affiliation->type)
+                  @case('char')
+                    @include('web::partials.character', ['character' => $affiliation->entity])
+                    @break
+                  @case('corp')
+                    @include('web::partials.corporation', ['corporation' => $affiliation->entity])
+                    @break
+                  @default
+                    <span>{{ trans('web::seat.unknown') }}</span>
+                @endswitch
+              </td>
+              <td>{{ ucfirst($affiliation->type) }}</td>
+              <td>
+                <a href="{{ route('notifications.groups.edit.affiliation.delete', ['group_id' => $group->id, 'affiliation_id' => $affiliation->id]) }}"
+                   type="button" class="btn btn-danger btn-xs pull-right">
+                  {{ trans('web::seat.remove') }}
+                </a>
+              </td>
+            </tr>
+
+          @endforeach
+
+          </tbody>
+        </table>
+
+      @else
+
+        <p>
+          {{ trans('notifications::notifications.no_affiliation_notice') }}
+        </p>
+
+      @endif
+
     </div>
-
-  @endif
+  </div>
 
 @stop
 
 @push('javascript')
 
-@include('web::includes.javascript.id-to-name')
+  @include('web::includes.javascript.id-to-name')
 
 <script type="text/javascript">
 
@@ -271,8 +264,8 @@
       "select#available_corporations, " +
       "select#available_characters").select2();
 
-  ids_to_names();
+    ids_to_names();
 
-</script>
+  </script>
 
 @endpush
