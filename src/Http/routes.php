@@ -84,17 +84,12 @@ Route::group([
 
         Route::get('/', [
             'as'   => 'notifications.groups.list',
-            'uses' => 'GroupsController@getGroups',
-        ]);
-
-        Route::get('/data', [
-            'as'   => 'notifications.groups.list.data',
-            'uses' => 'GroupsController@getGroupsData',
+            'uses' => 'GroupsController@index',
         ]);
 
         Route::post('/new', [
             'as'   => 'notifications.groups.new.post',
-            'uses' => 'GroupsController@postNewGroup',
+            'uses' => 'GroupsController@store',
         ]);
 
         Route::get('/delete/{group_id}', [
@@ -115,6 +110,16 @@ Route::group([
         Route::get('/edit/integration/delete/{group_id}/{integration_id}', [
             'as'   => 'notifications.groups.edit.integration.delete',
             'uses' => 'GroupsController@getDeleteIntegration',
+        ]);
+
+        Route::get('/ajax/alerts/', [
+            'as'   => 'notifications.ajax.alerts',
+            'uses' => 'GroupsController@getAjaxAlerts',
+        ]);
+
+        Route::post('/edit/alert/', [
+            'as'   => 'notifications.groups.edit.alert.add_all',
+            'uses' => 'GroupsController@postAddAllAlerts',
         ]);
 
         Route::post('/edit/alert/add', [

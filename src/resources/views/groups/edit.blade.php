@@ -88,7 +88,12 @@
     </div>
     <div class="card-body">
 
-      <form role="form" action="{{ route('notifications.groups.edit.alert.add') }}" method="post">
+      <form role="form" action="{{ route('notifications.groups.edit.alert.add_all') }}" method="post" id="group-alerts-all-form">
+        {{ csrf_field() }}
+        <input name="id" value="{{ $group->id }}" type="hidden">
+      </form>
+
+      <form role="form" action="{{ route('notifications.groups.edit.alert.add') }}" method="post" id="group-alerts-selection-form">
         {{ csrf_field() }}
         <input name="id" value="{{ $group->id }}" type="hidden">
 
@@ -96,28 +101,20 @@
 
           <div class="form-group">
             <label for="alerts">Alert</label>
-            <select name="alerts[]" id="alerts" class="form-control" multiple>
-
-              @foreach(config('notifications.alerts.' . $group->type, []) as $name => $notification)
-
-                  <option value="{{ $name }}">{{ trans($notification['label']) }}</option>
-
-              @endforeach
-
-            </select>
+            <select name="alerts[]" id="alerts" class="form-control" multiple></select>
           </div>
 
         </div><!-- /.box-body -->
-
-        <div class="box-footer">
-          <a href="#" class="btn btn-success">
-            {{ trans('notifications::notifications.add_all_alerts') }}
-          </a>
-          <button type="submit" class="btn btn-primary pull-right">
-            {{ trans('notifications::notifications.add') }}
-          </button>
-        </div>
       </form>
+
+      <div class="box-footer">
+        <button type="submit" class="btn btn-success" form="group-alerts-all-form">
+          {{ trans('notifications::notifications.add_all_alerts') }}
+        </button>
+        <button type="submit" class="btn btn-primary pull-right" form="group-alerts-selection-form">
+          {{ trans('notifications::notifications.add') }}
+        </button>
+      </div>
 
       <table class="table compact table-condensed table-hover">
         <thead>
@@ -257,12 +254,45 @@
 
   @include('web::includes.javascript.id-to-name')
 
-<script type="text/javascript">
+  <script type="text/javascript">
+    $('select#integration, select#available_corporations, select#available_characters').select2();
 
-  $("select#integration, " +
-      "select#alerts, " +
-      "select#available_corporations, " +
-      "select#available_characters").select2();
+    $('select#alerts').select2({
+        ajax: {
+            url: '{{ route('notifications.ajax.alerts') }}',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term,
+                };
+            },
+            processResults: function (data, params) {
+                params.page = params.page || 1;
+
+                return {
+                    results: data,
+                };
+            },
+            cache: true
+        },
+        templateResult: function(data) {
+            if (data.loading)
+                return data.text;
+
+            if (! data.channels)
+                return data.label;
+
+            icons = [];
+            data.channels.forEach(handler => handler === 'mail' ?
+                icons.push('<i class="fas fa-envelope"></i>') : icons.push(`<i class="fab fa-${handler}"></i>`));
+
+            return $(`<div class="select2-result-alert clearfix">${data.label} ${icons.join(' ')}</div>`);
+        },
+        templateSelection: function (data) {
+            return data.id;
+        }
+    });
 
     ids_to_names();
 

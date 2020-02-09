@@ -44,18 +44,7 @@
     </div>
     <div class="card-body">
 
-      <table class="table compact table-condensed table-hover" id="groups">
-        <thead>
-          <tr>
-            <th>{{ trans('notifications::notifications.name') }}</th>
-            <th>{{ trans('notifications::notifications.type') }}</th>
-            <th>{{ trans_choice('notifications::notifications.alert', 2) }}</th>
-            <th>{{ trans_choice('notifications::notifications.integration', 2) }}</th>
-            <th>{{ trans_choice('notifications::notifications.affiliation', 2) }}</th>
-            <th></th>
-          </tr>
-        </thead>
-      </table>
+      {!! $dataTable->table() !!}
 
     </div>
   </div>
@@ -64,26 +53,6 @@
 
 @push('javascript')
 
-<script>
-
-  $(function () {
-    $('table#groups').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax      : '{{ route('notifications.groups.list.data') }}',
-      columns   : [
-        {data: 'name', name: 'name'},
-        {data: 'type', name: 'type'},
-        {data: 'alerts', name: 'alerts', searchable: false},
-        {data: 'integrations', name: 'integrations', searchable: false},
-        {data: 'affiliations', name: 'affiliations', searchable: false},
-        {data: 'actions', name: 'actions', searchable: false, orderable: false},
-      ]
-    });
-
-    $('select.form-control').select2();
-  });
-
-</script>
+  {!! $dataTable->scripts() !!}
 
 @endpush
