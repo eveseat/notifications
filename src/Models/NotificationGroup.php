@@ -37,7 +37,7 @@ class NotificationGroup extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'type',
+        'name',
     ];
 
     /**

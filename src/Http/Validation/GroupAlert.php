@@ -52,8 +52,7 @@ class GroupAlert extends FormRequest
         return [
 
             'alerts.*' => 'required|in:' . implode(
-                    ',', array_keys(config('notifications.alerts.' . $this->request->get('type')))),
-            'type'     => 'required|in:' . implode(',', array_keys(config('notifications.alerts'))),
+                    ',', array_keys(config('notifications.alerts'))),
             'id'       => 'required|numeric|exists:notification_groups,id',
         ];
     }
