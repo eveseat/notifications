@@ -42,7 +42,7 @@ class UserObserver
     }
 
     /**
-     * Queue notification based on User Creation
+     * Queue notification based on User Creation.
      *
      * @param \Seat\Web\Models\User $user
      */
