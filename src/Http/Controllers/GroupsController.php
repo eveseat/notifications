@@ -22,9 +22,12 @@
 
 namespace Seat\Notifications\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Seat\Notifications\Http\DataTables\NotificationGroupDataTable;
 use Seat\Notifications\Http\Validation\Group;
 use Seat\Notifications\Http\Validation\GroupAffiliation;
 use Seat\Notifications\Http\Validation\GroupAlert;
+use Seat\Notifications\Http\Validation\GroupAllAlert;
 use Seat\Notifications\Http\Validation\GroupIntegration;
 use Seat\Notifications\Models\GroupAffiliation as GroupAffiliationModel;
 use Seat\Notifications\Models\GroupAlert as GroupAlertModel;
@@ -33,7 +36,6 @@ use Seat\Notifications\Models\NotificationGroup;
 use Seat\Services\Repositories\Character\Character;
 use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Http\Controllers\Controller;
-use Yajra\DataTables\DataTables;
 
 /**
  * Class GroupsController.
@@ -44,41 +46,13 @@ class GroupsController extends Controller
     use Corporation, Character;
 
     /**
+     * @param \Seat\Notifications\Http\DataTables\NotificationGroupDataTable $data_table
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getGroups()
+    public function index(NotificationGroupDataTable $data_table)
     {
 
-        return view('notifications::groups.list');
-    }
-
-    /**
-     * @return mixed
-     * @throws \Exception
-     */
-    public function getGroupsData()
-    {
-
-        return DataTables::of(NotificationGroup::all())
-            ->addColumn('alerts', function ($row) {
-
-                return count($row->alerts);
-            })
-            ->addColumn('integrations', function ($row) {
-
-                return count($row->integrations);
-            })
-            ->addColumn('affiliations', function ($row) {
-
-                return count($row->affiliations);
-            })
-            ->addColumn('actions', function ($row) {
-
-                return view('notifications::groups.partials.actions', compact('row'))
-                    ->render();
-            })
-            ->rawColumns(['actions'])
-            ->make(true);
+        return $data_table->render('notifications::groups.list');
     }
 
     /**
@@ -86,12 +60,11 @@ class GroupsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postNewGroup(Group $request)
+    public function store(Group $request)
     {
 
         NotificationGroup::create([
             'name' => $request->input('name'),
-            'type' => $request->input('type'),
         ]);
 
         return redirect()->back()
@@ -181,6 +154,49 @@ class GroupsController extends Controller
         return redirect()->back()
             ->with('success', 'Removed integration!');
 
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAjaxAlerts(Request $request)
+    {
+        $keyword = strtolower($request->query('q', ''));
+        $alerts = collect(config('notifications.alerts', []));
+
+        if (! empty($keyword)) {
+            $alerts = $alerts->filter(function ($alert) use ($keyword) {
+                return strpos(strtolower(trans($alert['label'])), $keyword) !== false;
+            });
+        }
+
+        return response()->json($alerts->map(function ($alert, $key) {
+                return [
+                    'id' => $key,
+                    'label' => trans($alert['label']),
+                    'channels' => array_keys($alert['handlers']),
+                ];
+            })->values()->toArray());
+    }
+
+    /**
+     * @param \Seat\Notifications\Http\Validation\GroupAllAlert $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postAddAllAlerts(GroupAllAlert $request)
+    {
+        $group = NotificationGroup::findOrFail($request->input('id'));
+
+        $alerts = array_keys(config('notifications.alerts', []));
+
+        foreach ($alerts as $alert) {
+            if (! $group->alerts->contains('alert', $alert))
+                $group->alerts()->save(new GroupAlertModel(['alert' => $alert]));
+        }
+
+        return redirect()->back()
+            ->with('success', 'All alerts has been added!');
     }
 
     /**
