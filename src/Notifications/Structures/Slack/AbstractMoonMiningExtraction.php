@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Notifications\Structures\Slack;
 
-
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Notifications\Notifications\AbstractNotification;
