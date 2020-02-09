@@ -55,7 +55,7 @@ class CharacterNotificationObserver
             return;
 
         // detect handlers setup for the current notification
-        $handlers = config(sprintf('notifications.alerts.char.%s.handlers', $notification->type), []);
+        $handlers = config(sprintf('notifications.alerts.%s.handlers', $notification->type), []);
 
         // if the notification is unsupported (no handlers available), log and interrupt
         if (empty($handlers)) {

@@ -20,38 +20,36 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Http\Validation;
-
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * Class Group.
- * @package Seat\Notifications\Http\Validation
+ * Class DropTypeFromNotificationGroups
  */
-class Group extends FormRequest
+class DropTypeFromNotificationGroups extends Migration
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the migrations.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function up()
     {
-
-        return true;
+        Schema::table('notification_groups', function (Blueprint $table) {
+            $table->dropColumn('type');
+        });
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reverse the migrations.
      *
-     * @return array
+     * @return void
      */
-    public function rules()
+    public function down()
     {
-
-        return [
-
-            'name' => 'required|max:255|unique:notification_groups,name',
-        ];
+        Schema::table('notification_groups', function (Blueprint $table) {
+            $table->string('type');
+        });
     }
 }

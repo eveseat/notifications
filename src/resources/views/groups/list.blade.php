@@ -22,15 +22,6 @@
                    placeholder="Group Name">
           </div>
 
-          <div class="form-group">
-            <label for="notification-type">{{ trans('notifications::notifications.group_type') }}</label>
-            <select name="type" class="form-control" id="notification-type">
-              <option value="seat">SeAT</option>
-              <option value="char">Character</option>
-              <option value="corp">Corporation</option>
-            </select>
-          </div>
-
         </div><!-- /.box-body -->
 
         <div class="box-footer">
