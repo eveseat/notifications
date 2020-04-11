@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015, 2016, 2017, 2018, 2019  Leon Jacobs
+ * Copyright (C) 2015 to 2020 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,20 +92,20 @@ return [
             'alert'    => \Seat\Notifications\Alerts\Corp\MemberTokenState::class,
             'notifier' => \Seat\Notifications\Notifications\MemberTokenState::class,
         ],
-//        'starbasefuel'        => [
-//            'name'     => 'Low Starbase Fuel',
-//            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
-//            'notifier' => \Seat\Notifications\Notifications\StarbaseFuel::class,
-//        ],
-//        'starbasestatechange' => [
-//            'name'     => 'Starbase State Change',
-//            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseStateChange::class,
-//            'notifier' => \Seat\Notifications\Notifications\StarbaseStateChange::class,
-//        ],
-//        'starbasesiphons'     => [
-//            'name'     => 'Starbase Siphon Detection',
-//            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseSiphons::class,
-//            'notifier' => \Seat\Notifications\Notifications\StarbaseSiphons::class,
-//        ],
+        //        'starbasefuel'        => [
+        //            'name'     => 'Low Starbase Fuel',
+        //            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseFuel::class,
+        //            'notifier' => \Seat\Notifications\Notifications\StarbaseFuel::class,
+        //        ],
+        //        'starbasestatechange' => [
+        //            'name'     => 'Starbase State Change',
+        //            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseStateChange::class,
+        //            'notifier' => \Seat\Notifications\Notifications\StarbaseStateChange::class,
+        //        ],
+        //        'starbasesiphons'     => [
+        //            'name'     => 'Starbase Siphon Detection',
+        //            'alert'    => \Seat\Notifications\Alerts\Corp\StarbaseSiphons::class,
+        //            'notifier' => \Seat\Notifications\Notifications\StarbaseSiphons::class,
+        //        ],
     ],
 ];
