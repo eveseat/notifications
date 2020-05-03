@@ -31,7 +31,7 @@ return [
             [
                 'name'       => 'integrations',
                 'label'      => 'Integrations',
-                'permission' => 'notifications',
+                'permission' => 'notifications.setup',
                 'icon'       => 'fas fa-toggle-on',
                 'route'      => 'notifications.integrations.list',
             ],
@@ -44,7 +44,7 @@ return [
             [
                 'name'       => 'notification.groups',
                 'label'      => 'Notifications Groups',
-                'permission' => 'notifications',
+                'permission' => 'notifications.setup',
                 'icon'       => 'fas fa-object-group',
                 'route'      => 'notifications.groups.list',
             ],
