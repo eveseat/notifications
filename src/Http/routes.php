@@ -33,7 +33,7 @@ Route::group([
 
     Route::group([
         'prefix'     => 'integrations',
-        'middleware' => 'bouncer:notifications',
+        'middleware' => 'can:notifications.setup',
     ], function () {
 
         Route::get('/', [
@@ -79,7 +79,7 @@ Route::group([
 
     Route::group([
         'prefix'     => 'groups',
-        'middleware' => 'bouncer:notifications',
+        'middleware' => 'can:notifications.setup',
     ], function () {
 
         Route::get('/', [

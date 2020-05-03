@@ -47,4 +47,6 @@ return [
     'configured_integrations' => 'Configured Integrations',
     'settings'                => 'Settings',
 
+    'setup_label'             => 'Notifications Setup',
+    'setup_description'       => 'Allow user to define notification channels and subscriptions.',
 ];
