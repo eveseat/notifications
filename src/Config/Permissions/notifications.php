@@ -21,7 +21,8 @@
  */
 
 return [
-    'notifications' => [
-        'label' => 'notifications::permissions.notifications_label',
+    'setup' => [
+        'label'       => 'notifications::permissions.setup_label',
+        'description' => 'notifications::permissions.setup_description',
     ],
 ];
