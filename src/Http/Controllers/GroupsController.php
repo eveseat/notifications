@@ -23,6 +23,8 @@
 namespace Seat\Notifications\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Notifications\Http\DataTables\NotificationGroupDataTable;
 use Seat\Notifications\Http\Validation\Group;
 use Seat\Notifications\Http\Validation\GroupAffiliation;
@@ -33,8 +35,6 @@ use Seat\Notifications\Models\GroupAffiliation as GroupAffiliationModel;
 use Seat\Notifications\Models\GroupAlert as GroupAlertModel;
 use Seat\Notifications\Models\Integration;
 use Seat\Notifications\Models\NotificationGroup;
-use Seat\Services\Repositories\Character\Character;
-use Seat\Services\Repositories\Corporation\Corporation;
 use Seat\Web\Http\Controllers\Controller;
 
 /**
@@ -43,8 +43,6 @@ use Seat\Web\Http\Controllers\Controller;
  */
 class GroupsController extends Controller
 {
-    use Corporation, Character;
-
     /**
      * @param \Seat\Notifications\Http\DataTables\NotificationGroupDataTable $data_table
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -85,8 +83,8 @@ class GroupsController extends Controller
 
         $integrations = Integration::all();
 
-        $all_characters = $this->getAllCharacters();
-        $all_corporations = $this->getAllCorporations();
+        $all_characters = CharacterInfo::all();
+        $all_corporations = CorporationInfo::all();
 
         return view('notifications::groups.edit',
             compact('group', 'integrations', 'all_characters', 'all_corporations'));
