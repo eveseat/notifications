@@ -45,6 +45,9 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
      */
     public function boot()
     {
+        // Register alerts
+        $this->add_alerts();
+
         $this->add_views();
 
         // Inform Laravel how to load migrations
@@ -65,6 +68,16 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     {
 
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'notifications');
+    }
+
+    /**
+     * Publish alerts configuration file - so user can tweak it.
+     */
+    private function add_alerts()
+    {
+        $this->publishes([
+            __DIR__ . '/Config/notifications.alerts.php' => config_path('notifications.alerts.php'),
+        ], ['config', 'seat']);
     }
 
     /**
@@ -109,10 +122,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         // Package specific configuration
         $this->mergeConfigFrom(
             __DIR__ . '/Config/notifications.config.php', 'notifications.config');
-
-        // Registered alerts
-        $this->mergeConfigFrom(
-            __DIR__ . '/Config/notifications.alerts.php', 'notifications.alerts');
 
         // Add new permissions
         $this->registerPermissions(__DIR__ . '/Config/Permissions/notifications.php', 'notifications');
