@@ -74,7 +74,7 @@ class StructureUnanchoring extends AbstractNotification
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
                     $system = MapDenormalize::firstOrNew(
-                        ['itemID' => $this->notification->text['solarSystemID']],
+                        ['itemID' => $this->notification->text['solarsystemID']],
                         ['itemName' => trans('web::seat.unknown')]
                     );
 
