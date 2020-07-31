@@ -22,7 +22,7 @@
 
 return [
     'setup' => [
-        'label'       => 'notifications::permissions.setup_label',
-        'description' => 'notifications::permissions.setup_description',
+        'label'       => 'notifications::notifications.setup_label',
+        'description' => 'notifications::notifications.setup_description',
     ],
 ];
