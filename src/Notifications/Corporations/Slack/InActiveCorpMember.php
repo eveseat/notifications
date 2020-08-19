@@ -71,7 +71,7 @@ class InActiveCorpMember extends AbstractNotification
             ->attachment(function ($attachment) {
 
                 $attachment->title('Tracking Details', route('corporation.view.tracking', [
-                    'corporation_id' => $this->member->corporation_id,
+                    'corporation' => $this->member->corporation_id,
                 ]))->fields([
                     'Last Logoff' => $this->member->logoff_date,
                     'Ship'        => $this->member->ship->typeName,
