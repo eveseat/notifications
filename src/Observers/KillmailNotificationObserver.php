@@ -39,7 +39,7 @@ class KillmailNotificationObserver
     /**
      * @param \Seat\Eveapi\Models\Killmails\KillmailDetail $killmail
      */
-    public function created(KillmailDetail $killmail)
+    public function updated(KillmailDetail $killmail)
     {
         $this->dispatch($killmail);
     }

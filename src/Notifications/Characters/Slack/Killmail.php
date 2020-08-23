@@ -76,7 +76,7 @@ class Killmail extends AbstractNotification
 
         $message = (new SlackMessage)
             ->content('A kill has been recorded for your corporation!')
-            ->from('SeAT Papmeter', $this->typeIconUrl($this->killmail->victim->ship_type_id))
+            ->from('SeAT Kilometer', $this->typeIconUrl($this->killmail->victim->ship_type_id))
             ->attachment(function ($attachment) {
 
                 $attachment
@@ -91,8 +91,8 @@ class Killmail extends AbstractNotification
                             ->content($this->zKillBoardToSlackLink(
                                 'system',
                                 $this->killmail->solar_system_id,
-                                $this->killmail->system->itemName . ' (' .
-                                number_format($this->killmail->system->security, 2) . ')'));
+                                $this->killmail->solar_system->name . ' (' .
+                                number_format($this->killmail->solar_system->security, 2) . ')'));
                     })
                     ->thumb($this->typeIconUrl($this->killmail->victim->ship_type_id))
                     ->fallback('Kill details')
@@ -121,8 +121,8 @@ class Killmail extends AbstractNotification
             'characterName'   => $this->killmail->attacker->character->name,
             'corporationName' => $this->killmail->attacker->corporation->name,
             'typeName'        => $this->killmail->victim->ship->typeName,
-            'itemName'        => $this->killmail->system->itemName,
-            'security'        => $this->killmail->system->security,
+            'system'          => $this->killmail->solar_system->name,
+            'security'        => $this->killmail->solar_system->security,
         ];
     }
 }
