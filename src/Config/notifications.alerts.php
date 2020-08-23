@@ -42,6 +42,16 @@ return [
         ],
     ],
     //
+    // Killmails
+    //
+    'Killmail' => [
+        'label' => 'notifications::alerts.killmails',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Characters\Mail\Killmail::class,
+            'slack' => \Seat\Notifications\Notifications\Characters\Slack\Killmail::class,
+        ],
+    ],
+    //
     // Esi Character Notifications
     //
     'AllAnchoringMsg' => [

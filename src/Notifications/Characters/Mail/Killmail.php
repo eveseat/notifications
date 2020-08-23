@@ -81,8 +81,8 @@ class Killmail extends AbstractNotification
             ->line(
                 'Lost a ' .
                 $this->killmail->victim->ship->typeName . ' in ' .
-                $this->killmail->system->itemName . ' (' .
-                number_format($this->killmail->system->security, 2) . ')'
+                $this->killmail->solar_system->name . ' (' .
+                number_format($this->killmail->solar_system->security, 2) . ')'
             )
             ->action(
                 'Check it out on zKillboard',
@@ -103,8 +103,8 @@ class Killmail extends AbstractNotification
             'characterName'   => $this->killmail->attacker->character->name,
             'corporationName' => $this->killmail->attacker->corporation->name,
             'typeName'        => $this->killmail->victim->ship->typeName,
-            'itemName'        => $this->killmail->system->itemName,
-            'security'        => $this->killmail->system->security,
+            'system'          => $this->killmail->solar_system->name,
+            'security'        => $this->killmail->solar_system->security,
         ];
     }
 }
