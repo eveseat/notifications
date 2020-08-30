@@ -83,7 +83,7 @@ class Killmail extends AbstractNotification
                     ->timestamp(carbon($this->killmail->killmail_time))
                     ->fields([
                         'Ship Type' => $this->killmail->victim->ship->typeName,
-                        'zKB Link'  => 'https://zkillboard.com/kill/' . $this->killmail->killmail_id,
+                        'zKB Link'  => 'https://zkillboard.com/kill/' . $this->killmail->killmail_id .'/',
                     ])
                     ->field(function ($field) {
 
