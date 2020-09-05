@@ -33,14 +33,14 @@ use Seat\Notifications\Notifications\AbstractNotification;
 class InActiveCorpMember extends AbstractNotification
 {
     /**
-     * @var
+     * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
      */
     private $member;
 
     /**
      * Create a new notification instance.
      *
-     * @param $member
+     * @param $member \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
      */
     public function __construct($member)
     {
@@ -74,15 +74,15 @@ class InActiveCorpMember extends AbstractNotification
             ->greeting('Heads up!')
             ->subject('Inactive Member Notification')
             ->line(
-                $this->member->name . ' logged off more than 3 months ago at ' .
-                $this->member->logoffDateTime . '.'
+                $this->member->character->name . ' logged off more than 3 months ago at ' .
+                $this->member->logoff_date . '.'
             )
             ->action('View Corporation Tracking', route('corporation.view.tracking', [
-                'corporation_id' => $this->member->corporationID,
+                'corporation' => $this->member->corporation_id,
             ]))
             ->line(
                 'Last seen at ' . $this->member->location . ' in a ' .
-                $this->member->shipType
+                $this->member->ship->typeName
             );
     }
 
@@ -96,10 +96,10 @@ class InActiveCorpMember extends AbstractNotification
     {
 
         return [
-            'name'        => $this->member->name,
-            'last_logoff' => $this->member->logoffDateTime,
+            'name'        => $this->member->character->name,
+            'last_logoff' => $this->member->logoff_date,
             'location'    => $this->member->location,
-            'ship'        => $this->member->shipType,
+            'ship'        => $this->member->ship->typeName,
         ];
     }
 }
