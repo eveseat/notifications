@@ -86,7 +86,7 @@ class Killmail extends AbstractNotification
             )
             ->action(
                 'Check it out on zKillboard',
-                'https://zkillboard.com/kill/' . $this->killmail->killmail_id . '/'
+                sprintf('https://zkillboard.com/kill/%d/', $this->killmail->killmail_id)
             );
     }
 
