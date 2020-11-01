@@ -74,7 +74,7 @@ class CorpAppNewMsg extends AbstractNotification
                 $attachment
                     ->field(function ($field) {
                         $corporation = UniverseName::firstOrNew(
-                            ['entity_id' => $this->notification->text['corporationID']],
+                            ['entity_id' => $this->notification->text['corpID']],
                             ['name' => trans('web::seat.unknown')]
                         );
 
@@ -88,7 +88,7 @@ class CorpAppNewMsg extends AbstractNotification
                     })
                     ->field(function ($field) {
                         $character = UniverseName::firstOrNew(
-                            ['entity_id' => $this->notification->text['characterID']],
+                            ['entity_id' => $this->notification->text['charID']],
                             ['name' => trans('web::seat.unknown')]
                         );
 
