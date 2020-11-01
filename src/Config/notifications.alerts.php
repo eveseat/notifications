@@ -136,6 +136,12 @@ return [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\MoonMiningExtractionStarted::class,
         ],
     ],
+    'OrbitalAttacked' => [
+        'label'   => 'notifications::alerts.orbital_attacked',
+        'handlers' => [
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\OrbitalAttacked::class,
+        ],
+    ],
     'OwnershipTransferred' => [
         'label'   => 'notifications::alerts.ownership_transferred',
         'handlers' => [
