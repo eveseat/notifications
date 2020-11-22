@@ -44,7 +44,7 @@ class DiscordEmbedField
     private $value;
 
     /**
-     * Whether the content must be displayed inline
+     * Whether the content must be displayed inline.
      *
      * @var bool
      */

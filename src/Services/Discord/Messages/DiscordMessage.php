@@ -69,17 +69,16 @@ class DiscordMessage
     /**
      * The TTS status of the message.
      *
-     * @var boolean|null
+     * @var bool|null
      */
     public $tts;
 
     /**
      * The allowed mention of the message.
      *
-     * @var boolean|null
+     * @var bool|null
      */
     public $allowed_mentions;
-
 
     /**
      * The message's embeds.

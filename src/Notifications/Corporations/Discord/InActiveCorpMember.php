@@ -29,9 +29,9 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
 class InActiveCorpMember extends AbstractNotification
 {
-    /**
-     * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
-     */
+     /**
+      * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
+      */
      private $member;
 
     /**

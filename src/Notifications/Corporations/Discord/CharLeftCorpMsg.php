@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
-
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractNotification;

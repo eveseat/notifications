@@ -31,7 +31,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class SovStructureReinforced
+ * Class SovStructureReinforced.
  *
  * @package Seat\Notifications\Notifications\Sovereignties\Discord
  */

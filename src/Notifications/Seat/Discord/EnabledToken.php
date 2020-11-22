@@ -30,7 +30,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Web\Models\User;
 
 /**
- * Class EnabledToken
+ * Class EnabledToken.
  *
  * @package Seat\Notifications\Notifications\Seat\Discord
  */
