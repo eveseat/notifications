@@ -23,6 +23,8 @@
 return [
     // Core
     'created_user'                     => 'Created User',
+    'disabled_token' => 'Invalidated Token',
+    'enabled_token' => 'Registered Token',
 
     // Esi
     'alliance_anchoring'               => 'Alliance Anchoring Report',
@@ -58,4 +60,5 @@ return [
     'structure_went_high_power'        => 'Structures High Power',
     'structure_went_low_power'         => 'Structures Low Power',
     'killmails'                        => 'Killmails',
+    'war_inactive_member' => 'War Inactive Member',
 ];
