@@ -42,6 +42,7 @@ return [
 
     'new_integration'         => 'New Integration',
     'new_integration_message' => 'Add a New Integration',
+    'new_discord'             => 'New Discord Integration',
     'new_email'               => 'New Email Integration',
     'new_slack'               => 'New Slack Integration',
     'configured_integrations' => 'Configured Integrations',

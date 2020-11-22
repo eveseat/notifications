@@ -29,7 +29,8 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Seat\\Notifications\\NotificationsServiceProvider"
+        "Seat\\Notifications\\NotificationsServiceProvider",
+        "Seat\\Notifications\\Services\\Discord\\DiscordChannelServiceProvider"
       ]
     }
   }
