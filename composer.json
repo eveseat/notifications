@@ -22,7 +22,7 @@
     "laravel/slack-notification-channel": "^2.0",
     "laravel/tinker": "^1.0",
     "eveseat/eveapi": "^4.0",
-    "eveseat/services": "^4.0",
+    "eveseat/services": "^4.1",
     "symfony/yaml": "^4.0",
     "yajra/laravel-datatables-oracle": "~9"
   },

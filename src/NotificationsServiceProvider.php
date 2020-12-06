@@ -118,11 +118,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
      */
     public function register()
     {
-
-        // Package specific configuration
-        $this->mergeConfigFrom(
-            __DIR__ . '/Config/notifications.config.php', 'notifications.config');
-
         // Add new permissions
         $this->registerPermissions(__DIR__ . '/Config/Permissions/notifications.php', 'notifications');
 
@@ -179,15 +174,5 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     public function getPackagistVendorName(): string
     {
         return 'eveseat';
-    }
-
-    /**
-     * Return the plugin installed version.
-     *
-     * @return string
-     */
-    public function getVersion(): string
-    {
-        return config('notifications.config.version');
     }
 }
