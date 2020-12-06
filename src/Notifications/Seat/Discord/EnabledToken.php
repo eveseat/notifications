@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Discord;
 
 use Seat\Eveapi\Models\RefreshToken;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;

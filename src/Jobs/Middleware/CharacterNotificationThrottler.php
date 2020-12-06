@@ -20,27 +20,34 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures\Mail;
+namespace Seat\Notifications\Jobs\Middleware;
 
-use Seat\Notifications\Jobs\AbstractCharacterNotification;
-use Seat\Notifications\Traits\NotificationTools;
+use Illuminate\Support\Facades\Redis;
 
 /**
- * Class OwnershipTransferred.
+ * Class CharacterThrottler.
  *
- * @package Seat\Notifications\Notifications\Structures
+ * @package Seat\Notifications\Jobs\Middleware
  */
-class OwnershipTransferred extends AbstractCharacterNotification
+class CharacterNotificationThrottler
 {
-    use NotificationTools;
-
     /**
-     * @param $notifiable
-     *
-     * @return array
+     * @param \Seat\Notifications\Jobs\AbstractCharacterNotification $job
+     * @param $next
      */
-    public function via($notifiable)
+    public function handle($job, $next)
     {
-        return ['mail'];
+        $key = sprintf('%s:%d', implode(',', $job->via(true)), $job->getNotificationId());
+
+        Redis::throttle($key)->block(0)->allow(1)->every(2)->then(function () use ($job, $next) {
+            $next($job);
+        }, function () use ($job) {
+            logger()->debug('Notification has been queued more than once. Removing duplicates.', [
+                'id' => $job->getNotificationId(),
+                'channel' => $job->via(true),
+            ]);
+
+            $job->delete();
+        });
     }
 }

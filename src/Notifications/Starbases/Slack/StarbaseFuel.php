@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Starbases\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 /**
  * Class StarbaseFuel.

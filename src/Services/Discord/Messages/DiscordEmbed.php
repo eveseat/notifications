@@ -230,7 +230,7 @@ class DiscordEmbed
     /**
      * Add a field to the embed.
      *
-     * @param  \Closure|string  $title
+     * @param  \Closure|string $title
      * @param string $value
      *
      * @return $this

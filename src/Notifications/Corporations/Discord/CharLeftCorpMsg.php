@@ -22,30 +22,19 @@
 
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
-use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractCharacterNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
-class CharLeftCorpMsg extends AbstractNotification
+/**
+ * Class CharLeftCorpMsg
+ *
+ * @package Seat\Notifications\Notifications\Corporations\Discord
+ */
+class CharLeftCorpMsg extends AbstractCharacterNotification
 {
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * CharLeftCorpMsg constructor.
-     *
-     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
-
     /**
      * @inheritDoc
      */

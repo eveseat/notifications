@@ -23,11 +23,10 @@
 namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractCharacterNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -35,24 +34,9 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class OwnershipTransferred extends AbstractNotification
+class OwnershipTransferred extends AbstractCharacterNotification
 {
     use NotificationTools;
-
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * OwnershipTransferred constructor.
-     *
-     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
 
     /**
      * Get the notification's delivery channels.

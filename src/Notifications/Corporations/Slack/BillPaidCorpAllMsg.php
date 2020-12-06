@@ -23,8 +23,7 @@
 namespace Seat\Notifications\Notifications\Corporations\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractCharacterNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,24 +31,9 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations\Slack
  */
-class BillPaidCorpAllMsg extends AbstractNotification
+class BillPaidCorpAllMsg extends AbstractCharacterNotification
 {
     use NotificationTools;
-
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * BillPaidCorpAllMsg constructor.
-     *
-     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
 
     /**
      * @param $notifiable

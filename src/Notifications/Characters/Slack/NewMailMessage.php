@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Support\Str;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 /**
  * Class NewMailMessage.
@@ -85,21 +85,5 @@ class NewMailMessage extends AbstractNotification
                         2000),
                 ]);
             });
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
-            'sent_date' => $this->message->sentDate,
-        ];
     }
 }

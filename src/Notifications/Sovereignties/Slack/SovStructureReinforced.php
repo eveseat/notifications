@@ -23,9 +23,8 @@
 namespace Seat\Notifications\Notifications\Sovereignties\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractCharacterNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,24 +32,9 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Sovereignties
  */
-class SovStructureReinforced extends AbstractNotification
+class SovStructureReinforced extends AbstractCharacterNotification
 {
     use NotificationTools;
-
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * SovStructureReinforced constructor.
-     *
-     * @param $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
 
     /**
      * @param $notifiable

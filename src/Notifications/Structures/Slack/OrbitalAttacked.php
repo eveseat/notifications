@@ -23,10 +23,9 @@
 namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractCharacterNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -34,23 +33,9 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-class OrbitalAttacked extends AbstractNotification
+class OrbitalAttacked extends AbstractCharacterNotification
 {
     use NotificationTools;
-
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * StructureUnderAttack constructor.
-     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
 
     /**
      * @param $notifiable
@@ -139,14 +124,5 @@ class OrbitalAttacked extends AbstractNotification
                 if ($this->notification->text['shieldLevel'] * 100 < 40)
                     $attachment->color('danger');
             });
-    }
-
-    /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function toArray($notifiable)
-    {
-        return $this->notification->text;
     }
 }

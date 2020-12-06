@@ -20,28 +20,33 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Corporations\Discord;
+namespace Seat\Notifications\Notifications\Characters\Discord;
 
-use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
+use Illuminate\Support\Str;
 use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
-class InActiveCorpMember extends AbstractNotification
+/**
+ * Class NewMailMessage
+ *
+ * @package Seat\Notifications\Notifications\Characters\Discord
+ */
+class NewMailMessage extends AbstractNotification
 {
-     /**
-      * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
-      */
-     private $member;
+    /**
+     * @var
+     */
+    private $message;
 
     /**
-     * InActiveCorpMember constructor.
+     * NewMailMessage constructor.
      *
-     * @param \Seat\Eveapi\Models\Corporation\CorporationMemberTracking $member
+     * @param $message
      */
-    public function __construct(CorporationMemberTracking $member)
+    public function __construct($message)
     {
-        $this->member = $member;
+        $this->message = $message;
     }
 
     /**
@@ -59,26 +64,18 @@ class InActiveCorpMember extends AbstractNotification
      */
     public function toDiscord($notifiable)
     {
-        $message = (new DiscordMessage())
-            ->content('A member has not logged in for some time! Check corp tracking.')
+        return (new DiscordMessage())
+            ->content('New EVEMail Received!')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp(carbon());
-                $embed->author(
-                    'SeAT Corporation Supervisor',
-                    asset('web/img/favico/apple-icon-180x180.png'),
-                    route('corporation.view.default', ['corporation' => $this->member->corporation_id])
-                );
+                $embed->timestamp($this->message->timestamp);
+                $embed->author('SeAT Personal Agent', asset('web/img/favico/apple-icon-180x180.png'));
 
-                $embed->field('Last Logoff', $this->member->logoff_date);
-                $embed->field('Ship', $this->member->ship->typeName);
+                $embed->description(Str::limit(
+                    str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
+                    2000));
+
+                $embed->field('Subject', $this->message->subject);
+                $embed->field('Sent Date', $this->message->timestamp);
             });
-
-        if (carbon()->diffInMonths($this->member->logon_date) > 1)
-            $message->warning();
-
-        if (carbon()->diffInMonths($this->member->logon_date) > 2)
-            $message->error();
-
-        return $message;
     }
 }

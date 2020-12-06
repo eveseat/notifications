@@ -23,32 +23,16 @@
 namespace Seat\Notifications\Notifications\Wars\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractCharacterNotification;
 
 /***
  * Class AllWarInvalidatedMsg.
  *
  * @package Seat\Notifications\Notifications\Corporations\Slack
  */
-class AllWarInvalidatedMsg extends AbstractNotification
+class AllWarInvalidatedMsg extends AbstractCharacterNotification
 {
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * AllWarInvalidatedMsg constructor.
-     *
-     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
-
     /**
      * @param $notifiable
      * @return array

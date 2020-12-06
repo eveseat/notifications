@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Starbases\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 /**
  * Class StarbaseStateChange.

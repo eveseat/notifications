@@ -31,6 +31,11 @@ use Closure;
  */
 class DiscordMessage
 {
+    public const INFO = 4886754;
+    public const SUCCESS = 8311585;
+    public const WARNING = 16098851;
+    public const ERROR = 13632027;
+
     /**
      * The "level" of the notification (info, success, warning, error).
      *
@@ -213,13 +218,13 @@ class DiscordMessage
     {
         switch ($this->level) {
             case 'success':
-                return 8311585;
+                return self::SUCCESS;
             case 'warning':
-                return 16098851;
+                return self::WARNING;
             case 'error':
-                return 13632027;
+                return self::ERROR;
             case 'info':
-                return 4886754;
+                return self::INFO;
         }
 
         return null;
