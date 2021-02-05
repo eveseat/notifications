@@ -42,6 +42,23 @@ return [
         ],
     ],
     //
+    // Squads
+    //
+    'squad_application' => [
+        'label' => 'notifications::alerts.squad_application',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Seat\Mail\SquadApplicationNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Seat\Slack\SquadApplicationNotification::class,
+        ],
+    ],
+    'squad_member' => [
+        'label' => 'notifications::alerts.squad_member',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Seat\Mail\SquadMemberNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Seat\Slack\SquadMemberNotification::class,
+        ],
+    ],
+    //
     // Killmails
     //
     'Killmail' => [
