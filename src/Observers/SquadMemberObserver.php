@@ -61,7 +61,7 @@ class SquadMemberObserver
         $handlers = config(sprintf('notifications.alerts.%s.handlers', $type), []);
 
         // retrieve routing candidates for the current notification
-        $routes = $this->getRoutingCandidates();
+        $routes = $this->getRoutingCandidates($type);
 
         // in case no routing candidates has been delivered, exit
         if ($routes->isEmpty())
@@ -85,12 +85,13 @@ class SquadMemberObserver
      * Provide a unique list of notification channels (including driver and route).
      *
      * @return \Illuminate\Support\Collection
+     * @param string $type
      */
-    private function getRoutingCandidates()
+    private function getRoutingCandidates(string $type)
     {
         $settings = NotificationGroup::with('alerts')
-            ->whereHas('alerts', function ($query) {
-                $query->where('alert', 'squad_member');
+            ->whereHas('alerts', function ($query) use ($type) {
+                $query->where('alert', $type);
             })->get();
 
         $routes = $settings->map(function ($group) {
