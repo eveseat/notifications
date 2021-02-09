@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications\Seat\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Web\Models\Squads\SquadApplication;
+
 /**
  * Class SquadMemberNotification.
  *
@@ -32,11 +33,10 @@ use Seat\Web\Models\Squads\SquadApplication;
  */
 class SquadApplicationNotification extends AbstractNotification
 {
-     /**
+    /**
      * @var \Seat\Web\Models\Squads\SquadApplication
      */
     private $application;
-
 
     /**
      * SquadMember constructor.

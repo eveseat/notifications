@@ -27,6 +27,7 @@ use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Web\Models\Squads\Squad;
 use Seat\Web\Models\Squads\SquadMember;
 use Seat\Web\Models\User;
+
 /**
  * Class SquadMemberRemovedNotification.
  *
@@ -34,7 +35,7 @@ use Seat\Web\Models\User;
  */
 class SquadMemberRemovedNotification extends AbstractNotification
 {
-     /**
+    /**
      * @var \Seat\Web\Models\Squads\Squad
      */
     private $squad;
