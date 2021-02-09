@@ -58,6 +58,13 @@ return [
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\SquadMemberNotification::class,
         ],
     ],
+    'squad_member_removed' => [
+        'label' => 'notifications::alerts.squad_member_removed',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Seat\Mail\SquadMemberRemovedNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Seat\Slack\SquadMemberRemovedNotification::class,
+        ],
+    ],
     //
     // Killmails
     //

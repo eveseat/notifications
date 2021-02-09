@@ -24,29 +24,39 @@ namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Web\Models\Squads\SquadApplication;
+use Seat\Web\Models\Squads\Squad;
+use Seat\Web\Models\Squads\SquadMember;
+use Seat\Web\Models\User;
 /**
- * Class SquadMemberNotification.
+ * Class SquadMemberRemovedNotification.
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class SquadApplicationNotification extends AbstractNotification
+class SquadMemberRemovedNotification extends AbstractNotification
 {
      /**
-     * @var \Seat\Web\Models\Squads\SquadApplication
+     * @var \Seat\Web\Models\Squads\Squad
      */
-    private $application;
+    private $squad;
 
+    /**
+     * @var \Seat\Web\Models\User
+     */
+    private $user;
 
     /**
      * SquadMember constructor.
      *
-     * @param \Seat\Web\Models\Squads\Squad $squad
-     * @param \Seat\Web\Models\User $user
+     * @param \Seat\Web\Models\Squads\SquadMember $member
      */
-    public function __construct(SquadApplication $application)
+    public function __construct(SquadMember $member)
     {
-        $this->application = $application;
+
+        $squad = Squad::find($member->squad_id);
+        $user = User::find($member->user_id);
+
+        $this->squad = $squad;
+        $this->user = $user;
     }
 
     /**
@@ -69,16 +79,15 @@ class SquadApplicationNotification extends AbstractNotification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-            ->warning()
-            ->content('A SeAT Squad has a new Application!')
+            ->error()
+            ->content('A SeAT Squad has lost a Member!')
             ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Squad Application', $this->application->squad->link)
+                $attachment->title('Squad', $this->squad->link)
                 ->fields([
-                    'User'    => $this->application->user->name,
-                    'Squad'   => $this->application->squad->name,
-                    'Message' => $this->application->message,
+                    'User'  => $this->user->name,
+                    'Squad' => $this->squad->name,
                 ]);
             });
     }

@@ -24,41 +24,32 @@ namespace Seat\Notifications\Observers;
 
 use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Models\NotificationGroup;
-use Seat\Web\Models\Squads\SquadMember;
+use Seat\Web\Models\Squads\SquadApplication;
 
 /**
  * Class UserNotificationObserver.
  *
  * @package Seat\Notifications\Observers
  */
-class SquadMemberObserver
+class SquadApplicationObserver
 {
     /**
-     * @param \Seat\Web\Models\Squads\SquadMember $member
+     * @param \Seat\Web\Models\Squads\SquadApplication $member
      */
-    public function created(SquadMember $member)
+    public function created(SquadApplication $member)
     {
-        $this->dispatch($member, 'squad_member');
-    }
-
-    /**
-     * @param \Seat\Web\Models\Squads\SquadMember $member
-     */
-    public function deleted(SquadMember $member)
-    {
-        $this->dispatch($member, 'squad_member_removed');
+        $this->dispatch($member);
     }
 
     /**
      * Queue notification based on User Creation.
      *
-     * @param \Seat\Web\Models\Sqauds\SquadMember $member
-     * @param string $type
+     * @param \Seat\Web\Models\Squads\SquadApplication $member
      */
-    private function dispatch(SquadMember $member, string $type)
+    private function dispatch(SquadApplication $member)
     {
         // detect handlers setup for the current notification
-        $handlers = config(sprintf('notifications.alerts.%s.handlers', $type), []);
+        $handlers = config('notifications.alerts.squad_application.handlers', []);
 
         // retrieve routing candidates for the current notification
         $routes = $this->getRoutingCandidates();

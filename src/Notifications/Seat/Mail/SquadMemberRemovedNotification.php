@@ -24,28 +24,36 @@ namespace Seat\Notifications\Notifications\Seat\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Web\Models\Squads\SquadApplication;
+use Seat\Web\Models\Squads\Squad;
+use Seat\Web\Models\User;
 
 /**
- * Class NewAccount.
+ * Class SquadMemberNotification.
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class SquadApplicationNotification extends AbstractNotification
+class SquadMemberRemovedNotification extends AbstractNotification
 {
     /**
-     * @var \Seat\Web\Models\Squads\SquadApplication
+     * @var \Seat\Web\Models\Squads\Squad
      */
-    private $application;
+    private $squad;
+
+    /**
+     * @var \Seat\Web\Models\User
+     */
+    private $user;
 
     /**
      * SquadMember constructor.
      *
-     * @param \Seat\Web\Models\Squads\SquadApplication $application
+     * @param \Seat\Web\Models\Squads\Squad $squad
+     * @param \Seat\Web\Models\User $user
      */
-    public function __construct(SquadApplication $application)
+    public function __construct(Squad $squad, User $user)
     {
-        $this->application = $application;
+        $this->squad = $squad;
+        $this->user = $user;
     }
 
     /**
@@ -68,14 +76,13 @@ class SquadApplicationNotification extends AbstractNotification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->success()
+            ->error()
             ->greeting('Heads up!')
-            ->line('A squad has a new applicant on SeAT!')
+            ->line('A squad has lost a member on SeAT!')
             ->line(
-                'The application was made by ' . $this->application->user->name . ' to the ' .
-                'squad ' . $this->application->squad->name . '. They left the following message:\n' .
-                $this->application->message
+                'The user  ' . $this->user->main_character->name . ' has joined the ' .
+                'squad ' . $this->squad->name
             )
-            ->action('Check it out on SeAT', $this->application->squad->link);
+            ->action('Check it out on SeAT', $this->squad->link);
     }
 }

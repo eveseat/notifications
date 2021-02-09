@@ -81,7 +81,7 @@ class SquadMemberNotification extends AbstractNotification
             ->line('A squad has a new member on SeAT!')
             ->line(
                 'The user  ' . $this->user->main_character->name . ' has joined the ' .
-                'squad ' . $this->squad->name
+                'squad: ' . $this->squad->name . '.'
             )
             ->action('Check it out on SeAT', $this->squad->link);
     }
