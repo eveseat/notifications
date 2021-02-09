@@ -24,6 +24,11 @@ return [
     // Core
     'created_user'                     => 'Created User',
 
+    //Squads
+    'squad_application'                => 'Squad Applications',
+    'squad_member'                     => 'New Squad Member',
+    'squad_member_removed'             => 'Removed Squad Member',
+    
     // Esi
     'alliance_anchoring'               => 'Alliance Anchoring Report',
     'alliance_war_declared'            => 'Declared War against Ally',
