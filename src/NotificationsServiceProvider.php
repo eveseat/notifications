@@ -28,8 +28,12 @@ use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Observers\CharacterNotificationObserver;
 use Seat\Notifications\Observers\CorporationMemberTrackingObserver;
 use Seat\Notifications\Observers\KillmailNotificationObserver;
+use Seat\Notifications\Observers\SquadApplicationObserver;
+use Seat\Notifications\Observers\SquadMemberObserver;
 use Seat\Notifications\Observers\UserObserver;
 use Seat\Services\AbstractSeatPlugin;
+use Seat\Web\Models\Squads\SquadApplication;
+use Seat\Web\Models\Squads\SquadMember;
 use Seat\Web\Models\User;
 
 /**
@@ -109,6 +113,8 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         CorporationMemberTracking::observe(CorporationMemberTrackingObserver::class);
         KillmailDetail::observe(KillmailNotificationObserver::class);
         User::observe(UserObserver::class);
+        SquadApplication::observe(SquadApplicationObserver::class);
+        SquadMember::observe(SquadMemberObserver::class);
     }
 
     /**

@@ -42,6 +42,30 @@ return [
         ],
     ],
     //
+    // Squads
+    //
+    'squad_application' => [
+        'label' => 'notifications::alerts.squad_application',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Seat\Mail\SquadApplicationNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Seat\Slack\SquadApplicationNotification::class,
+        ],
+    ],
+    'squad_member' => [
+        'label' => 'notifications::alerts.squad_member',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Seat\Mail\SquadMemberNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Seat\Slack\SquadMemberNotification::class,
+        ],
+    ],
+    'squad_member_removed' => [
+        'label' => 'notifications::alerts.squad_member_removed',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Seat\Mail\SquadMemberRemovedNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Seat\Slack\SquadMemberRemovedNotification::class,
+        ],
+    ],
+    //
     // Killmails
     //
     'Killmail' => [
