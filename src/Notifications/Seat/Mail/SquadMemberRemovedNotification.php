@@ -74,8 +74,6 @@ class SquadMemberRemovedNotification extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        logger()->debug('sending removed squad member notification');
-
         return (new MailMessage)
             ->error()
             ->greeting('Heads up!')

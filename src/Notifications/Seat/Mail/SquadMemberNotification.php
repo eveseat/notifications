@@ -74,8 +74,6 @@ class SquadMemberNotification extends AbstractNotification
      */
     public function toMail($notifiable)
     {
-        logger()->debug('sending new squad member notification');
-
         return (new MailMessage)
             ->success()
             ->greeting('Heads up!')
