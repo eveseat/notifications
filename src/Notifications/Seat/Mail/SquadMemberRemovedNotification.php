@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications\Seat\Mail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Web\Models\Squads\Squad;
+use Seat\Web\Models\Squads\SquadMember;
 use Seat\Web\Models\User;
 
 /**
@@ -45,15 +46,13 @@ class SquadMemberRemovedNotification extends AbstractNotification
     private $user;
 
     /**
-     * SquadMember constructor.
-     *
-     * @param \Seat\Web\Models\Squads\Squad $squad
-     * @param \Seat\Web\Models\User $user
+     * SquadMemberRemovedNotification constructor.
+     * @param \Seat\Web\Models\Squads\SquadMember $member
      */
-    public function __construct(Squad $squad, User $user)
+    public function __construct(SquadMember $member)
     {
-        $this->squad = $squad;
-        $this->user = $user;
+        $this->squad = Squad::find($member->squad_id);
+        $this->user = User::find($member->user_id);
     }
 
     /**
@@ -80,7 +79,7 @@ class SquadMemberRemovedNotification extends AbstractNotification
             ->greeting('Heads up!')
             ->line('A squad has lost a member on SeAT!')
             ->line(
-                'The user  ' . $this->user->main_character->name . ' has joined the ' .
+                'The user  ' . $this->user->name . ' has joined the ' .
                 'squad ' . $this->squad->name
             )
             ->action('Check it out on SeAT', $this->squad->link);
