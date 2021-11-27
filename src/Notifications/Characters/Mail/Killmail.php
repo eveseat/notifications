@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractKillmailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,7 +32,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class Killmail extends AbstractNotification
+class Killmail extends AbstractKillmailNotification
 {
     use NotificationTools;
 
@@ -72,6 +72,10 @@ class Killmail extends AbstractNotification
      */
     public function toMail($notifiable)
     {
+
+        if (!parent::shouldProcessKillmail($notifiable)) {
+            return null;
+        }
 
         return (new MailMessage)
             ->subject('Killmail Notification')

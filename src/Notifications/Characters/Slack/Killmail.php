@@ -25,7 +25,7 @@ namespace Seat\Notifications\Notifications\Characters\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractKillmailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class Killmail extends AbstractNotification
+class Killmail extends AbstractKillmailNotification
 {
     use NotificationTools;
 
@@ -73,6 +73,10 @@ class Killmail extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
+
+        if (!parent::shouldProcessKillmail($notifiable)) {
+            return null;
+        }
 
         $message = (new SlackMessage)
             ->content('A kill has been recorded for your corporation!')
