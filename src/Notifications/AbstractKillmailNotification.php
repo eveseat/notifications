@@ -31,7 +31,6 @@ use AbstractNotification;
  */
 class AbstractKillmailNotification extends AbstractNotification
 {
-
     /**
      * Get the Slack representation of the notification.
      *
@@ -41,7 +40,7 @@ class AbstractKillmailNotification extends AbstractNotification
     protected function shouldProcessKillmail($notifiable) {
 
         $killmailConfig = config('notifications.killmails');
-        
+
         $allianceId = $killmailConfig['alliance_id'];
         $corporationId = $killmailConfig['corporation_id'];
         $processKills = $killmailConfig['process_kills'];
@@ -55,18 +54,18 @@ class AbstractKillmailNotification extends AbstractNotification
             } elseif (in_array($allianceId, $killmail->attackers->pluck('alliance_id')) || in_array($corporationId, $killmail->attackers->pluck('character_id'))) {
                 $shouldProcess = $processKills;
             }
-        } else if ($allianceId) {
+        } elseif ($allianceId) {
             if ($this->killmail->victim->alliance_id === $allianceId) {
                 $shouldProcess = $processLosses;
             }
-            else if (in_array($allianceId, $killmail->attackers->pluck('alliance_id'))) {
+            elseif (in_array($allianceId, $killmail->attackers->pluck('alliance_id'))) {
                 $shouldProcess = $processKills;
             }
-        } else if ($corporationId) {
+        } elseif ($corporationId) {
             if ($this->killmail->victim->corporation_id === $corporationId) {
                 $shouldProcess = $processLosses;
             }
-            else if (in_array($corporationId, $killmail->attackers->pluck('character_id'))) {
+            elseif (in_array($corporationId, $killmail->attackers->pluck('character_id'))) {
                 $shouldProcess = $processKills;
             }
         }
