@@ -53,6 +53,8 @@ class AbstractKillmailNotification extends AbstractNotification
                 $shouldProcess = $processLosses;
             } elseif (in_array($allianceId, $killmail->attackers->pluck('alliance_id')) || in_array($corporationId, $killmail->attackers->pluck('character_id'))) {
                 $shouldProcess = $processKills;
+            } else {
+                $shouldProcess = false;
             }
         } elseif ($allianceId) {
             if ($this->killmail->victim->alliance_id === $allianceId) {
@@ -60,6 +62,8 @@ class AbstractKillmailNotification extends AbstractNotification
             }
             elseif (in_array($allianceId, $killmail->attackers->pluck('alliance_id'))) {
                 $shouldProcess = $processKills;
+            } else {
+                $shouldProcess = false;
             }
         } elseif ($corporationId) {
             if ($this->killmail->victim->corporation_id === $corporationId) {
@@ -67,6 +71,8 @@ class AbstractKillmailNotification extends AbstractNotification
             }
             elseif (in_array($corporationId, $killmail->attackers->pluck('character_id'))) {
                 $shouldProcess = $processKills;
+            } else {
+                $shouldProcess = false;
             }
         }
 
