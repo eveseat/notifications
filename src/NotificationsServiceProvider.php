@@ -32,6 +32,7 @@ use Seat\Notifications\Observers\SquadApplicationObserver;
 use Seat\Notifications\Observers\SquadMemberObserver;
 use Seat\Notifications\Observers\UserObserver;
 use Seat\Services\AbstractSeatPlugin;
+use Seat\Services\Settings\Profile;
 use Seat\Web\Models\Squads\SquadApplication;
 use Seat\Web\Models\Squads\SquadMember;
 use Seat\Web\Models\User;
@@ -50,6 +51,9 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
      */
     public function boot()
     {
+        // Register settings
+        $this->register_settings();
+
         // Register alerts
         $this->add_alerts();
 
@@ -76,16 +80,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     }
 
     /**
-     * Publish alerts configuration file - so user can tweak it.
-     */
-    private function add_alerts()
-    {
-        $this->publishes([
-            __DIR__ . '/Config/notifications.alerts.php' => config_path('notifications.alerts.php'),
-        ], ['config', 'seat']);
-    }
-
-    /**
      * Include the routes.
      */
     public function add_routes()
@@ -106,19 +100,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     }
 
     /**
-     * Register custom events that may be fire for this package.
-     */
-    private function add_events()
-    {
-        CharacterNotification::observe(CharacterNotificationObserver::class);
-        CorporationMemberTracking::observe(CorporationMemberTrackingObserver::class);
-        KillmailDetail::observe(KillmailNotificationObserver::class);
-        User::observe(UserObserver::class);
-        SquadApplication::observe(SquadApplicationObserver::class);
-        SquadMember::observe(SquadMemberObserver::class);
-    }
-
-    /**
      * Register the application services.
      *
      * @return void
@@ -131,16 +112,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         // Include this packages menu items
         $this->mergeConfigFrom(
             __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
-    }
-
-    /**
-     * Set the path for migrations which should
-     * be migrated by laravel. More informations:
-     * https://laravel.com/docs/5.5/packages#migrations.
-     */
-    private function add_migrations()
-    {
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
     }
 
     /**
@@ -181,5 +152,48 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     public function getPackagistVendorName(): string
     {
         return 'eveseat';
+    }
+
+    /**
+     * Publish alerts configuration file - so user can tweak it.
+     */
+    private function add_alerts()
+    {
+        $this->publishes([
+            __DIR__ . '/Config/notifications.alerts.php' => config_path('notifications.alerts.php'),
+        ], ['config', 'seat']);
+    }
+
+    /**
+     * Register custom events that may be fire for this package.
+     */
+    private function add_events()
+    {
+        CharacterNotification::observe(CharacterNotificationObserver::class);
+        CorporationMemberTracking::observe(CorporationMemberTrackingObserver::class);
+        KillmailDetail::observe(KillmailNotificationObserver::class);
+        User::observe(UserObserver::class);
+        SquadApplication::observe(SquadApplicationObserver::class);
+        SquadMember::observe(SquadMemberObserver::class);
+    }
+
+    /**
+     * Set the path for migrations which should
+     * be migrated by laravel. More informations:
+     * https://laravel.com/docs/5.5/packages#migrations.
+     */
+    private function add_migrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
+    }
+
+    /**
+     * Register default settings value for user profile.
+     */
+    private function register_settings()
+    {
+        // Notifications
+        Profile::define('email_notifications', 'no');
+        Profile::define('email_address', '');
     }
 }
