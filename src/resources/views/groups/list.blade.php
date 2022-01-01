@@ -11,7 +11,7 @@
     </div>
     <div class="card-body">
 
-      <form role="form" action="{{ route('notifications.groups.new.post') }}" method="post">
+      <form role="form" action="{{ route('seatcore::notifications.groups.new.post') }}" method="post">
         {{ csrf_field() }}
 
         <div class="box-body">

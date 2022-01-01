@@ -17,11 +17,11 @@
 
       <p>
 
-        <a href="{{ route('notifications.integrations.new.email') }}" class="btn btn-primary btn-block">
+        <a href="{{ route('seatcore::notifications.integrations.new.email') }}" class="btn btn-primary btn-block">
           <i class="fas fa-envelope"></i>
           {{ trans('notifications::notifications.new_email') }}
         </a>
-        <a href="{{ route('notifications.integrations.new.slack') }}" class="btn btn-primary btn-block">
+        <a href="{{ route('seatcore::notifications.integrations.new.slack') }}" class="btn btn-primary btn-block">
           <i class="fab fa-slack"></i>
           {{ trans('notifications::notifications.new_slack') }}
         </a>
@@ -64,7 +64,7 @@
     $('table#integrations').DataTable({
       processing: true,
       serverSide: true,
-      ajax      : '{{ route('notifications.integrations.list.data') }}',
+      ajax      : '{{ route('seatcore::notifications.integrations.list.data') }}',
       columns   : [
         {data: 'name', name: 'name'},
         {data: 'type', name: 'type'},

@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
 
-      <form role="form" action="{{ route('notifications.groups.edit.integration.add') }}" method="post">
+      <form role="form" action="{{ route('seatcore::notifications.groups.edit.integration.add') }}" method="post">
         {{ csrf_field() }}
         <input name="id" value="{{ $group->id }}" type="hidden">
 
@@ -58,7 +58,7 @@
             <td>{{ $integration->name }}</td>
             <td>{{ ucfirst($integration->type) }}</td>
             <td>
-              <a href="{{ route('notifications.groups.edit.integration.delete', ['group_id' => $group->id, 'integration_id' => $integration->id]) }}"
+              <a href="{{ route('seatcore::notifications.groups.edit.integration.delete', ['group_id' => $group->id, 'integration_id' => $integration->id]) }}"
                  class="btn btn-xs btn-danger pull-right">
                 {{ trans('web::seat.delete') }}
               </a>
@@ -88,12 +88,12 @@
     </div>
     <div class="card-body">
 
-      <form role="form" action="{{ route('notifications.groups.edit.alert.add_all') }}" method="post" id="group-alerts-all-form">
+      <form role="form" action="{{ route('seatcore::notifications.groups.edit.alert.add_all') }}" method="post" id="group-alerts-all-form">
         {{ csrf_field() }}
         <input name="id" value="{{ $group->id }}" type="hidden">
       </form>
 
-      <form role="form" action="{{ route('notifications.groups.edit.alert.add') }}" method="post" id="group-alerts-selection-form">
+      <form role="form" action="{{ route('seatcore::notifications.groups.edit.alert.add') }}" method="post" id="group-alerts-selection-form">
         {{ csrf_field() }}
         <input name="id" value="{{ $group->id }}" type="hidden">
 
@@ -132,7 +132,7 @@
               {{ trans(config('notifications.alerts.' . $alert->alert . '.label', $alert->alert)) }}
             </td>
             <td>
-              <a href="{{ route('notifications.groups.edit.alert.delete', ['group_id' => $group->id, 'alert_id' => $alert->id]) }}"
+              <a href="{{ route('seatcore::notifications.groups.edit.alert.delete', ['group_id' => $group->id, 'alert_id' => $alert->id]) }}"
                  class="btn btn-xs btn-danger pull-right">
                 {{ trans('web::seat.delete') }}
               </a>
@@ -162,7 +162,7 @@
     </div>
     <div class="card-body">
 
-      <form role="form" action="{{ route('notifications.groups.edit.affiliations.add') }}" method="post">
+      <form role="form" action="{{ route('seatcore::notifications.groups.edit.affiliations.add') }}" method="post">
         {{ csrf_field() }}
         <input name="id" value="{{ $group->id }}" type="hidden">
 
@@ -225,7 +225,7 @@
               </td>
               <td>{{ ucfirst($affiliation->type) }}</td>
               <td>
-                <a href="{{ route('notifications.groups.edit.affiliation.delete', ['group_id' => $group->id, 'affiliation_id' => $affiliation->id]) }}"
+                <a href="{{ route('seatcore::notifications.groups.edit.affiliation.delete', ['group_id' => $group->id, 'affiliation_id' => $affiliation->id]) }}"
                    type="button" class="btn btn-danger btn-xs pull-right">
                   {{ trans('web::seat.remove') }}
                 </a>
@@ -259,7 +259,7 @@
 
     $('select#alerts').select2({
         ajax: {
-            url: '{{ route('notifications.ajax.alerts') }}',
+            url: '{{ route('seatcore::notifications.ajax.alerts') }}',
             dataType: 'json',
             delay: 250,
             data: function (params) {
