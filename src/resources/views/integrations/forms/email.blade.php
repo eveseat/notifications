@@ -13,7 +13,7 @@
     <div class="card-body">
 
       <div class="col-md-4 offset-md-4">
-        <form role="form" action="{{ route('notifications.integrations.new.email.add') }}" method="post">
+        <form role="form" action="{{ route('seatcore::notifications.integrations.new.email.add') }}" method="post">
           {{ csrf_field() }}
 
           <div class="box-body">
@@ -40,7 +40,7 @@
           </div><!-- /.box-body -->
 
           <div class="box-footer">
-            <a href="{{ route('notifications.integrations.list') }}">
+            <a href="{{ route('seatcore::notifications.integrations.list') }}">
               Back to Integrations
             </a>
             <button type="submit" class="btn btn-primary float-right">
