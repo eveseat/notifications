@@ -31,7 +31,7 @@ class ScheduleSeeder extends Seeder
 
         [   // Process Alerts Every 5 minutes.
             'command'           => 'alerts:run',
-            'expression'        => '*/5 * * * * *',
+            'expression'        => '*/5 * * * *',
             'allow_overlap'     => false,
             'allow_maintenance' => false,
             'ping_before'       => null,
