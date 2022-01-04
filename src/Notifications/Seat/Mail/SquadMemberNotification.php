@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,8 @@ class SquadMemberNotification extends AbstractNotification
 
     /**
      * SquadMemberNotification constructor.
-     * @param \Seat\Web\Models\Squads\SquadMember $member
+     *
+     * @param  \Seat\Web\Models\Squads\SquadMember  $member
      */
     public function __construct(SquadMember $member)
     {
@@ -58,7 +59,7 @@ class SquadMemberNotification extends AbstractNotification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -69,7 +70,7 @@ class SquadMemberNotification extends AbstractNotification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)

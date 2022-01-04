@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ use Yajra\DataTables\DataTables;
 
 /**
  * Class IntegrationsController.
+ *
  * @package Seat\Notifications\Http\Controllers
  */
 class IntegrationsController extends Controller
@@ -45,6 +46,7 @@ class IntegrationsController extends Controller
 
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getIntegrationsData()
@@ -66,8 +68,7 @@ class IntegrationsController extends Controller
     }
 
     /**
-     * @param int $integration_id
-     *
+     * @param  int  $integration_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function getDeleteIntegration(int $integration_id)
@@ -90,8 +91,7 @@ class IntegrationsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\EmailIntegration $request
-     *
+     * @param  \Seat\Notifications\Http\Validation\EmailIntegration  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postNewEmail(EmailIntegration $request)
@@ -117,8 +117,7 @@ class IntegrationsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\SlackIntegration $request
-     *
+     * @param  \Seat\Notifications\Http\Validation\SlackIntegration  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postNewSlack(SlackIntegration $request)

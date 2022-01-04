@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class Killmail extends AbstractNotification
     /**
      * Create a new notification instance.
      *
-     * @param \Seat\Eveapi\Models\Killmails\KillmailDetail $killmail
+     * @param  \Seat\Eveapi\Models\Killmails\KillmailDetail  $killmail
      */
     public function __construct(KillmailDetail $killmail)
     {
@@ -56,7 +56,7 @@ class Killmail extends AbstractNotification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -111,7 +111,7 @@ class Killmail extends AbstractNotification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)
