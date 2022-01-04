@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,12 +39,13 @@ use Seat\Web\Http\Controllers\Controller;
 
 /**
  * Class GroupsController.
+ *
  * @package Seat\Notifications\Http\Controllers
  */
 class GroupsController extends Controller
 {
     /**
-     * @param \Seat\Notifications\Http\DataTables\NotificationGroupDataTable $data_table
+     * @param  \Seat\Notifications\Http\DataTables\NotificationGroupDataTable  $data_table
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(NotificationGroupDataTable $data_table)
@@ -54,8 +55,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\Group $request
-     *
+     * @param  \Seat\Notifications\Http\Validation\Group  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Group $request)
@@ -70,8 +70,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param int $notification_group_id
-     *
+     * @param  int  $notification_group_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getEditGroup(int $notification_group_id)
@@ -92,8 +91,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param int $group_id
-     *
+     * @param  int  $group_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function getDeleteGroup(int $group_id)
@@ -107,8 +105,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\GroupIntegration $request
-     *
+     * @param  \Seat\Notifications\Http\Validation\GroupIntegration  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postAddIntegrations(GroupIntegration $request)
@@ -138,9 +135,8 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param int $group_id
-     * @param int $integration_id
-     *
+     * @param  int  $group_id
+     * @param  int  $integration_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function getDeleteIntegration(int $group_id, int $integration_id)
@@ -155,7 +151,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAjaxAlerts(Request $request)
@@ -179,7 +175,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\GroupAllAlert $request
+     * @param  \Seat\Notifications\Http\Validation\GroupAllAlert  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postAddAllAlerts(GroupAllAlert $request)
@@ -198,8 +194,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\GroupAlert $request
-     *
+     * @param  \Seat\Notifications\Http\Validation\GroupAlert  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postAddAlert(GroupAlert $request)
@@ -218,9 +213,8 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param int $group_id
-     * @param int $alert_id
-     *
+     * @param  int  $group_id
+     * @param  int  $alert_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function getDeleteAlert(int $group_id, int $alert_id)
@@ -235,8 +229,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\GroupAffiliation $request
-     *
+     * @param  \Seat\Notifications\Http\Validation\GroupAffiliation  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postAddAffiliation(GroupAffiliation $request)
@@ -268,9 +261,8 @@ class GroupsController extends Controller
     }
 
     /**
-     * @param int $group_id
-     * @param int $affiliation_id
-     *
+     * @param  int  $group_id
+     * @param  int  $affiliation_id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function getDeleteAffiliation(int $group_id, int $affiliation_id)

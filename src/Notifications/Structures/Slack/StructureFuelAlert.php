@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ class StructureFuelAlert extends AbstractNotification
     /**
      * StructureFuelAlert constructor.
      *
-     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
+     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
      */
     public function __construct(CharacterNotification $notification)
     {
@@ -56,7 +56,7 @@ class StructureFuelAlert extends AbstractNotification
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array;
      */
     public function via($notifiable)

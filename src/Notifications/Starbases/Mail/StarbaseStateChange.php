@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ use Seat\Notifications\Notifications\AbstractNotification;
  * Class StarbaseStateChange.
  *
  * @package Seat\Notifications\Notifications\Starbases
+ *
  * @deprecated 4.0.0
  */
 class StarbaseStateChange extends AbstractNotification
@@ -52,7 +53,7 @@ class StarbaseStateChange extends AbstractNotification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -64,7 +65,7 @@ class StarbaseStateChange extends AbstractNotification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -89,7 +90,7 @@ class StarbaseStateChange extends AbstractNotification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)

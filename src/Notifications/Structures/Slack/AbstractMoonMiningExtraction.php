@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ abstract class AbstractMoonMiningExtraction extends AbstractNotification
     abstract public function toSlack($notifiable);
 
     /**
-     * @param \Illuminate\Notifications\Messages\SlackMessage $message
+     * @param  \Illuminate\Notifications\Messages\SlackMessage  $message
      */
     protected function addOreAttachments(SlackMessage $message)
     {

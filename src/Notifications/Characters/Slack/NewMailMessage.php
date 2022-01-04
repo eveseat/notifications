@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ class NewMailMessage extends AbstractNotification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -90,7 +90,7 @@ class NewMailMessage extends AbstractNotification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed $notifiable
+     * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)

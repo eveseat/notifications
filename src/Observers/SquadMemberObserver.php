@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ use Seat\Web\Models\Squads\SquadMember;
 class SquadMemberObserver
 {
     /**
-     * @param \Seat\Web\Models\Squads\SquadMember $member
+     * @param  \Seat\Web\Models\Squads\SquadMember  $member
      */
     public function created(SquadMember $member)
     {
@@ -42,7 +42,7 @@ class SquadMemberObserver
     }
 
     /**
-     * @param \Seat\Web\Models\Squads\SquadMember $member
+     * @param  \Seat\Web\Models\Squads\SquadMember  $member
      */
     public function deleted(SquadMember $member)
     {
@@ -52,8 +52,8 @@ class SquadMemberObserver
     /**
      * Queue notification based on User Creation.
      *
-     * @param \Seat\Web\Models\Sqauds\SquadMember $member
-     * @param string $type
+     * @param  \Seat\Web\Models\Sqauds\SquadMember  $member
+     * @param  string  $type
      */
     private function dispatch(SquadMember $member, string $type)
     {
@@ -84,8 +84,8 @@ class SquadMemberObserver
     /**
      * Provide a unique list of notification channels (including driver and route).
      *
+     * @param  string  $type
      * @return \Illuminate\Support\Collection
-     * @param string $type
      */
     private function getRoutingCandidates(string $type)
     {

@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2021 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ trait NotificationTools
     /**
      * Build a link to Eve Type.
      *
-     * @param int $type_id
+     * @param  int  $type_id
      * @return string
      */
     public function typeIconUrl(int $type_id): string
@@ -55,10 +55,9 @@ trait NotificationTools
     /**
      * Build a link to zKillboard using Slack message formatting.
      *
-     * @param string $type (must be ship, character, corporation or alliance)
-     * @param int    $id   the type entity ID
-     * @param string $name the type name
-     *
+     * @param  string  $type  (must be ship, character, corporation or alliance)
+     * @param  int  $id  the type entity ID
+     * @param  string  $name  the type name
      * @return string
      */
     public function zKillBoardToSlackLink(string $type, int $id, string $name): string
@@ -70,8 +69,9 @@ trait NotificationTools
     }
 
     /**
-     * @param int $timestamp
+     * @param  int  $timestamp
      * @return \Carbon\Carbon
+     *
      * @author https://github.com/flakas/reconbot/blob/master/reconbot/notificationprinters/esi/printer.py#L317
      */
     public function mssqlTimestampToDate(int $timestamp)
@@ -87,7 +87,7 @@ trait NotificationTools
     /**
      * Convert a campaign event enum type into an Type Name.
      *
-     * @param int $type
+     * @param  int  $type
      * @return string
      */
     public function campaignEventType(int $type): string
