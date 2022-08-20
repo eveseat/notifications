@@ -22,31 +22,31 @@
 
 return [
 
-    'group'      => 'Notification Group|Notification Groups',
-    'new_group'  => 'New Notifications Group',
-    'edit_group' => 'Edit Group',
-    'group_name' => 'Group Name',
-    'group_type' => 'Group Type',
+    'group'      => 'Groupe de notifications|Groupes de notifications',
+    'new_group'  => 'Nouveau groupe de notifications',
+    'edit_group' => 'Modifier le groupe',
+    'group_name' => 'Nom du groupe',
+    'group_type' => 'Type de groupe',
 
-    'add'            => 'Add',
-    'name'           => 'Name',
+    'add'            => 'Ajouter',
+    'name'           => 'Nom',
     'type'           => 'Type',
-    'alert'          => 'Alert|Alerts',
-    'integration'    => 'Integration|Integrations',
+    'alert'          => 'Alerte | Alertes',
+    'integration'    => 'Intégration | Intégrations',
     'affiliation'    => 'Affiliation|Affiliations',
-    'add_all_alerts' => 'Add All Alerts',
+    'add_all_alerts' => 'Ajouter toutes les alertes',
 
-    'no_affiliation_notice' => 'No affiliations have been assosciated with this group ' .
-        'yet. In this configuration, all notifications for the matched alerts will be ' .
-        'sent without any filter.',
+    'no_affiliation_notice' => 'Aucune affiliation n\'a été associée à ce groupe ' .
+        'pour le moment, dans cette configuration, toutes les notifications pour les alertes correspondantes seront ' .
+        'envoyé sans filtre.',
 
-    'new_integration'         => 'New Integration',
-    'new_integration_message' => 'Add a New Integration',
-    'new_email'               => 'New Email Integration',
-    'new_slack'               => 'New Slack Integration',
-    'configured_integrations' => 'Configured Integrations',
-    'settings'                => 'Settings',
+    'new_integration'         => 'Nouvelle intégration',
+    'new_integration_message' => 'Ajouter une intégration',
+    'new_email'               => 'Intégration par e-mail',
+    'new_slack'               => 'Intégration par Slack',
+    'configured_integrations' => 'Intégrations configurées',
+    'settings'                => 'Paramètres',
 
-    'setup_label'             => 'Notifications Setup',
-    'setup_description'       => 'Allow user to define notification channels and subscriptions.',
+    'setup_label'             => 'Paramètres de notification',
+    'setup_description'       => 'Permet à l\'utilisateur de définir des canaux de notification et des abonnements.',
 ];
