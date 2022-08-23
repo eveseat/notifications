@@ -22,12 +22,12 @@
 
 return [
     // Core
-    'created_user'                     => 'Created User',
+    'created_user'                     => 'Benutzer erstellt',
 
     //Squads
-    'squad_application'                => 'Squad Applications',
-    'squad_member'                     => 'New Squad Member',
-    'squad_member_removed'             => 'Removed Squad Member',
+    'squad_application'                => 'Squadbewerbungen',
+    'squad_member'                     => 'Neues Squadmitglied',
+    'squad_member_removed'             => 'Squadmitglied entfernt',
 
     // Esi
     'alliance_anchoring'               => 'Alliance Anchoring Report',
