@@ -28,25 +28,25 @@ return [
     'group_name' => 'Group Name',
     'group_type' => 'Group Type',
 
-    'add'            => 'Add',
+    'add'            => 'Hinzufügen',
     'name'           => 'Name',
-    'type'           => 'Type',
-    'alert'          => 'Alert|Alerts',
-    'integration'    => 'Integration|Integrations',
+    'type'           => 'Typ',
+    'alert'          => 'Warnung|Warnungen',
+    'integration'    => 'Integration|Integrationen',
     'affiliation'    => 'Affiliation|Affiliations',
-    'add_all_alerts' => 'Add All Alerts',
+    'add_all_alerts' => 'Alle Warnungen hinzufügen',
 
     'no_affiliation_notice' => 'No affiliations have been assosciated with this group ' .
         'yet. In this configuration, all notifications for the matched alerts will be ' .
         'sent without any filter.',
 
-    'new_integration'         => 'New Integration',
-    'new_integration_message' => 'Add a New Integration',
-    'new_email'               => 'New Email Integration',
-    'new_slack'               => 'New Slack Integration',
-    'configured_integrations' => 'Configured Integrations',
-    'settings'                => 'Settings',
+    'new_integration'         => 'Neue Integration',
+    'new_integration_message' => 'Neue Integration hinzufügen',
+    'new_email'               => 'Neue E-Mail Integration',
+    'new_slack'               => 'Neue Slack-Integration',
+    'configured_integrations' => 'Konfigurierte Integrationen',
+    'settings'                => 'Einstellungen',
 
-    'setup_label'             => 'Notifications Setup',
-    'setup_description'       => 'Allow user to define notification channels and subscriptions.',
+    'setup_label'             => 'Benachrichtigungseinrichtung',
+    'setup_description'       => 'Erlaubt einem Nutzer, Benachrichtigungskanäle und Abonnoments zu definieren.',
 ];
