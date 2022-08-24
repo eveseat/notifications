@@ -22,10 +22,10 @@
 
 return [
     // Core
-    'created_user'                     => 'Created User',
+    'created_user'                     => 'Utilisateur créé',
 
     //Squads
-    'squad_application'                => 'Squad Applications',
+    'squad_application'                => 'Candidature de brigade',
     'squad_member'                     => 'New Squad Member',
     'squad_member_removed'             => 'Removed Squad Member',
 
