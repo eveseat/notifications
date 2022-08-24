@@ -28,9 +28,9 @@ return [
     'group_name' => 'Group Name',
     'group_type' => 'Group Type',
 
-    'add'            => 'Add',
-    'name'           => 'Name',
-    'type'           => 'Type',
+    'add'            => 'Adaugă',
+    'name'           => 'Nume',
+    'type'           => 'Tip',
     'alert'          => 'Alert|Alerts',
     'integration'    => 'Integration|Integrations',
     'affiliation'    => 'Affiliation|Affiliations',
@@ -45,8 +45,8 @@ return [
     'new_email'               => 'New Email Integration',
     'new_slack'               => 'New Slack Integration',
     'configured_integrations' => 'Configured Integrations',
-    'settings'                => 'Settings',
+    'settings'                => 'Setări',
 
-    'setup_label'             => 'Notifications Setup',
-    'setup_description'       => 'Allow user to define notification channels and subscriptions.',
+    'setup_label'             => 'Setările notificăriilor',
+    'setup_description'       => 'Permite utilizatorului să definească canalele de notificare și abonamentele.',
 ];
