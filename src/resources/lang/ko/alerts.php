@@ -22,15 +22,15 @@
 
 return [
     // Core
-    'created_user'                     => 'Created User',
+    'created_user'                     => '사용자 생성됨',
 
     //Squads
-    'squad_application'                => 'Squad Applications',
-    'squad_member'                     => 'New Squad Member',
-    'squad_member_removed'             => 'Removed Squad Member',
+    'squad_application'                => '스쿼드 지원서',
+    'squad_member'                     => '새 스쿼드 멤버',
+    'squad_member_removed'             => '스쿼드 멤버 제거됨',
 
     // Esi
-    'alliance_anchoring'               => 'Alliance Anchoring Report',
+    'alliance_anchoring'               => '얼라이언스 위치 고정 보고서',
     'alliance_war_declared'            => 'Declared War against Ally',
     'alliance_war_invalidated'         => 'Invalidated War against Ally',
     'alliance_capital_changed'         => 'Changed Capital Alliance',
@@ -44,7 +44,7 @@ return [
     'moon_mining_extraction_finished'  => 'MM Finished Extractions',
     'moon_mining_extraction_started'   => 'MM Started Extractions',
     'orbital_attacked'                 => 'Attacked Customs Office',
-    'ownership_transferred'            => 'Transferred Ownership',
+    'ownership_transferred'            => '소유권 이전됨',
     'raffle_created'                   => 'Created Raffle',
     'raffle_expired'                   => 'Expired Raffle',
     'raffle_finished'                  => 'Finished Raffle',
