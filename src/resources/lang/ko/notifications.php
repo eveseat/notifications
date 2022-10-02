@@ -42,8 +42,8 @@ return [
 
     'new_integration'         => 'New Integration',
     'new_integration_message' => 'Add a New Integration',
-    'new_email'               => 'New Email Integration',
-    'new_slack'               => 'New Slack Integration',
+    'new_email'               => '이메일 신규 통합',
+    'new_slack'               => 'Slack 신규 연동',
     'configured_integrations' => 'Configured Integrations',
     'settings'                => 'Settings',
 
