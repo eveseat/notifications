@@ -22,31 +22,31 @@
 
 return [
 
-    'group'      => 'Notification Group|Notification Groups',
-    'new_group'  => 'New Notifications Group',
-    'edit_group' => 'Edit Group',
-    'group_name' => 'Group Name',
-    'group_type' => 'Group Type',
+    'group'      => '通知グループ',
+    'new_group'  => '新たな通知グループ',
+    'edit_group' => 'グループの編集',
+    'group_name' => 'グループ名',
+    'group_type' => 'グループタイプ',
 
-    'add'            => 'Add',
-    'name'           => 'Name',
-    'type'           => 'Type',
-    'alert'          => 'Alert|Alerts',
-    'integration'    => 'Integration|Integrations',
-    'affiliation'    => 'Affiliation|Affiliations',
-    'add_all_alerts' => 'Add All Alerts',
+    'add'            => '追加',
+    'name'           => '名前',
+    'type'           => 'タイプ',
+    'alert'          => 'アラート',
+    'integration'    => '外部サービス連携 | 一覧',
+    'affiliation'    => '加入者 | 一覧',
+    'add_all_alerts' => 'すべてのアラートを追加',
 
-    'no_affiliation_notice' => 'No affiliations have been assosciated with this group ' .
-        'yet. In this configuration, all notifications for the matched alerts will be ' .
-        'sent without any filter.',
+    'no_affiliation_notice' => 'このグループに紐づけられている加入者は ' .
+        'まだいません. この設定ではマッチしたアラートによる全ての通知が ' .
+        'フィルターなしで送信されます。',
 
-    'new_integration'         => 'New Integration',
-    'new_integration_message' => 'Add a New Integration',
-    'new_email'               => 'New Email Integration',
-    'new_slack'               => 'New Slack Integration',
-    'configured_integrations' => 'Configured Integrations',
-    'settings'                => 'Settings',
+    'new_integration'         => '新規外部サービス連携',
+    'new_integration_message' => '新規外部サービス連携',
+    'new_email'               => '新たなE-メールの統合',
+    'new_slack'               => '新たなslackの統合',
+    'configured_integrations' => '外部サービスの連携設定',
+    'settings'                => '設定',
 
-    'setup_label'             => 'Notifications Setup',
-    'setup_description'       => 'Allow user to define notification channels and subscriptions.',
+    'setup_label'             => '通知の設定',
+    'setup_description'       => 'ユーザーが通知チャンネルとサブスクリプションを定義できるようにします。',
 ];
