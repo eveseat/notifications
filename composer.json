@@ -10,8 +10,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Seat\\Notifications\\": "src/",
-      "Seat\\Notifications\\Database\\Seeders\\": "src/database/seeders/"
+      "Seat\\Notifications\\": "src/"
     }
   },
   "minimum-stability": "dev",
