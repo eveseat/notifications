@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Notifications\Characters\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Facades\DB;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Notifications\AbstractKillmailNotification;
@@ -104,7 +105,13 @@ class Killmail extends AbstractKillmailNotification
                     ->footerIcon('https://zkillboard.com/img/wreck.png');
             });
 
-        $allied_corporation_ids = CorporationInfo::select('corporation_id')->get()->pluck('corporation_id')->toArray();
+        $allied_corporation_ids = DB::table('corporation_infos')
+            ->join('users', 'corporation_infos.ceo_id', '=', 'users.main_character_id')
+            ->where('users.active', '=',  '1')
+            ->select('corporation_id')
+            ->get()
+            ->pluck('corporation_id')
+            ->toArray();
 
         (in_array($this->killmail->victim->corporation_id, $allied_corporation_ids)) ?
             $message->error() : $message->success();
