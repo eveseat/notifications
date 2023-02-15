@@ -22,7 +22,7 @@
     "eveseat/eveapi": "5.0.x-dev",
     "eveseat/services": "5.0.x-dev",
     "symfony/yaml": "^5.0",
-    "yajra/laravel-datatables-oracle": "^9.0"
+    "yajra/laravel-datatables-oracle": "^10.0"
   },
   "extra": {
     "laravel": {
