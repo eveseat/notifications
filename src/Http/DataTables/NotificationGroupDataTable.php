@@ -24,6 +24,7 @@ namespace Seat\Notifications\Http\DataTables;
 
 use Seat\Notifications\Models\NotificationGroup;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Http\JsonResponse;
 
 /**
  * Class NotificationGroupDataTable.
@@ -37,7 +38,7 @@ class NotificationGroupDataTable extends DataTable
      *
      * @throws \Exception
      */
-    public function ajax()
+    public function ajax() : JsonResponse
     {
         return datatables()
             ->eloquent($this->applyScopes($this->query()))
@@ -69,7 +70,7 @@ class NotificationGroupDataTable extends DataTable
                     $sub_query->whereRaw('name LIKE ?', ["%$keyword%"]);
                 });
             })
-            ->make(true);
+            ->toJson();
     }
 
     /**
