@@ -22,9 +22,9 @@
 
 namespace Seat\Notifications\Http\DataTables;
 
+use Illuminate\Http\JsonResponse;
 use Seat\Notifications\Models\NotificationGroup;
 use Yajra\DataTables\Services\DataTable;
-use Illuminate\Http\JsonResponse;
 
 /**
  * Class NotificationGroupDataTable.
@@ -38,7 +38,7 @@ class NotificationGroupDataTable extends DataTable
      *
      * @throws \Exception
      */
-    public function ajax() : JsonResponse
+    public function ajax(): JsonResponse
     {
         return datatables()
             ->eloquent($this->applyScopes($this->query()))
