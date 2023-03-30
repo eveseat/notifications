@@ -63,4 +63,5 @@ return [
     'structure_went_high_power'        => 'Structures High Power',
     'structure_went_low_power'         => 'Structures Low Power',
     'killmails'                        => 'Killmails',
+    'character_contract_created'       => 'Character Contract created'
 ];

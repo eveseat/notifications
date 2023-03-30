@@ -286,4 +286,10 @@ return [
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\InActiveCorpMember::class,
         ],
     ],
+    'character_contract_created' => [
+        'label' => 'notifications::alerts.character_contract_created',
+        'handlers' => [
+            'slack' => \Seat\Notifications\Notifications\Characters\Slack\CharacterContractNotification::class,
+        ],
+    ]
 ];
