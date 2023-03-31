@@ -103,7 +103,7 @@ class IntegrationsController extends Controller
             'type'     => 'mail',
         ]);
 
-        return redirect()->route('notifications.integrations.list')
+        return redirect()->route('seatcore::notifications.integrations.list')
             ->with('success', 'Mail Integration Added!');
     }
 
@@ -129,7 +129,7 @@ class IntegrationsController extends Controller
             'type'     => 'slack',
         ]);
 
-        return redirect()->route('notifications.integrations.list')
+        return redirect()->route('seatcore::notifications.integrations.list')
             ->with('success', 'Slack Integration Added!');
     }
 }
