@@ -289,7 +289,7 @@ return [
     'character_contract_created' => [
         'label' => 'notifications::alerts.character_contract_created',
         'handlers' => [
-            'slack' => \Seat\Notifications\Notifications\Characters\Slack\CharacterContractNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Contracts\Slack\ContractNotification::class,
         ],
     ]
 ];

@@ -33,17 +33,20 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Observers
  */
-class CharacterContractObserver
+class ContractDetailObserver
 {
     /**
-     * @param  CharacterContract  $contract
+     * @param  ContractDetail  $contract
      */
-    public function created(CharacterContract $contract)
+    public function created(ContractDetail $contract)
     {
+        // if the contract is old but just got loaded, don't notify
+        if($contract->date_expired && carbon($contract->date_expired) < now()->subHours(1)) return;
+
         $this->dispatch($contract);
     }
 
-    public function saving(CharacterContract $contract)
+    public function saved(ContractDetail $contract)
     {
         $this->dispatch($contract);
     }
@@ -51,15 +54,18 @@ class CharacterContractObserver
     /**
      * Queue notification based on User Creation.
      *
-     * @param  \Seat\Web\Models\User  $user
+     * @param  ContractDetail $contract
      */
-    private function dispatch(CharacterContract $contract)
+    private function dispatch(ContractDetail $contract)
     {
+        //if nothing changed, don't notify
+        if(!$contract->isDirty()) return;
+
         // detect handlers setup for the current notification
         $handlers = config('notifications.alerts.character_contract_created.handlers', []);
 
         // retrieve routing candidates for the current notification
-        $routes = $this->getRoutingCandidates($contract->detail);
+        $routes = $this->getRoutingCandidates($contract);
 
         // in case no routing candidates has been delivered, exit
         if ($routes->isEmpty())
@@ -91,8 +97,9 @@ class CharacterContractObserver
                 $query->where('alert', "character_contract_created");
             })->whereHas('affiliations', function ($query) use ($detail) {
                 $query->where('affiliation_id', $detail->issuer_id);
-                $query->orWhere('affiliation_id', $detail->assingee);
+                $query->orWhere('affiliation_id', $detail->assingee_id);
                 $query->orWhere('affiliation_id', $detail->acceptor_id);
+                $query->orWhere('affiliation_id', $detail->issuer_corporation_id);
             })->get();
 
         $routes = $settings->map(function ($group) {

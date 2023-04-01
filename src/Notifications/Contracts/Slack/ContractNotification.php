@@ -20,35 +20,36 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Characters\Slack;
+namespace Seat\Notifications\Notifications\Contracts\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Contracts\CharacterContract;
+use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class CharacterContractNotification.
+ * Class ContractNotification.
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class CharacterContractNotification extends AbstractNotification
+class ContractNotification extends AbstractNotification
 {
     use NotificationTools;
 
     /**
-     * @var CharacterContract
+     * @var ContractDetail
      */
-    private $contract;
+    private ContractDetail $contract;
 
     /**
      * Create a new notification instance.
      *
-     * @param  CharacterContract  $contract
+     * @param  ContractDetail  $contract
      */
-    public function __construct(CharacterContract $contract)
+    public function __construct(ContractDetail $contract)
     {
 
         $this->contract = $contract;
@@ -74,23 +75,26 @@ class CharacterContractNotification extends AbstractNotification
      */
     public function toSlack($notifiable)
     {
-        $detail = $this->contract->detail;
-
         $message = (new SlackMessage)
             ->content('A new contract has been created!')
             ->from('SeAT Contract Monitor')
-            ->attachment(function ($attachment) use ($detail) {
+            ->attachment(function ($attachment){
+                $type = $this->contract->type;
+                if($type == "item_exchange"){
+                    $type = "item exchange";
+                }
 
                 $attachment
-                    ->timestamp(carbon($detail->date_issued))
+                    ->timestamp(carbon($this->contract->date_issued))
                     ->fields([
-                        'Issuer' => $detail->issuer->name,
-                        'Assignee'  => $detail->assignee->name,
-                        'Acceptor' => $detail->acceptor()->exists() ? $detail->acceptor->name : "-",
-                        'Type'=> $detail->type,
-                        'Status'=> $detail->status,
-                        'Description'=>$detail->title ?? "-",
-                        'Issued'=>carbon($detail->date_issued)
+                        'Issuer' => $this->contract->issuer->name,
+                        'Assignee'  => $this->contract->assignee->name,
+                        'Acceptor' => $this->contract->acceptor()->exists() ? $this->contract->acceptor->name : "-",
+                        'Type'=> $type,
+                        'Status'=> $this->contract->status,
+                        'Description'=>$this->contract->title ?? "-",
+                        'Issued'=>carbon($this->contract->date_issued)->toDayDateTimeString(),
+                        'Completed'=>$this->contract->date_completed ? carbon($this->contract->date_completed)->toDayDateTimeString() : "-",
                     ]);
             });
 
