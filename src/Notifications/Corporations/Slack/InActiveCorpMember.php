@@ -24,7 +24,6 @@ namespace Seat\Notifications\Notifications\Corporations\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
-use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**

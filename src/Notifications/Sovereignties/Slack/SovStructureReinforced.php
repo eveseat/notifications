@@ -25,7 +25,6 @@ namespace Seat\Notifications\Notifications\Sovereignties\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 

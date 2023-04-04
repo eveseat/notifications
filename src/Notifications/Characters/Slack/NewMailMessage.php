@@ -24,7 +24,6 @@ namespace Seat\Notifications\Notifications\Characters\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Support\Str;
-use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**

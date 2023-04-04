@@ -24,7 +24,6 @@ namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\RefreshToken;
-use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Web\Models\User;
 

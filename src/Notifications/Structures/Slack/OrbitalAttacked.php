@@ -26,7 +26,6 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
-use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -80,10 +79,10 @@ class OrbitalAttacked extends AbstractSlackNotification
                             $this->zKillBoardToSlackLink(
                                 'corporation',
                                 $this->notification->text['aggressorCorpID'],
-                                (UniverseName::firstOrNew(
+                                UniverseName::firstOrNew(
                                     ['entity_id' => $this->notification->text['aggressorCorpID']],
                                     ['category' => 'corporation', 'name' => trans('web::seat.unknown')])
-                                )->name
+                                ->name
                             ));
                     })
                     ->field(function ($field) {
@@ -96,10 +95,10 @@ class OrbitalAttacked extends AbstractSlackNotification
                                 $this->zKillBoardToSlackLink(
                                     'alliance',
                                     $this->notification->text['aggressorAllianceID'],
-                                    (UniverseName::firstOrNew(
+                                    UniverseName::firstOrNew(
                                         ['entity_id' => $this->notification->text['aggressorAllianceID']],
                                         ['category' => 'alliance', 'name' => trans('web::seat.unknown')])
-                                    )->name
+                                    ->name
                                 ));
                     });
             })

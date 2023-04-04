@@ -22,6 +22,8 @@
 
 namespace Seat\Notifications;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
@@ -37,8 +39,6 @@ use Seat\Services\Settings\Profile;
 use Seat\Web\Models\Squads\SquadApplication;
 use Seat\Web\Models\Squads\SquadMember;
 use Seat\Web\Models\User;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Support\Facades\RateLimiter;
 
 /**
  * Class NotificationsServiceProvider.
@@ -203,7 +203,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         Profile::define('email_address', '');
     }
 
-    private function add_rate_limiters(){
+    private function add_rate_limiters() {
         https://api.slack.com/docs/rate-limits
         RateLimiter::for(AbstractSlackNotification::RATE_LIMIT_KEY, function (object $job) {
             return Limit::perMinute(AbstractSlackNotification::RATE_LIMIT);
