@@ -23,13 +23,11 @@
 namespace Seat\Notifications\Observers;
 
 use Illuminate\Support\Facades\Notification;
-use Seat\Eveapi\Models\Contracts\CharacterContract;
 use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Notifications\Models\NotificationGroup;
-use Seat\Web\Models\User;
 
 /**
- * Class CharacterContractObserver.
+ * Class CharacterDetailObserver.
  *
  * @package Seat\Notifications\Observers
  */
@@ -41,7 +39,10 @@ class ContractDetailObserver
     public function created(ContractDetail $contract)
     {
         // if the contract is old but just got loaded, don't notify
-        if($contract->date_expired && carbon($contract->date_expired) < now()->subHours(1)) return;
+        if(
+            $contract->date_expired && carbon($contract->date_expired) < now()->subHours(1)
+            || $contract->status == "finished"
+        ) return;
 
         $this->dispatch($contract);
     }

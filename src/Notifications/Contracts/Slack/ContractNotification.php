@@ -23,10 +23,7 @@
 namespace Seat\Notifications\Notifications\Contracts\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Contracts\CharacterContract;
 use Seat\Eveapi\Models\Contracts\ContractDetail;
-use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Notifications\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
