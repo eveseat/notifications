@@ -23,9 +23,11 @@
 namespace Seat\Notifications;
 
 use Seat\Eveapi\Models\Character\CharacterNotification;
+use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Observers\CharacterNotificationObserver;
+use Seat\Notifications\Observers\ContractDetailObserver;
 use Seat\Notifications\Observers\CorporationMemberTrackingObserver;
 use Seat\Notifications\Observers\KillmailNotificationObserver;
 use Seat\Notifications\Observers\SquadApplicationObserver;
@@ -175,6 +177,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         User::observe(UserObserver::class);
         SquadApplication::observe(SquadApplicationObserver::class);
         SquadMember::observe(SquadMemberObserver::class);
+        ContractDetail::observe(ContractDetailObserver::class);
     }
 
     /**
