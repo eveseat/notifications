@@ -206,7 +206,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     private function add_rate_limiters(){
         https://api.slack.com/docs/rate-limits
         RateLimiter::for(AbstractSlackNotification::RATE_LIMIT_KEY, function (object $job) {
-            return Limit::perMinute(60);
+            return Limit::perMinute(AbstractSlackNotification::RATE_LIMIT);
         });
     }
 }

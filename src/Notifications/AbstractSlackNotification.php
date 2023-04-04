@@ -8,6 +8,7 @@ use Illuminate\Queue\Middleware\RateLimitedWithRedis;
 abstract class AbstractSlackNotification extends AbstractNotification
 {
     public const RATE_LIMIT_KEY = "slack_webhook";
+    public const RATE_LIMIT = 60;
 
     public function middleware(): array
     {
