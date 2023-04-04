@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications\Seat\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\RefreshToken;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Web\Models\User;
 
 /**
@@ -32,7 +33,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat\Slack
  */
-class EnabledToken extends AbstractNotification
+class EnabledToken extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\RefreshToken

@@ -27,6 +27,7 @@ use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -34,7 +35,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-class OrbitalAttacked extends AbstractNotification
+class OrbitalAttacked extends AbstractSlackNotification
 {
     use NotificationTools;
 

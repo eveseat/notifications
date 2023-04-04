@@ -24,6 +24,7 @@ namespace Seat\Notifications\Notifications\Starbases\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**
  * Class StarbaseSiphons.
@@ -32,7 +33,7 @@ use Seat\Notifications\Notifications\AbstractNotification;
  *
  * @deprecated 4.0.0
  */
-class StarbaseSiphons extends AbstractNotification
+class StarbaseSiphons extends AbstractSlackNotification
 {
     /**
      * @var

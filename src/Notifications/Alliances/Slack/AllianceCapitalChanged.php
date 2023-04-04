@@ -27,6 +27,7 @@ use Seat\Eveapi\Models\Alliances\Alliance;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /***
@@ -34,7 +35,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Alliances\Slack
  */
-class AllianceCapitalChanged extends AbstractNotification
+class AllianceCapitalChanged extends AbstractSlackNotification
 {
     use NotificationTools;
 

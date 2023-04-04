@@ -25,13 +25,14 @@ namespace Seat\Notifications\Notifications\Corporations\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**
  * Class InActiveCorpMember.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class InActiveCorpMember extends AbstractNotification
+class InActiveCorpMember extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking

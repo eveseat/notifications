@@ -26,13 +26,14 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**
  * Class AllyJoinedWarAllyMsg.
  *
  * @package Seat\Notifications\Notifications\Wars\Slack
  */
-class AllyJoinedWarAllyMsg extends AbstractNotification
+class AllyJoinedWarAllyMsg extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification

@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications\Corporations\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations\Slack
  */
-class BillPaidCorpAllMsg extends AbstractNotification
+class BillPaidCorpAllMsg extends AbstractSlackNotification
 {
     use NotificationTools;
 

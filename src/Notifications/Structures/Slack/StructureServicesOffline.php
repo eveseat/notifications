@@ -27,13 +27,14 @@ use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**
  * Class StructureServicesOffline.
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class StructureServicesOffline extends AbstractNotification
+class StructureServicesOffline extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification

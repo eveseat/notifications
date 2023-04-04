@@ -32,7 +32,7 @@ use Seat\Eveapi\Models\Sde\MapDenormalize;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class MoonMiningExtractionStarted extends AbstractMoonMiningExtraction
+class MoonMiningExtractionStarted extends AbstractSlackMoonMiningExtraction
 {
     /**
      * MoonMiningExtractionFinished constructor.
