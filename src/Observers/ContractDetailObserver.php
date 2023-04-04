@@ -41,7 +41,7 @@ class ContractDetailObserver
         // if the contract is old but just got loaded, don't notify
         if(
             $contract->date_expired && carbon($contract->date_expired) < now()->subHours(1)
-            || $contract->status == "finished"
+            || $contract->status === 'finished'
         ) return;
 
         $this->dispatch($contract);
@@ -55,15 +55,15 @@ class ContractDetailObserver
     /**
      * Queue notification based on User Creation.
      *
-     * @param  ContractDetail $contract
+     * @param  ContractDetail  $contract
      */
     private function dispatch(ContractDetail $contract)
     {
         //if nothing changed, don't notify
-        if(!$contract->isDirty()) return;
+        if(! $contract->isDirty()) return;
 
         // detect handlers setup for the current notification
-        $handlers = config('notifications.alerts.character_contract_created.handlers', []);
+        $handlers = config('notifications.alerts.contract_created.handlers', []);
 
         // retrieve routing candidates for the current notification
         $routes = $this->getRoutingCandidates($contract);
@@ -95,7 +95,7 @@ class ContractDetailObserver
     {
         $settings = NotificationGroup::with('alerts', 'affiliations')
             ->whereHas('alerts', function ($query) {
-                $query->where('alert', "character_contract_created");
+                $query->where('alert', 'contract_created');
             })->whereHas('affiliations', function ($query) use ($detail) {
                 $query->where('affiliation_id', $detail->issuer_id);
                 $query->orWhere('affiliation_id', $detail->assingee_id);

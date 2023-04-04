@@ -75,23 +75,22 @@ class ContractNotification extends AbstractNotification
         $message = (new SlackMessage)
             ->content('A new contract has been created!')
             ->from('SeAT Contract Monitor')
-            ->attachment(function ($attachment){
+            ->attachment(function ($attachment) {
                 $type = $this->contract->type;
-                if($type == "item_exchange"){
-                    $type = "item exchange";
+                if($type == 'item_exchange'){
+                    $type = 'item exchange';
                 }
 
                 $attachment
-                    ->timestamp(carbon($this->contract->date_issued))
                     ->fields([
                         'Issuer' => $this->contract->issuer->name,
                         'Assignee'  => $this->contract->assignee->name,
-                        'Acceptor' => $this->contract->acceptor()->exists() ? $this->contract->acceptor->name : "-",
+                        'Acceptor' => $this->contract->acceptor()->exists() ? $this->contract->acceptor->name : '-',
                         'Type'=> $type,
                         'Status'=> $this->contract->status,
-                        'Description'=>$this->contract->title ?? "-",
+                        'Description'=>$this->contract->title ?? '-',
                         'Issued'=>carbon($this->contract->date_issued)->toDayDateTimeString(),
-                        'Completed'=>$this->contract->date_completed ? carbon($this->contract->date_completed)->toDayDateTimeString() : "-",
+                        'Completed'=>$this->contract->date_completed ? carbon($this->contract->date_completed)->toDayDateTimeString() : '-',
                     ]);
             });
 
