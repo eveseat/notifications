@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Contracts\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Contracts\ContractDetail;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,7 +32,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class ContractNotification extends AbstractNotification
+class ContractNotification extends AbstractSlackNotification
 {
     use NotificationTools;
 
