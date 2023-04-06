@@ -56,10 +56,10 @@ abstract class AbstractNotificationJob extends Notification implements ShouldQue
     public function failed(Exception $exception)
     {
         // Analytics. Report only the Exception class and message.
-        dispatch((new Analytics((new AnalyticsContainer)
+        dispatch(new Analytics((new AnalyticsContainer)
             ->set('type', 'exception')
             ->set('exd', get_class($exception) . ':' . $exception->getMessage())
-            ->set('exf', 1))))->onQueue('default');
+            ->set('exf', 1)))->onQueue('default');
 
         // Rethrow the original exception for Horizon
         throw $exception;
