@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Sde\InvType;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,7 +32,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-abstract class AbstractMoonMiningExtraction extends AbstractNotification
+abstract class AbstractSlackMoonMiningExtraction extends AbstractSlackNotification
 {
     use NotificationTools;
 

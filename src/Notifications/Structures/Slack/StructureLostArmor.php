@@ -26,7 +26,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -34,7 +34,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-class StructureLostArmor extends AbstractNotification
+class StructureLostArmor extends AbstractSlackNotification
 {
     use NotificationTools;
 

@@ -25,14 +25,14 @@ namespace Seat\Notifications\Notifications\Wars\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /***
  * Class AllWarInvalidatedMsg.
  *
  * @package Seat\Notifications\Notifications\Corporations\Slack
  */
-class AllWarInvalidatedMsg extends AbstractNotification
+class AllWarInvalidatedMsg extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification

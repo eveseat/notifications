@@ -22,10 +22,13 @@
 
 namespace Seat\Notifications;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Observers\CharacterNotificationObserver;
 use Seat\Notifications\Observers\ContractDetailObserver;
 use Seat\Notifications\Observers\CorporationMemberTrackingObserver;
@@ -70,6 +73,9 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
 
         // Add events listeners
         $this->add_events();
+
+        // rate limiting for slack/discord
+        $this->add_rate_limiters();
     }
 
     /**
@@ -198,5 +204,12 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         // Notifications
         Profile::define('email_notifications', 'no');
         Profile::define('email_address', '');
+    }
+
+    private function add_rate_limiters() {
+        https://api.slack.com/docs/rate-limits
+        RateLimiter::for(AbstractSlackNotification::RATE_LIMIT_KEY, function (object $job) {
+            return Limit::perMinute(AbstractSlackNotification::RATE_LIMIT);
+        });
     }
 }

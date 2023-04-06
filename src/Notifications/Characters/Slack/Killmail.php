@@ -25,7 +25,7 @@ namespace Seat\Notifications\Notifications\Characters\Slack;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class Killmail extends AbstractNotification
+class Killmail extends AbstractSlackNotification
 {
     use NotificationTools;
 

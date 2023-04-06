@@ -26,14 +26,14 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**
  * Class CharLeftCorpMsg.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class CharLeftCorpMsg extends AbstractNotification
+class CharLeftCorpMsg extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
