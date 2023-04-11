@@ -292,4 +292,13 @@ return [
             'slack' => \Seat\Notifications\Notifications\Contracts\Slack\ContractNotification::class,
         ],
     ],
+    // even though the test notification can't be added to a notification group, it is here for consistency
+    'test_integration' => [
+        'label' => 'notifications::notifications.test_integration', // Since it's hidden, it shouldn't really matter
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Seat\Mail\TestNotification::class,
+            'slack' => \Seat\Notifications\Notifications\Seat\Slack\TestNotification::class,
+        ],
+        'hidden' => true
+    ]
 ];
