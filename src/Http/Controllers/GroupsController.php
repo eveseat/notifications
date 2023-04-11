@@ -160,9 +160,10 @@ class GroupsController extends Controller
         $alerts = collect(config('notifications.alerts', []));
 
         // remove all hidden groups
-        $alerts = $alerts->filter(function ($alert){
+        $alerts = $alerts->filter(function ($alert) {
             $hidden = $alert['hidden'] ?? false;
-            return !$hidden;
+
+            return ! $hidden;
         });
 
         if (! empty($keyword)) {

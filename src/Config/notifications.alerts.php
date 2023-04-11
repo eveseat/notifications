@@ -299,6 +299,6 @@ return [
             'mail' => \Seat\Notifications\Notifications\Seat\Mail\TestNotification::class,
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\TestNotification::class,
         ],
-        'hidden' => true
-    ]
+        'hidden' => true,
+    ],
 ];

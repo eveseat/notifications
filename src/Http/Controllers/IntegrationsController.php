@@ -22,10 +22,10 @@
 
 namespace Seat\Notifications\Http\Controllers;
 
+use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Http\Validation\EmailIntegration;
 use Seat\Notifications\Http\Validation\SlackIntegration;
 use Seat\Notifications\Models\Integration;
-use Illuminate\Support\Facades\Notification;
 use Seat\Web\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 
@@ -82,7 +82,7 @@ class IntegrationsController extends Controller
             ->with('success', 'Integration deleted!');
     }
 
-    public function getTestIntegration(int $integration_id){
+    public function getTestIntegration(int $integration_id) {
         $integration = Integration::find($integration_id);
 
         if($integration === null){
@@ -90,9 +90,9 @@ class IntegrationsController extends Controller
                 ->with('error', 'Integration not found!');
         }
 
-        $notification = config(sprintf('notifications.alerts.test_integration.handlers.%s',$integration->type), null);
+        $notification = config(sprintf('notifications.alerts.test_integration.handlers.%s', $integration->type), null);
 
-        if($notification === null || !class_exists($notification)){
+        if($notification === null || ! class_exists($notification)){
             return redirect()->back()
                 ->with('error', 'Integration doesn\'t support test notifications. Please report this to the SeAT team.');
         }
