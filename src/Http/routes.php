@@ -25,11 +25,6 @@ Route::group([
     'prefix'     => 'notifications',
     'middleware' => ['web', 'auth'],
 ], function () {
-
-    Route::get('/')
-        ->name('seatcore::notifications.list')
-        ->uses('NotificationController@getNotifications');
-
     Route::group([
         'prefix'     => 'integrations',
         'middleware' => 'can:notifications.setup',
