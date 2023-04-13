@@ -161,9 +161,9 @@ class GroupsController extends Controller
 
         // remove all hidden groups
         $alerts = $alerts->filter(function ($alert) {
-            $hidden = $alert['hidden'] ?? false;
+            $is_visible = $alert['visible'] ?? true;
 
-            return ! $hidden;
+            return $is_visible;
         });
 
         if (! empty($keyword)) {
