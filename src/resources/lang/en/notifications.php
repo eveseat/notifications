@@ -49,4 +49,6 @@ return [
 
     'setup_label'             => 'Notifications Setup',
     'setup_description'       => 'Allow user to define notification channels and subscriptions.',
+
+    'test_integration'        => 'Test',
 ];

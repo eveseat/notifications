@@ -159,6 +159,13 @@ class GroupsController extends Controller
         $keyword = strtolower($request->query('q', ''));
         $alerts = collect(config('notifications.alerts', []));
 
+        // remove all hidden groups
+        $alerts = $alerts->filter(function ($alert) {
+            $is_visible = $alert['visible'] ?? true;
+
+            return $is_visible;
+        });
+
         if (! empty($keyword)) {
             $alerts = $alerts->filter(function ($alert) use ($keyword) {
                 return strpos(strtolower(trans($alert['label'])), $keyword) !== false;

@@ -42,6 +42,10 @@ Route::group([
             ->name('seatcore::notifications.integrations.delete')
             ->uses('IntegrationsController@getDeleteIntegration');
 
+        Route::get('/test/{integration_id}')
+            ->name('seatcore::notifications.integrations.test')
+            ->uses('IntegrationsController@getTestIntegration');
+
         // New Integrations
 
         // Email

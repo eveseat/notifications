@@ -22,6 +22,7 @@
 
 namespace Seat\Notifications\Http\Controllers;
 
+use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Http\Validation\EmailIntegration;
 use Seat\Notifications\Http\Validation\SlackIntegration;
 use Seat\Notifications\Models\Integration;
@@ -60,7 +61,7 @@ class IntegrationsController extends Controller
             ->addColumn('actions', function ($row) {
 
                 return view(
-                    'notifications::integrations.partials.deleteintegration', compact('row')
+                    'notifications::integrations.partials.actions', compact('row')
                 )->render();
             })
             ->rawColumns(['actions'])
@@ -79,6 +80,31 @@ class IntegrationsController extends Controller
 
         return redirect()->back()
             ->with('success', 'Integration deleted!');
+    }
+
+    public function getTestIntegration(int $integration_id) {
+        $integration = Integration::find($integration_id);
+
+        if($integration === null){
+            return redirect()->back()
+                ->with('error', 'Integration not found!');
+        }
+
+        $notification = config(sprintf('notifications.alerts.test_integration.handlers.%s', $integration->type), null);
+
+        if($notification === null || ! class_exists($notification)){
+            return redirect()->back()
+                ->with('error', 'Integration doesn\'t support test notifications. Please report this to the SeAT team.');
+        }
+
+        $setting = (array) $integration->settings;
+        $key = array_key_first($setting);
+        $route = $setting[$key];
+
+        Notification::route($integration->type, $route)->notify(new $notification());
+
+        return redirect()->back()
+            ->with('success', 'Successfully scheduled notification test');
     }
 
     /**
