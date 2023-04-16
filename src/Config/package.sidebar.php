@@ -27,6 +27,7 @@ return [
         'label'         => 'Notifications',
         'icon'          => 'fas fa-bell',
         'route_segment' => 'notifications',
+        'permission'    => 'notifications.setup',
         'entries'       => [
             [
                 'name'       => 'integrations',
@@ -34,12 +35,6 @@ return [
                 'permission' => 'notifications.setup',
                 'icon'       => 'fas fa-toggle-on',
                 'route'      => 'seatcore::notifications.integrations.list',
-            ],
-            [
-                'name'  => 'notifications',
-                'label' => 'My Notifications',
-                'icon'  => 'fas fa-envelope-square',
-                'route' => 'seatcore::notifications.list',
             ],
             [
                 'name'       => 'notification.groups',

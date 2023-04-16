@@ -20,24 +20,40 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Http\Controllers;
+namespace Seat\Notifications\Notifications\Seat\Mail;
 
-use Seat\Web\Http\Controllers\Controller;
+use Illuminate\Notifications\Messages\MailMessage;
+use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
- * Class NotificationController.
+ * Class TestNotification.
  *
- * @package Seat\Notifications\Http\Controllers
+ * @package Seat\Notifications\Notifications\Seat
  */
-class NotificationController extends Controller
+class TestNotification extends AbstractNotification
 {
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
      */
-    public function getNotifications()
+    public function via($notifiable)
     {
+        return ['mail'];
+    }
 
-        return view('notifications::notifications.list');
-
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+            ->success()
+            ->greeting('Heads up!')
+            ->line('SeAT notification seem to be working!');
     }
 }
