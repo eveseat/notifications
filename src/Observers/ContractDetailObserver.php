@@ -44,11 +44,19 @@ class ContractDetailObserver
             || $contract->status === 'finished'
         ) return;
 
+        logger()->debug(
+            sprintf('[Notifications][%d] Contract Detail - Queuing job due to created contract.', $contract->contract_id),
+            $contract->toArray());
+
         $this->dispatch($contract);
     }
 
-    public function saved(ContractDetail $contract)
+    public function updated(ContractDetail $contract)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Contract Detail - Queuing job due to updated contract.', $contract->contract_id),
+            $contract->toArray());
+
         $this->dispatch($contract);
     }
 
