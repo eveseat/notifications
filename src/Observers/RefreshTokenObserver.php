@@ -38,6 +38,9 @@ class RefreshTokenObserver
      */
     public function deleted(RefreshToken $token)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Access Token - Queuing job due to removed access token.', $token->character_id));
+
         $this->dispatch($token, 'disabled_token');
     }
 
@@ -46,6 +49,9 @@ class RefreshTokenObserver
      */
     public function restored(RefreshToken $token)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Access Token - Queuing job due to restored access token.', $token->character_id));
+
         $this->dispatch($token, 'enabled_token');
     }
 

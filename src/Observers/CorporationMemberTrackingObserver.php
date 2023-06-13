@@ -40,6 +40,10 @@ class CorporationMemberTrackingObserver
      */
     public function created(CorporationMemberTracking $member)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Corporation Member Tracking - Queuing job due to created corporation member event.', $member->character_id),
+            $member->toArray());
+
         $this->dispatch($member);
     }
 
@@ -48,6 +52,10 @@ class CorporationMemberTrackingObserver
      */
     public function updated(CorporationMemberTracking $member)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Corporation Member Tracking - Queuing job due to updated corporation member event.', $member->character_id),
+            $member->toArray());
+
         $this->dispatch($member);
     }
 
