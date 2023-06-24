@@ -22,7 +22,7 @@
 
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
-use Seat\Notifications\Jobs\AbstractCharacterNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
@@ -33,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations\Discord
  */
-class BillPaidCorpAllMsg extends AbstractCharacterNotification
+class BillPaidCorpAllMsg extends AbstractDiscordNotification
 {
     use NotificationTools;
 
@@ -43,6 +43,21 @@ class BillPaidCorpAllMsg extends AbstractCharacterNotification
     public function via($notifiable)
     {
         return ['discord'];
+    }
+
+    /**
+     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     */
+    private $notification;
+
+    /**
+     * Constructor
+     *
+     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
+     */
+    public function __construct(CharacterNotification $notification)
+    {
+        $this->notification = $notification;
     }
 
     /**

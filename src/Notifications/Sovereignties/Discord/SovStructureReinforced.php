@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Sovereignties\Discord;
 
 use Seat\Eveapi\Models\Sde\SolarSystem;
-use Seat\Notifications\Jobs\AbstractCharacterNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
@@ -34,7 +34,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Sovereignties\Discord
  */
-class SovStructureReinforced extends AbstractCharacterNotification
+class SovStructureReinforced extends AbstractDiscordNotification
 {
     use NotificationTools;
 
@@ -45,6 +45,21 @@ class SovStructureReinforced extends AbstractCharacterNotification
     public function via($notifiable)
     {
         return ['discord'];
+    }
+
+    /**
+     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     */
+    private $notification;
+
+    /**
+     * Constructor
+     *
+     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
+     */
+    public function __construct(CharacterNotification $notification)
+    {
+        $this->notification = $notification;
     }
 
     /**

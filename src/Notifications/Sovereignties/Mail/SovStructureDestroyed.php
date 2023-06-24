@@ -25,7 +25,7 @@ namespace Seat\Notifications\Notifications\Sovereignties\Mail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Jobs\AbstractCharacterNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Sovereignties
  */
-class SovStructureDestroyed extends AbstractCharacterNotification
+class SovStructureDestroyed extends AbstractMailNotification
 {
     use NotificationTools;
 
@@ -44,6 +44,21 @@ class SovStructureDestroyed extends AbstractCharacterNotification
     public function via($notifiable)
     {
         return ['mail'];
+    }
+
+    /**
+     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     */
+    private $notification;
+
+    /**
+     * Constructor
+     *
+     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
+     */
+    public function __construct(CharacterNotification $notification)
+    {
+        $this->notification = $notification;
     }
 
     /**

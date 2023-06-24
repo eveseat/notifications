@@ -25,7 +25,7 @@ namespace Seat\Notifications\Notifications\Corporations\Mail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Alliances\Alliance;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Seat\Notifications\Jobs\AbstractCharacterNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class CorpAllBillMsg extends AbstractCharacterNotification
+class CorpAllBillMsg extends AbstractMailNotification
 {
     use NotificationTools;
 
@@ -45,6 +45,22 @@ class CorpAllBillMsg extends AbstractCharacterNotification
     {
         return ['mail'];
     }
+
+    /**
+     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     */
+    private $notification;
+
+    /**
+     * Constructor
+     *
+     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
+     */
+    public function __construct(CharacterNotification $notification)
+    {
+        $this->notification = $notification;
+    }
+
 
     /**
      * @param $notifiable

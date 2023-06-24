@@ -25,7 +25,7 @@ namespace Seat\Notifications\Notifications\Structures\Mail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Jobs\AbstractCharacterNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class MoonMiningExtractionStarted
+class MoonMiningExtractionStarted extends AbstractMailNotification
 {
     use NotificationTools;
 

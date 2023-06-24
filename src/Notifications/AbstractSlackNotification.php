@@ -29,7 +29,7 @@ use Seat\Notifications\Jobs\AbstractNotification;
 abstract class AbstractSlackNotification extends AbstractNotification
 {
     public const RATE_LIMIT_KEY = 'slack_webhook';
-    public const RATE_LIMIT = 60;
+    public const RATE_LIMIT = 60; // https://api.slack.com/docs/rate-limits
 
     public function middleware(): array
     {
