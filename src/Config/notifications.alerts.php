@@ -313,6 +313,7 @@ return [
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Seat\Mail\TestNotification::class,
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\TestNotification::class,
+            'discord'=>\Seat\Notifications\Notifications\Seat\Discord\TestNotification::class,
         ],
         'visible' => false,
     ],

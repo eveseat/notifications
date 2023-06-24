@@ -131,7 +131,7 @@ class IntegrationsController extends Controller
             'type'     => 'discord',
         ]);
 
-        return redirect()->route('notifications.integrations.list')
+        return redirect()->route('seatcore::notifications.integrations.list')
             ->with('success', 'Discord Integration Added!');
     }
 
