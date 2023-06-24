@@ -55,7 +55,7 @@ class ContractNotification extends AbstractSlackNotification
     /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return SlackMessage
      */
     public function toSlack($notifiable)

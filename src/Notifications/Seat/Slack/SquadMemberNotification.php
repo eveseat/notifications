@@ -63,7 +63,7 @@ class SquadMemberNotification extends AbstractSlackNotification
     /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

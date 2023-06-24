@@ -42,7 +42,7 @@ class StarbaseStateChange extends AbstractSlackNotification
     /**
      * Create a new notification instance.
      *
-     * @param $starbase
+     * @param  $starbase
      */
     public function __construct($starbase)
     {
@@ -53,7 +53,7 @@ class StarbaseStateChange extends AbstractSlackNotification
     /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

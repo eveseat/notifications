@@ -24,7 +24,6 @@ namespace Seat\Notifications\Notifications\Seat\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Notifications\Notifications\AbstractMailNotification;
-use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
  * Class TestNotification.

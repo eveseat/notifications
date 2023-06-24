@@ -60,15 +60,17 @@ abstract class AbstractDiscordNotification extends AbstractNotification
     public function toDiscord($notifiable)
     {
         $message = new DiscordMessage();
-        $message->content("@here");
+        $message->content('@here');
         $this->populateMessage($message, $notifiable);
+
         return $message;
     }
 
     /**
-     * Populate the content of the notification
-     * @param DiscordMessage $message
-     * @param $notifiable
+     * Populate the content of the notification.
+     *
+     * @param  DiscordMessage  $message
+     * @param  $notifiable
      * */
-    protected abstract function populateMessage(DiscordMessage $message, $notifiable);
+    abstract protected function populateMessage(DiscordMessage $message, $notifiable);
 }

@@ -51,8 +51,8 @@ class CreatedUser extends AbstractDiscordNotification
     }
 
     /**
-     * @param DiscordMessage $message
-     * @param $notifiable
+     * @param  DiscordMessage  $message
+     * @param  $notifiable
      */
     public function populateMessage(DiscordMessage $message, $notifiable)
     {
