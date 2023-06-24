@@ -2,12 +2,14 @@
 
 namespace Seat\Notifications\Traits;
 
+use Illuminate\Support\Facades\Notification;
+
 trait NotificationDispatchTool
 {
     public function mapGroups($groups){
         return $groups
             ->map(function ($group) {
-                return $group->integrations->map(function ($channel) {
+                return $group->integrations->map(function ($channel) use ($group) {
 
                     // extract the route value from settings field
                     $setting = (array)$channel->settings;
@@ -18,12 +20,11 @@ trait NotificationDispatchTool
                     return (object)[
                         'channel' => $channel->type,
                         'route' => $route,
+                        'mentions' => $group->mentions,
                     ];
                 });
             })
-            ->flatten()->unique(function ($integration) {
-                return $integration->channel . $integration->route;
-            });
+            ->flatten();
     }
 
     public function dispatchNotifications($alert_type,$groups,$notification_creation_callback)
@@ -49,6 +50,9 @@ trait NotificationDispatchTool
                 $handler = $handlers[$integration->channel];
 
                 $notification = $notification_creation_callback($handler);
+                $notification->setMentions($integration->mentions);
+
+                logger()->error("set:".json_encode($notification->getMentions()));
 
                 // enqueue the notification
                 Notification::route($integration->channel, $integration->route)

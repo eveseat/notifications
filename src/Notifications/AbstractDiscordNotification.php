@@ -39,7 +39,7 @@ abstract class AbstractDiscordNotification extends AbstractNotification
 
     public function retryUntil(): DateTime
     {
-        return now()->addMinutes(60);
+        return now()->addSeconds(10);
     }
 
     /**
@@ -58,10 +58,10 @@ abstract class AbstractDiscordNotification extends AbstractNotification
      * @return DiscordMessage
      */
     // we can already declare this final because all discord notifications are ported to populateMessage
-    public final function toDiscord($notifiable): MailMessage
+    public final function toDiscord($notifiable): DiscordMessage
     {
         $message = new DiscordMessage();
-        $message->content('@here');
+        $message->content($this->formatMentions());
         $this->populateMessage($message, $notifiable);
 
         return $message;
@@ -74,4 +74,24 @@ abstract class AbstractDiscordNotification extends AbstractNotification
      * @param  $notifiable
      * */
     abstract protected function populateMessage(DiscordMessage $message, $notifiable);
+
+    private function formatMentions(): string {
+        logger()->error("get:".json_encode($this->getMentions()));
+
+//        $mentions = $this->getMentions()
+//            ->map(function ($mention){
+//                return (object)[
+//                    'data' => $mention->data,
+//                    'type'=>$mention->getType()
+//                ];
+//            })
+//            ->filter(function ($mention){
+//               return $mention->type->type === 'discord';
+//            })
+//            ->map(function ($mention){
+//                return $mention->name;
+//            })->toArray();
+//        return implode(" ", $mentions);
+        return "aa";
+    }
 }

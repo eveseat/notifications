@@ -22,6 +22,8 @@
 
 namespace Seat\Notifications\Jobs;
 
+use Illuminate\Queue\SerializesModels;
+
 /**
  * Class AbstractNotification.
  *
@@ -29,6 +31,8 @@ namespace Seat\Notifications\Jobs;
  */
 abstract class AbstractNotification extends AbstractNotificationJob
 {
+    use SerializesModels;
+
     /**
      * {@inheritdoc}
      */
@@ -48,4 +52,23 @@ abstract class AbstractNotification extends AbstractNotificationJob
      * @return array
      */
     abstract public function via($notifiable);
+
+    public $mentions;
+
+    /**
+     * @return mixed
+     */
+    public function getMentions()
+    {
+        return $this->mentions ?? collect();
+    }
+
+    /**
+     * @param mixed $mentions
+     */
+    public function setMentions($mentions): void
+    {
+        $this->mentions = $mentions;
+    }
+
 }

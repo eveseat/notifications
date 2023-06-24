@@ -27,6 +27,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Seat\Services\Helpers\AnalyticsContainer;
 use Seat\Services\Jobs\Analytics;
 
@@ -37,7 +38,7 @@ use Seat\Services\Jobs\Analytics;
  */
 abstract class AbstractNotificationJob extends Notification implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * When a job fails, grab some information and send a
@@ -62,7 +63,7 @@ abstract class AbstractNotificationJob extends Notification implements ShouldQue
             ->set('exf', 1)))->onQueue('default');
 
         // Rethrow the original exception for Horizon
-        throw $exception;
+        $this->fail($exception);
     }
 
     /**

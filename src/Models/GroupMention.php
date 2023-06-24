@@ -61,10 +61,11 @@ class GroupMention extends Model
         return $this->belongsTo(NotificationGroup::class);
     }
 
-    public function data(){
-        return config('notifications.mentions')[$this->type] ?? [
+    public function getType(): object
+    {
+        return (object)(config('notifications.mentions')[$this->type] ?? [
                 'type' => 'mail',
                 'name' => 'notifications::mentions.unknown'
-            ];
+            ]);
     }
 }

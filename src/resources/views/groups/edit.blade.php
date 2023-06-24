@@ -121,8 +121,8 @@
                 @foreach($group->mentions as $mention)
 
                     <tr>
-                        <td>{{ trans($mention->data()['name']) }}</td>
-                        <td>{{ ucfirst($mention->data()['type']) }}</td>
+                        <td>{{ trans($mention->getType()->name) }}</td>
+                        <td>{{ ucfirst($mention->getType()->type) }}</td>
                         <th>
                             @if($mention->data !== [])
                                 <code>{{ json_encode($mention->data) }}</code>
