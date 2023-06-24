@@ -106,6 +106,14 @@ Route::group([
             ->name('seatcore::notifications.groups.edit.integration.delete')
             ->uses('GroupsController@getDeleteIntegration');
 
+        Route::post('/edit/mentions/add')
+            ->name('seatcore::notifications.groups.edit.mention.add')
+            ->uses('GroupsController@postAddGroupMention');
+
+        Route::get('/edit/mentions/delete/{mention_id}')
+            ->name('seatcore::notifications.groups.edit.mention.delete')
+            ->uses('GroupsController@postDeleteGroupMention');
+
         Route::get('/ajax/alerts/')
             ->name('seatcore::notifications.ajax.alerts')
             ->uses('GroupsController@getAjaxAlerts');
@@ -132,4 +140,12 @@ Route::group([
 
     });
 
+//    Route::group([
+//        'prefix'     => 'mentions',
+//        'middleware' => 'can:notifications.setup',
+//    ], function () {
+//        Route::post('/{group}/create/discord/@everyone')
+//            ->name('seatcore::notifications.mentions.create.discord.@everyone')
+//            ->uses('MentionsController@postCreateAtEveryone');
+//    });
 });

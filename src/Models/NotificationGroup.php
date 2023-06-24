@@ -60,6 +60,15 @@ class NotificationGroup extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function mentions()
+    {
+
+        return $this->hasMany(GroupMention::class);
+    }
+
+    /**
      * Get all of the configured notification channels.
      *
      * @return mixed

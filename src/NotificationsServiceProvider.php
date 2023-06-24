@@ -171,6 +171,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     {
         $this->publishes([
             __DIR__ . '/Config/notifications.alerts.php' => config_path('notifications.alerts.php'),
+            __DIR__ . '/Config/notifications.mentions.php' => config_path('notifications.mentions.php'),
         ], ['config', 'seat']);
     }
 

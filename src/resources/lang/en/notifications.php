@@ -52,4 +52,8 @@ return [
     'setup_description'       => 'Allow user to define notification channels and subscriptions.',
 
     'test_integration'        => 'Test',
+
+    'mention'                 => 'Mention|Mentions',
+    'data'                    => 'Data',
+    'actions'                 => 'Actions'
 ];
