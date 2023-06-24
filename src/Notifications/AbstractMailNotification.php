@@ -23,8 +23,8 @@
 namespace Seat\Notifications\Notifications;
 
 use DateTime;
-use Seat\Notifications\Jobs\AbstractNotification;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 abstract class AbstractMailNotification extends AbstractNotification
 {

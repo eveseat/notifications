@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Notifications\Seat\Discord;
 
-use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 

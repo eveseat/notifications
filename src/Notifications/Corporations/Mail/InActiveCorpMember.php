@@ -23,14 +23,14 @@
 namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 
 /**
  * Class InActiveCorpMember.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class InActiveCorpMember extends AbstractNotification
+class InActiveCorpMember extends AbstractMailNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking

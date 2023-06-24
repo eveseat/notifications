@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,7 +32,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class Killmail extends AbstractNotification
+class Killmail extends AbstractMailNotification
 {
     use NotificationTools;
 

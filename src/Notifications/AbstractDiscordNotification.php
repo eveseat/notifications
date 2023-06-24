@@ -23,9 +23,9 @@
 namespace Seat\Notifications\Notifications;
 
 use DateTime;
+use Illuminate\Queue\Middleware\RateLimitedWithRedis;
 use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
-use Illuminate\Queue\Middleware\RateLimitedWithRedis;
 
 abstract class AbstractDiscordNotification extends AbstractNotification
 {

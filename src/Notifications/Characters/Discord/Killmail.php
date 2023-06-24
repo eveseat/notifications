@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Discord;
 
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
@@ -35,7 +35,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters\Discord
  */
-class Killmail extends AbstractNotification
+class Killmail extends AbstractDiscordNotification
 {
     use NotificationTools;
 
@@ -63,12 +63,12 @@ class Killmail extends AbstractNotification
     }
 
     /**
-     * @param  $notifiable
-     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     * @param DiscordMessage $message
+     * @param $notifiable
      */
-    public function toDiscord($notifiable)
+    public function populateMessage(DiscordMessage $message, $notifiable)
     {
-        return (new DiscordMessage())
+        $message
             ->content('A kill has been recorded for your corporation!')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->killmail->killmail_time);

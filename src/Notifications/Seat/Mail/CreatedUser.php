@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Web\Models\User;
 
 /**
@@ -31,7 +31,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class CreatedUser extends AbstractNotification
+class CreatedUser extends AbstractMailNotification
 {
     /**
      * @var \Seat\Web\Models\User

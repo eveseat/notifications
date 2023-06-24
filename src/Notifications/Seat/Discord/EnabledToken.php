@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Discord;
 
 use Seat\Eveapi\Models\RefreshToken;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
@@ -34,7 +34,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat\Discord
  */
-class EnabledToken extends AbstractNotification
+class EnabledToken extends AbstractDiscordNotification
 {
     /**
      * @var \Seat\Eveapi\Models\RefreshToken
@@ -54,9 +54,13 @@ class EnabledToken extends AbstractNotification
         return ['discord'];
     }
 
-    public function toDiscord($notifiable)
+    /**
+     * @param DiscordMessage $message
+     * @param $notifiable
+     */
+    public function populateMessage(DiscordMessage $message, $notifiable)
     {
-        return (new DiscordMessage())
+        $message
             ->content('A corporation members token has been enabled!')
             ->from('SeAT State of Things')
             ->embed(function (DiscordEmbed $embed) {

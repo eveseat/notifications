@@ -23,11 +23,11 @@
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
-class InActiveCorpMember extends AbstractNotification
+class InActiveCorpMember extends AbstractDiscordNotification
 {
      /**
       * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
@@ -53,12 +53,12 @@ class InActiveCorpMember extends AbstractNotification
     }
 
     /**
-     * @param  $notifiable
-     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     * @param DiscordMessage $message
+     * @param $notifiable
      */
-    public function toDiscord($notifiable)
+    public function populateMessage(DiscordMessage $message, $notifiable)
     {
-        $message = (new DiscordMessage())
+        $message
             ->content('A member has not logged in for some time! Check corp tracking.')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp(carbon());

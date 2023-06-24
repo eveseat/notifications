@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Starbases\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 
 /**
  * Class StarbaseFuel.
@@ -32,7 +32,7 @@ use Seat\Notifications\Jobs\AbstractNotification;
  *
  * @deprecated 4.0.0
  */
-class StarbaseFuel extends AbstractNotification
+class StarbaseFuel extends AbstractMailNotification
 {
     /**
      * @var

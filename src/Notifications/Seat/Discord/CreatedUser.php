@@ -22,7 +22,7 @@
 
 namespace Seat\Notifications\Notifications\Seat\Discord;
 
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
@@ -33,7 +33,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat\Discord
  */
-class CreatedUser extends AbstractNotification
+class CreatedUser extends AbstractDiscordNotification
 {
     /**
      * @var \Seat\Web\Models\User
@@ -59,12 +59,12 @@ class CreatedUser extends AbstractNotification
     }
 
     /**
-     * @param  $notifiable
-     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     * @param DiscordMessage $message
+     * @param $notifiable
      */
-    public function toDiscord($notifiable)
+    public function populateMessage(DiscordMessage $message, $notifiable)
     {
-        return (new DiscordMessage())
+        $message
             ->content('A new SeAT account was created!')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp(carbon());

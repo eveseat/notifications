@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Characters\Discord;
 
 use Illuminate\Support\Str;
-use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
@@ -32,7 +32,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
  *
  * @package Seat\Notifications\Notifications\Characters\Discord
  */
-class NewMailMessage extends AbstractNotification
+class NewMailMessage extends AbstractDiscordNotification
 {
     /**
      * @var
@@ -58,12 +58,12 @@ class NewMailMessage extends AbstractNotification
     }
 
     /**
-     * @param  $notifiable
-     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     * @param DiscordMessage $message
+     * @param $notifiable
      */
-    public function toDiscord($notifiable)
+    public function populateMessage(DiscordMessage $message, $notifiable)
     {
-        return (new DiscordMessage())
+        $message
             ->content('New EVEMail Received!')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->message->timestamp);

@@ -64,12 +64,12 @@ class SovStructureDestroyed extends AbstractDiscordNotification
     }
 
     /**
-     * @param  $notifiable
-     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     * @param DiscordMessage $message
+     * @param $notifiable
      */
-    public function toDiscord($notifiable)
+    public function populateMessage(DiscordMessage $message, $notifiable)
     {
-        return (new DiscordMessage())
+        $message
             ->content('A sovereignty structure has been destroyed! :skull:')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->notification->timestamp);
