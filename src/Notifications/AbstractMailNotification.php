@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications;
 use DateTime;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
 use Seat\Notifications\Jobs\AbstractNotification;
+use Illuminate\Notifications\Messages\MailMessage;
 
 abstract class AbstractMailNotification extends AbstractNotification
 {
@@ -51,4 +52,25 @@ abstract class AbstractMailNotification extends AbstractNotification
     {
         return ['mail'];
     }
+
+    /**
+     * @deprecated 5.0 Child classes should move to using populateMessage instead of overwriting toMail. In the future, toMail will become final.
+     * @param  $notifiable
+     * @return MailMessage
+     */
+    // don't type hint this function, it sometimes breaks notification that still override this
+    public function toMail($notifiable)
+    {
+        $message = new MailMessage();
+        $this->populateMessage($message, $notifiable);
+        return $message;
+    }
+
+    /**
+     * Populate the content of the notification.
+     *
+     * @param  MailMessage  $message
+     * @param  $notifiable
+     * */
+    protected function populateMessage(MailMessage $message, $notifiable){}
 }

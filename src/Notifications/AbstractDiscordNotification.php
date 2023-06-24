@@ -55,9 +55,10 @@ abstract class AbstractDiscordNotification extends AbstractNotification
 
     /**
      * @param  $notifiable
-     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     * @return DiscordMessage
      */
-    public function toDiscord($notifiable)
+    // we can already declare this final because all discord notifications are ported to populateMessage
+    public final function toDiscord($notifiable): MailMessage
     {
         $message = new DiscordMessage();
         $message->content('@here');
