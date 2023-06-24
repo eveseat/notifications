@@ -24,6 +24,21 @@ return [
     'discord_@everyone' => [
         'type' => 'discord',
         'name' => 'notifications::mentions.discord_@everyone',
-        'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createAtEveryone',
+        'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtEveryone',
+    ],
+    'discord_@here' => [
+        'type' => 'discord',
+        'name' => 'notifications::mentions.discord_@here',
+        'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtHere',
+    ],
+    'discord_@role' => [
+        'type' => 'discord',
+        'name' => 'notifications::mentions.discord_@role',
+        'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtRole',
+    ],
+    'discord_@user' => [
+        'type' => 'discord',
+        'name' => 'notifications::mentions.discord_@user',
+        'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtUser',
     ],
 ];
