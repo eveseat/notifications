@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
 use Seat\Web\Models\User;
@@ -56,7 +55,7 @@ class UserObserver
                 $query->where('alert', 'created_user');
             })->get();
 
-        $this->dispatchNotifications('created_user',$groups,function ($notificationClass) use ($user) {
+        $this->dispatchNotifications('created_user', $groups, function ($notificationClass) use ($user) {
             return new $notificationClass($user);
         });
     }

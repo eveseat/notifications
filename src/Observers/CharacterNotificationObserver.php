@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
@@ -65,9 +64,9 @@ class CharacterNotificationObserver
                 $query->orWhere('affiliation_id', $notification->recipient->affiliation->corporation_id);
             })->get();
 
-        logger()->error("character notification",['t'=>json_encode($groups),"c"=>$notification->character_id]);
+        logger()->error('character notification', ['t'=>json_encode($groups), 'c'=>$notification->character_id]);
 
-        $this->dispatchNotifications($notification->type,$groups,function ($notificationClass) use ($notification) {
+        $this->dispatchNotifications($notification->type, $groups, function ($notificationClass) use ($notification) {
             return new $notificationClass($notification);
         });
     }

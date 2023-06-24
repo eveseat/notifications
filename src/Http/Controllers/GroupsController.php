@@ -26,12 +26,12 @@ use Illuminate\Http\Request;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Notifications\Http\DataTables\NotificationGroupDataTable;
+use Seat\Notifications\Http\Validation\CreateGroupMention;
 use Seat\Notifications\Http\Validation\Group;
 use Seat\Notifications\Http\Validation\GroupAffiliation;
 use Seat\Notifications\Http\Validation\GroupAlert;
 use Seat\Notifications\Http\Validation\GroupAllAlert;
 use Seat\Notifications\Http\Validation\GroupIntegration;
-use Seat\Notifications\Http\Validation\CreateGroupMention;
 use Seat\Notifications\Models\GroupAffiliation as GroupAffiliationModel;
 use Seat\Notifications\Models\GroupAlert as GroupAlertModel;
 use Seat\Notifications\Models\GroupMention;
@@ -152,14 +152,14 @@ class GroupsController extends Controller
 
     }
 
-    public function postAddGroupMention(CreateGroupMention $request){
+    public function postAddGroupMention(CreateGroupMention $request) {
         $mention_type = config('notifications.mentions')[$request->mention_type];
 
         // call the controller for creation. It can either show a page to enter more details or directly create the mention.
         return app()->call($mention_type['creation_controller_method']);
     }
 
-    public function postDeleteGroupMention($mention_id){
+    public function postDeleteGroupMention($mention_id) {
         GroupMention::destroy($mention_id);
 
         return redirect()->back()

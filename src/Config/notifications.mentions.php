@@ -25,24 +25,24 @@ return [
         'type' => 'discord',
         'name' => 'notifications::mentions.discord_@everyone',
         'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtEveryone',
-        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtEveryone'
+        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtEveryone',
     ],
     'discord_@here' => [
         'type' => 'discord',
         'name' => 'notifications::mentions.discord_@here',
         'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtHere',
-        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtHere'
+        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtHere',
     ],
     'discord_@role' => [
         'type' => 'discord',
         'name' => 'notifications::mentions.discord_@role',
         'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtRole',
-        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtRole'
+        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtRole',
     ],
     'discord_@user' => [
         'type' => 'discord',
         'name' => 'notifications::mentions.discord_@user',
         'creation_controller_method' => 'Seat\Notifications\Http\Controllers\MentionsController@createDiscordAtUser',
-        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtUser'
+        'message_adapter' => 'Seat\Notifications\Mentions\DiscordMentionsAdapter@populateAtUser',
     ],
 ];

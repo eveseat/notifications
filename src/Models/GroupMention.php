@@ -23,7 +23,6 @@
 namespace Seat\Notifications\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Seat\Eveapi\Models\Universe\UniverseName;
 
 /**
  * Class GroupAffiliation.
@@ -63,9 +62,9 @@ class GroupMention extends Model
 
     public function getType(): object
     {
-        return (object)(config('notifications.mentions')[$this->type] ?? [
-                'type' => 'mail',
-                'name' => 'notifications::mentions.unknown'
-            ]);
+        return (object) (config('notifications.mentions')[$this->type] ?? [
+            'type' => 'mail',
+            'name' => 'notifications::mentions.unknown',
+        ]);
     }
 }

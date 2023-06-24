@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
@@ -70,7 +69,7 @@ class CorporationMemberTrackingObserver
                 $query->orWhere('affiliation_id', $member->corporation_id);
             })->get();
 
-        $this->dispatchNotifications('inactive_member',$groups,function ($notificationClass) use ($member) {
+        $this->dispatchNotifications('inactive_member', $groups, function ($notificationClass) use ($member) {
             return new $notificationClass($member);
         });
     }

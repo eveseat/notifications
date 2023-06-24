@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
@@ -75,7 +74,7 @@ class ContractDetailObserver
                 $query->orWhere('affiliation_id', $contract->issuer_corporation_id);
             })->get();
 
-        $this->dispatchNotifications('contract_created',$groups,function ($notificationClass) use ($contract) {
+        $this->dispatchNotifications('contract_created', $groups, function ($notificationClass) use ($contract) {
             return new $notificationClass($contract);
         });
     }

@@ -50,7 +50,7 @@ class CreateDiscordUserGroupMention extends FormRequest
     public function rules()
     {
         return [
-            'user_id'              => "required|numeric",
+            'user_id'              => 'required|numeric',
             'group_id'             => 'required|numeric|exists:notification_groups,id',
         ];
     }

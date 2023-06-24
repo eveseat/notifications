@@ -22,18 +22,12 @@
 
 namespace Seat\Notifications\Http\Controllers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Http\Validation\CreateDiscordRoleGroupMention;
 use Seat\Notifications\Http\Validation\CreateDiscordUserGroupMention;
-use Seat\Notifications\Http\Validation\DiscordIntegration;
-use Seat\Notifications\Http\Validation\EmailIntegration;
 use Seat\Notifications\Http\Validation\CreateGroupMention;
-use Seat\Notifications\Http\Validation\SlackIntegration;
 use Seat\Notifications\Models\GroupMention;
-use Seat\Notifications\Models\Integration;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Web\Http\Controllers\Controller;
-use Yajra\DataTables\DataTables;
 
 /**
  * Class IntegrationsController.
@@ -42,7 +36,7 @@ use Yajra\DataTables\DataTables;
  */
 class MentionsController extends Controller
 {
-    public function createDiscordAtEveryone(CreateGroupMention $request){
+    public function createDiscordAtEveryone(CreateGroupMention $request) {
         $group = NotificationGroup::find($request->id);
 
         $mention = new GroupMention();
@@ -52,11 +46,11 @@ class MentionsController extends Controller
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route("seatcore::notifications.groups.edit",["notification_group_id"=>$request->id])
-            ->with("success",trans("notifications::notifications.successfully_created_mention"));
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->id])
+            ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 
-    public function createDiscordAtHere(CreateGroupMention $request){
+    public function createDiscordAtHere(CreateGroupMention $request) {
         $group = NotificationGroup::find($request->id);
 
         $mention = new GroupMention();
@@ -66,43 +60,43 @@ class MentionsController extends Controller
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route("seatcore::notifications.groups.edit",["notification_group_id"=>$request->id])
-            ->with("success",trans("notifications::notifications.successfully_created_mention"));
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->id])
+            ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 
-    public function createDiscordAtRole(CreateGroupMention $request){
-        return view("notifications::mentions.discord.create_role", ["group_id" => $request->id]);
+    public function createDiscordAtRole(CreateGroupMention $request) {
+        return view('notifications::mentions.discord.create_role', ['group_id' => $request->id]);
     }
 
-    public function postCreateDiscordAtRole(CreateDiscordRoleGroupMention $request){
+    public function postCreateDiscordAtRole(CreateDiscordRoleGroupMention $request) {
         $group = NotificationGroup::find($request->group_id);
 
         $mention = new GroupMention();
         $mention->type = 'discord_@role';
-        $mention->data = ['role'=>(int)$request->role_id];
+        $mention->data = ['role'=>(int) $request->role_id];
 
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route("seatcore::notifications.groups.edit",["notification_group_id"=>$request->group_id])
-            ->with("success",trans("notifications::notifications.successfully_created_mention"));
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->group_id])
+            ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 
-    public function createDiscordAtUser(CreateGroupMention $request){
-        return view("notifications::mentions.discord.create_user", ["group_id" => $request->id]);
+    public function createDiscordAtUser(CreateGroupMention $request) {
+        return view('notifications::mentions.discord.create_user', ['group_id' => $request->id]);
     }
 
-    public function postCreateDiscordAtUser(CreateDiscordUserGroupMention $request){
+    public function postCreateDiscordAtUser(CreateDiscordUserGroupMention $request) {
         $group = NotificationGroup::find($request->group_id);
 
         $mention = new GroupMention();
         $mention->type = 'discord_@user';
-        $mention->data = ['user'=>(int)$request->user_id];
+        $mention->data = ['user'=>(int) $request->user_id];
 
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route("seatcore::notifications.groups.edit",["notification_group_id"=>$request->group_id])
-            ->with("success",trans("notifications::notifications.successfully_created_mention"));
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->group_id])
+            ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 }

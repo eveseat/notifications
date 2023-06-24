@@ -64,11 +64,10 @@ abstract class AbstractNotification extends AbstractNotificationJob
     }
 
     /**
-     * @param mixed $mentions
+     * @param  mixed  $mentions
      */
     public function setMentions($mentions): void
     {
         $this->mentions = $mentions;
     }
-
 }

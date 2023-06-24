@@ -49,7 +49,7 @@ class CreateGroupMention extends FormRequest
      */
     public function rules()
     {
-        $mention_types = implode(",",array_keys(config("notifications.mentions")));
+        $mention_types = implode(',', array_keys(config('notifications.mentions')));
 
         return [
             'mention_type' => "required|string|in:$mention_types",

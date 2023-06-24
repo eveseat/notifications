@@ -22,9 +22,7 @@
 
 namespace Seat\Notifications\Notifications;
 
-use DateTime;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
-use Illuminate\Support\Facades\App;
 use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
@@ -54,12 +52,12 @@ abstract class AbstractDiscordNotification extends AbstractNotification
      * @return DiscordMessage
      */
     // we can already declare this final because all discord notifications are ported to populateMessage
-    public final function toDiscord($notifiable): DiscordMessage
+    final public function toDiscord($notifiable): DiscordMessage
     {
         $message = new DiscordMessage();
 
         foreach ($this->getMentions() as $mention){
-            [$class,$method] = explode('@',$mention->getType()->message_adapter,2);
+            [$class,$method] = explode('@', $mention->getType()->message_adapter, 2);
             $class::$method($message, $mention->data);
         }
 

@@ -182,7 +182,7 @@ class DiscordMessage
     }
 
     /**
-     * Appends text to the content of the discord message
+     * Appends text to the content of the discord message.
      *
      * @param  string  $content
      * @return $this

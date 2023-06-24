@@ -22,10 +22,9 @@
 
 namespace Seat\Notifications\Notifications;
 
-use DateTime;
+use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
 use Seat\Notifications\Jobs\AbstractNotification;
-use Illuminate\Notifications\Messages\SlackMessage;
 
 abstract class AbstractSlackNotification extends AbstractNotification
 {
@@ -50,6 +49,7 @@ abstract class AbstractSlackNotification extends AbstractNotification
 
     /**
      * @deprecated 5.0 Child classes should move to using populateMessage instead of overwriting toSlack. In the future, toMail will become final.
+     *
      * @param  $notifiable
      * @return SlackMessage
      */
@@ -58,6 +58,7 @@ abstract class AbstractSlackNotification extends AbstractNotification
     {
         $message = new SlackMessage();
         $this->populateMessage($message, $notifiable);
+
         return $message;
     }
 
@@ -67,5 +68,5 @@ abstract class AbstractSlackNotification extends AbstractNotification
      * @param  SlackMessage  $message
      * @param  $notifiable
      * */
-    protected function populateMessage(SlackMessage $message, $notifiable){}
+    protected function populateMessage(SlackMessage $message, $notifiable) {}
 }

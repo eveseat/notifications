@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
 use Seat\Web\Models\Squads\SquadMember;
@@ -65,7 +64,7 @@ class SquadMemberObserver
                 $query->where('alert', $type);
             })->get();
 
-        $this->dispatchNotifications($type,$group,function ($notificationClass) use ($member) {
+        $this->dispatchNotifications($type, $group, function ($notificationClass) use ($member) {
             return new $notificationClass($member);
         });
     }

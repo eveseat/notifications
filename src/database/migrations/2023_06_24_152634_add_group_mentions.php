@@ -37,15 +37,15 @@ class AddGroupMentions extends Migration
     public function up()
     {
         Schema::create('notification_groups_mentions', function (Blueprint $table) {
-            $table->increments("id");
+            $table->increments('id');
 
-            $table->integer("notification_group_id")->unsigned();
+            $table->integer('notification_group_id')->unsigned();
             $table->foreign('notification_group_id')->references('id')
                 ->on('notification_groups')
                 ->onDelete('cascade');
 
-            $table->string("type");
-            $table->json("data");
+            $table->string('type');
+            $table->json('data');
         });
     }
 
