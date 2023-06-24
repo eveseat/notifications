@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Notifications\Sovereignties\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractMailNotification;

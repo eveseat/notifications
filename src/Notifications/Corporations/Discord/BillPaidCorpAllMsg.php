@@ -22,6 +22,7 @@
 
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;

@@ -22,6 +22,7 @@
 
 namespace Seat\Notifications\Notifications\Sovereignties\Discord;
 
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\SolarSystem;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;

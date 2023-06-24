@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractSlackNotification;

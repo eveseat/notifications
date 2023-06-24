@@ -22,6 +22,7 @@
 
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
@@ -63,6 +64,7 @@ class CorpAppNewMsg extends AbstractDiscordNotification
             ->content($this->notification->text['applicationText'])
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->notification->timestamp);
+
                 $embed->author(
                     'SeAT - New Application',
                     asset('web/img/favico/apple-icon-180x180.png'),

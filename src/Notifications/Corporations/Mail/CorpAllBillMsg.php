@@ -24,6 +24,7 @@ namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Alliances\Alliance;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
