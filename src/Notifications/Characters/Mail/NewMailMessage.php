@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Str;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 /**
  * Class NewMailMessage.

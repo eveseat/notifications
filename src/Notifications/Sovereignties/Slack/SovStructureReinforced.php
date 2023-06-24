@@ -38,27 +38,27 @@ class SovStructureReinforced extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * SovStructureReinforced constructor.
-     *
-     * @param $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
-
-    /**
      * @param $notifiable
      * @return mixed
      */
     public function via($notifiable)
     {
         return ['slack'];
+    }
+
+    /**
+     * @var CharacterNotification
+     */
+    private $notification;
+
+    /**
+     * SovStructureReinforced constructor.
+     *
+     * @param CharacterNotification $notification
+     */
+    public function __construct(CharacterNotification $notification)
+    {
+        $this->notification = $notification;
     }
 
     /**

@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Web\Models\User;
 
 /**

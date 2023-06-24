@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 /**
  * Class InActiveCorpMember.

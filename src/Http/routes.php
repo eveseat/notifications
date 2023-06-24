@@ -48,6 +48,17 @@ Route::group([
 
         // New Integrations
 
+        // Discord
+        Route::get('/new/discord', [
+            'as'   => 'notifications.integrations.new.discord',
+            'uses' => 'IntegrationsController@getNewDiscord',
+        ]);
+
+        Route::post('/new/discord', [
+            'as'   => 'notifications.integrations.new.discord.add',
+            'uses' => 'IntegrationsController@postNewDiscord',
+        ]);
+
         // Email
         Route::get('/new/email')
             ->name('seatcore::notifications.integrations.new.email')

@@ -86,20 +86,4 @@ class NewMailMessage extends AbstractSlackNotification
                 ]);
             });
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
-            'sent_date' => $this->message->sentDate,
-        ];
-    }
 }

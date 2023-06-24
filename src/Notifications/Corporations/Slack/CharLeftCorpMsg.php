@@ -36,27 +36,27 @@ use Seat\Notifications\Notifications\AbstractSlackNotification;
 class CharLeftCorpMsg extends AbstractSlackNotification
 {
     /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    /**
-     * CharLeftCorpMsg constructor.
-     *
-     * @param $notification
-     */
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
-
-    /**
      * @param $notifiable
      * @return mixed
      */
     public function via($notifiable)
     {
         return ['slack'];
+    }
+
+    /**
+     * @var CharacterNotification
+     */
+    private $notification;
+
+    /**
+     * CharLeftCorpMsg constructor.
+     *
+     * @param CharacterNotification $notification
+     */
+    public function __construct(CharacterNotification $notification)
+    {
+        $this->notification = $notification;
     }
 
     /**

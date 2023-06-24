@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to 2020 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,33 +20,48 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures\Mail;
+namespace Seat\Notifications\Jobs;
 
 use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Notifications\Traits\NotificationTools;
+use Seat\Notifications\Jobs\Middleware\CharacterNotificationThrottler;
 
 /**
- * Class OwnershipTransferred.
+ * Class AbstractCharacterNotification.
  *
- * @package Seat\Notifications\Notifications\Structures
+ * @package Seat\Notifications\Notifications
  */
-class OwnershipTransferred extends AbstractNotification
+abstract class AbstractCharacterNotification extends AbstractNotification
 {
-    use NotificationTools;
-
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
-    private $notification;
+    protected $notification;
 
     /**
-     * OwnershipTransferred constructor.
+     * AbstractCharacterNotification constructor.
      *
-     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
+     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
      */
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    /**
+     * @return array
+     */
+    public function middleware()
+    {
+        return [
+            new CharacterNotificationThrottler,
+        ];
+    }
+
+    /**
+     * @return int
+     */
+    public function getNotificationId()
+    {
+        return $this->notification->notification_id;
     }
 }

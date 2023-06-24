@@ -39,22 +39,27 @@ class SovStructureDestroyed extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    private $notification;
-
-    public function __construct(CharacterNotification $notification)
-    {
-        $this->notification = $notification;
-    }
-
-    /**
      * @param $notifiable
      * @return array
      */
     public function via($notifiable)
     {
         return ['slack'];
+    }
+
+    /**
+     * @var CharacterNotification
+     */
+    private $notification;
+
+    /**
+     * SovStructureDestroyed constructor.
+     *
+     * @param CharacterNotification $notification
+     */
+    public function __construct(CharacterNotification $notification)
+    {
+        $this->notification = $notification;
     }
 
     /**

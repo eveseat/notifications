@@ -17,7 +17,11 @@
 
       <p>
 
-        <a href="{{ route('seatcore::notifications.integrations.new.email') }}" class="btn btn-primary btn-block">
+        <a href="{{ route('notifications.integrations.new.discord') }}" class="btn btn-primary btn-block">
+          <i class="fab fa-discord"></i>
+          {{ trans('notifications::notifications.new_discord') }}
+        </a>
+        <a href="{{ route('notifications.integrations.new.email') }}" class="btn btn-primary btn-block">
           <i class="fas fa-envelope"></i>
           {{ trans('notifications::notifications.new_email') }}
         </a>

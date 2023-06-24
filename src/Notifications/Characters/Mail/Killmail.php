@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**

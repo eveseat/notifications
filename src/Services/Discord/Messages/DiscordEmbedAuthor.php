@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to 2020 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,27 +20,47 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
-
-use Seat\Notifications\Jobs\AbstractNotificationJob;
+namespace Seat\Notifications\Services\Discord\Messages;
 
 /**
- * Class AbstractNotification.
+ * Class DiscordEmbedAuthor.
  *
- * @package Seat\Notifications\Jobs
+ * @package Seat\Notifications\Services\Discord\Messages
  */
-abstract class AbstractNotification extends AbstractNotificationJob
+class DiscordEmbedAuthor
 {
     /**
-     * {@inheritdoc}
+     * The embed's author name.
+     *
+     * @var string
      */
-    public $queue = 'notifications';
+    public $name;
 
     /**
-     * Get the notification's delivery channels.
+     * The embed's author link.
      *
-     * @param $notifiable
+     * @var string|null
+     */
+    public $url;
+
+    /**
+     * The embed's author icon.
+     *
+     * @var string|null
+     */
+    public $icon_url;
+
+    /**
+     * Get the array representation of the embed's author.
+     *
      * @return array
      */
-    abstract public function via($notifiable);
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'url' => $this->url,
+            'icon_url' => $this->icon_url,
+        ];
+    }
 }
