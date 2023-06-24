@@ -81,9 +81,13 @@ class DiscordMessage
     /**
      * The allowed mention of the message.
      *
-     * @var bool|null
+     * @var array
      */
-    public $allowed_mentions;
+    public array $allowed_mentions = [
+        'parse' => [],
+        'users' => [],
+        'roles' => [],
+    ];
 
     /**
      * The message's embeds.
@@ -178,7 +182,7 @@ class DiscordMessage
     }
 
     /**
-     * Set the content of the Discord message.
+     * Appends text to the content of the discord message
      *
      * @param  string  $content
      * @return $this
@@ -186,6 +190,25 @@ class DiscordMessage
     public function content(string $content): DiscordMessage
     {
         $this->content = "$this->content\n$content";
+
+        return $this;
+    }
+
+    public function mention(DiscordMention $mention): DiscordMessage
+    {
+        $this->content($mention->formatPing());
+
+        if($mention->type === DiscordMentionType::Everyone || $mention->type === DiscordMentionType::Here) {
+            $this->allowed_mentions['parse'] = ['everyone'];
+        }
+
+        if($mention->type === DiscordMentionType::Role){
+            $this->allowed_mentions['roles'][] = $mention->id;
+        }
+
+        if($mention->type === DiscordMentionType::User){
+            $this->allowed_mentions['users'][] = $mention->id;
+        }
 
         return $this;
     }

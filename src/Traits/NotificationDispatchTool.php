@@ -20,7 +20,9 @@ trait NotificationDispatchTool
                     return (object)[
                         'channel' => $channel->type,
                         'route' => $route,
-                        'mentions' => $group->mentions,
+                        'mentions' => $group->mentions->filter(function ($mention) use ($channel) {
+                            return $mention->getType()->type = $channel->type;
+                        }),
                     ];
                 });
             })

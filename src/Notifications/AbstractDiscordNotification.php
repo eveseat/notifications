@@ -24,6 +24,7 @@ namespace Seat\Notifications\Notifications;
 
 use DateTime;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+use Illuminate\Support\Facades\App;
 use Seat\Notifications\Jobs\AbstractNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
@@ -56,7 +57,12 @@ abstract class AbstractDiscordNotification extends AbstractNotification
     public final function toDiscord($notifiable): DiscordMessage
     {
         $message = new DiscordMessage();
-        $message->content($this->formatMentions());
+
+        foreach ($this->getMentions() as $mention){
+            [$class,$method] = explode('@',$mention->getType()->message_adapter,2);
+            $class::$method($message, $mention->data);
+        }
+
         $this->populateMessage($message, $notifiable);
 
         return $message;
@@ -69,21 +75,4 @@ abstract class AbstractDiscordNotification extends AbstractNotification
      * @param  $notifiable
      * */
     abstract protected function populateMessage(DiscordMessage $message, $notifiable);
-
-    private function formatMentions(): string {
-        $mentions = $this->getMentions()
-            ->map(function ($mention){
-                return (object)[
-                    'data' => $mention->data,
-                    'type'=>$mention->getType()
-                ];
-            })
-            ->filter(function ($mention){
-               return $mention->type->type === 'discord';
-            })
-            ->map(function ($mention){
-                return $mention->type->name;
-            })->toArray();
-        return implode(" ", $mentions);
-    }
 }
