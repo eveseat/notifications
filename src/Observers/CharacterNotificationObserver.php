@@ -64,8 +64,6 @@ class CharacterNotificationObserver
                 $query->orWhere('affiliation_id', $notification->recipient->affiliation->corporation_id);
             })->get();
 
-        logger()->error('character notification', ['t'=>json_encode($groups), 'c'=>$notification->character_id]);
-
         $this->dispatchNotifications($notification->type, $groups, function ($notificationClass) use ($notification) {
             return new $notificationClass($notification);
         });
