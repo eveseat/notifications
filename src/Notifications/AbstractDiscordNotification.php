@@ -22,7 +22,10 @@
 
 namespace Seat\Notifications\Notifications;
 
+use DateTime;
 use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
+use Illuminate\Queue\Middleware\RateLimitedWithRedis;
 
 abstract class AbstractDiscordNotification extends AbstractNotification
 {
@@ -38,4 +41,23 @@ abstract class AbstractDiscordNotification extends AbstractNotification
     {
         return now()->addMinutes(60);
     }
+
+    /**
+     * @param  $notifiable
+     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     */
+    public function toDiscord($notifiable)
+    {
+        $message = new DiscordMessage();
+        $message->content("@here");
+        $this->populateMessage($message, $notifiable);
+        return $message;
+    }
+
+    /**
+     * Populate the content of the notification
+     * @param DiscordMessage $message
+     * @param $notifiable
+     * */
+    protected abstract function populateMessage(DiscordMessage $message, $notifiable);
 }

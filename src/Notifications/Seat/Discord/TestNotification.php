@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Discord;
 
 use Seat\Notifications\Jobs\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 
 /**
@@ -30,7 +31,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
  *
  * @package Seat\Notifications\Notifications\Seat\Discord
  */
-class TestNotification extends AbstractNotification
+class TestNotification extends AbstractDiscordNotification
 {
     /**
      * @inheritDoc
@@ -41,12 +42,12 @@ class TestNotification extends AbstractNotification
     }
 
     /**
-     * @param  $notifiable
-     * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
+     * @param DiscordMessage $message
+     * @param $notifiable
      */
-    public function toDiscord($notifiable)
+    public function populateMessage(DiscordMessage $message, $notifiable)
     {
-        return (new DiscordMessage())
+        $message
             ->content('SeAT notifications to discord seem to be working!')
             ->success();
     }

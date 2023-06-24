@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Notifications\AbstractNotification;
 
 /**
@@ -30,7 +31,7 @@ use Seat\Notifications\Notifications\AbstractNotification;
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class TestNotification extends AbstractNotification
+class TestNotification extends AbstractMailNotification
 {
     /**
      * Get the notification's delivery channels.
