@@ -25,6 +25,7 @@ namespace Seat\Notifications\Observers;
 use Illuminate\Support\Facades\Notification;
 use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Notifications\Models\NotificationGroup;
+use Seat\Notifications\Traits\NotificationDispatchTool;
 
 /**
  * Class CharacterDetailObserver.
@@ -33,6 +34,8 @@ use Seat\Notifications\Models\NotificationGroup;
  */
 class ContractDetailObserver
 {
+    use NotificationDispatchTool;
+
     /**
      * @param  ContractDetail  $contract
      */
@@ -62,65 +65,18 @@ class ContractDetailObserver
         //if nothing changed, don't notify
         if(! $contract->isDirty()) return;
 
-        // detect handlers setup for the current notification
-        $handlers = config('notifications.alerts.contract_created.handlers', []);
-
-        // retrieve routing candidates for the current notification
-        $routes = $this->getRoutingCandidates($contract);
-
-        // in case no routing candidates has been delivered, exit
-        if ($routes->isEmpty())
-            return;
-
-        // attempt to enqueue a notification for each routing candidates
-        $routes->each(function ($integration) use ($handlers, $contract) {
-            if (array_key_exists($integration->channel, $handlers)) {
-
-                // extract handler from the list
-                $handler = $handlers[$integration->channel];
-
-                // enqueue the notification
-                Notification::route($integration->channel, $integration->route)
-                    ->notify(new $handler($contract));
-            }
-        });
-    }
-
-    /**
-     * Provide a unique list of notification channels (including driver and route).
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    private function getRoutingCandidates(ContractDetail $detail)
-    {
-        $settings = NotificationGroup::with('alerts', 'affiliations')
+        $groups = NotificationGroup::with('alerts', 'affiliations')
             ->whereHas('alerts', function ($query) {
                 $query->where('alert', 'contract_created');
-            })->whereHas('affiliations', function ($query) use ($detail) {
-                $query->where('affiliation_id', $detail->issuer_id);
-                $query->orWhere('affiliation_id', $detail->assingee_id);
-                $query->orWhere('affiliation_id', $detail->acceptor_id);
-                $query->orWhere('affiliation_id', $detail->issuer_corporation_id);
+            })->whereHas('affiliations', function ($query) use ($contract) {
+                $query->where('affiliation_id', $contract->issuer_id);
+                $query->orWhere('affiliation_id', $contract->assingee_id);
+                $query->orWhere('affiliation_id', $contract->acceptor_id);
+                $query->orWhere('affiliation_id', $contract->issuer_corporation_id);
             })->get();
 
-        $routes = $settings->map(function ($group) {
-            return $group->integrations->map(function ($channel) {
-
-                // extract the route value from settings field
-                $settings = (array) $channel->settings;
-                $key = array_key_first($settings);
-                $route = $settings[$key];
-
-                // build a composite object built with channel and route
-                return (object) [
-                    'channel' => $channel->type,
-                    'route' => $route,
-                ];
-            });
-        });
-
-        return $routes->flatten()->unique(function ($integration) {
-            return $integration->channel . $integration->route;
+        $this->dispatchNotifications('contract_created',$groups,function ($notificationClass) use ($contract) {
+            return new $notificationClass($contract);
         });
     }
 }
