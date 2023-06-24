@@ -182,7 +182,6 @@ return [
     'OwnershipTransferred' => [
         'label'   => 'notifications::alerts.ownership_transferred',
         'handlers' => [
-            'mail' => \Seat\Notifications\Notifications\Structures\Mail\OwnershipTransferred::class,
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\OwnershipTransferred::class,
         ],
     ],

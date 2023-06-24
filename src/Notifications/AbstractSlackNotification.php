@@ -24,6 +24,7 @@ namespace Seat\Notifications\Notifications;
 
 use DateTime;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 abstract class AbstractSlackNotification extends AbstractNotification
 {
