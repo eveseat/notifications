@@ -65,7 +65,7 @@ class InActiveCorpMember extends AbstractMailNotification
                 $this->member->character->name . ' logged off more than 3 months ago at ' .
                 $this->member->logoff_date . '.'
             )
-            ->action('View Corporation Tracking', route('corporation.view.tracking', [
+            ->action('View Corporation Tracking', route('seatcore::corporation.view.tracking', [
                 'corporation' => $this->member->corporation_id,
             ]))
             ->line(

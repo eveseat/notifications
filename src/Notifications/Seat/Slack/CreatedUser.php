@@ -62,7 +62,7 @@ class CreatedUser extends AbstractSlackNotification
             ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Account Details', route('configuration.users.edit', [
+                $attachment->title('Account Details', route('seatcore::configuration.users.edit', [
                     'user_id' => $this->user->id,
                 ]))->fields([
                     'Account Name'            => $this->user->name,

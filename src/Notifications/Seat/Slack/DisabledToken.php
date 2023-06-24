@@ -65,7 +65,7 @@ class DisabledToken extends AbstractSlackNotification
                 $owner = User::where('id', $this->token->user_id)
                     ->first();
 
-                $attachment->title('Token Details', route('corporation.view.tracking', [
+                $attachment->title('Token Details', route('seatcore::corporation.view.tracking', [
                     'corporation_id' => $this->token->affiliation->corporation_id,
                 ]))->fields([
                     'Character Name' => $this->token->character->name,

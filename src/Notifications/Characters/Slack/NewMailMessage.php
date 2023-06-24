@@ -63,7 +63,7 @@ class NewMailMessage extends AbstractSlackNotification
             ->from('SeAT Personal Agent')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
+                $attachment->title('Read on SeAT', route('seatcore::character.view.mail.timeline.read', [
                     'message_id' => $this->message->mail_id,
                 ]))->fields([
                     'Subject'   => $this->message->subject,

@@ -57,7 +57,7 @@ class InActiveCorpMember extends AbstractDiscordNotification
                 $embed->author(
                     'SeAT Corporation Supervisor',
                     asset('web/img/favico/apple-icon-180x180.png'),
-                    route('corporation.view.default', ['corporation' => $this->member->corporation_id])
+                    route('seatcore::corporation.view.default', ['corporation' => $this->member->corporation_id])
                 );
 
                 $embed->field('Last Logoff', $this->member->logoff_date);

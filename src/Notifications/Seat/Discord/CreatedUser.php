@@ -63,7 +63,7 @@ class CreatedUser extends AbstractDiscordNotification
                 $embed->author(
                     'SeAT State of Things',
                     asset('web/img/favico/apple-icon-180x180.png'),
-                    route('character.view.default', [$this->user->main_character_id]));
+                    route('seatcore::character.view.default', [$this->user->main_character_id]));
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $field->name('Account Name')

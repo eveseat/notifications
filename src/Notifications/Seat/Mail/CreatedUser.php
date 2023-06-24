@@ -65,6 +65,6 @@ class CreatedUser extends AbstractMailNotification
                 'logged in from ' . $this->user->last_login_source . ' at ' .
                 $this->user->last_login . '.'
             )
-            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
+            ->action('Check it out on SeAT', route('seatcore::configuration.users.edit', ['user_id' => $this->user->id]));
     }
 }

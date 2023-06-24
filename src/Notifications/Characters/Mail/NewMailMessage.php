@@ -70,7 +70,7 @@ class NewMailMessage extends AbstractMailNotification
                     2000) .
                 '"'
             )
-            ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
+            ->action('Read it on SeAT', route('seatcore::character.view.mail.timeline.read', [
                 'message_id' => $this->message->mail_id,
             ]));
     }
