@@ -37,11 +37,6 @@ abstract class AbstractDiscordNotification extends AbstractNotification
         return [new RateLimitedWithRedis(self::RATE_LIMIT_KEY)];
     }
 
-    public function retryUntil(): DateTime
-    {
-        return now()->addSeconds(10);
-    }
-
     /**
      * Get the notification's delivery channels.
      *
@@ -76,22 +71,19 @@ abstract class AbstractDiscordNotification extends AbstractNotification
     abstract protected function populateMessage(DiscordMessage $message, $notifiable);
 
     private function formatMentions(): string {
-        logger()->error("get:".json_encode($this->getMentions()));
-
-//        $mentions = $this->getMentions()
-//            ->map(function ($mention){
-//                return (object)[
-//                    'data' => $mention->data,
-//                    'type'=>$mention->getType()
-//                ];
-//            })
-//            ->filter(function ($mention){
-//               return $mention->type->type === 'discord';
-//            })
-//            ->map(function ($mention){
-//                return $mention->name;
-//            })->toArray();
-//        return implode(" ", $mentions);
-        return "aa";
+        $mentions = $this->getMentions()
+            ->map(function ($mention){
+                return (object)[
+                    'data' => $mention->data,
+                    'type'=>$mention->getType()
+                ];
+            })
+            ->filter(function ($mention){
+               return $mention->type->type === 'discord';
+            })
+            ->map(function ($mention){
+                return $mention->type->name;
+            })->toArray();
+        return implode(" ", $mentions);
     }
 }

@@ -43,7 +43,7 @@ abstract class AbstractNotification extends AbstractNotificationJob
      *
      * @var int
      */
-    public $tries = 1;
+    public $tries = 2;
 
     /**
      * Get the notification's delivery channels.

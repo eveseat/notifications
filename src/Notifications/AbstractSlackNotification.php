@@ -37,11 +37,6 @@ abstract class AbstractSlackNotification extends AbstractNotification
         return [new RateLimitedWithRedis(self::RATE_LIMIT_KEY)];
     }
 
-    public function retryUntil(): DateTime
-    {
-        return now()->addMinutes(60);
-    }
-
     /**
      * Get the notification's delivery channels.
      *

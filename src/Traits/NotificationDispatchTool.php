@@ -52,8 +52,6 @@ trait NotificationDispatchTool
                 $notification = $notification_creation_callback($handler);
                 $notification->setMentions($integration->mentions);
 
-                logger()->error("set:".json_encode($notification->getMentions()));
-
                 // enqueue the notification
                 Notification::route($integration->channel, $integration->route)
                     ->notify($notification);
