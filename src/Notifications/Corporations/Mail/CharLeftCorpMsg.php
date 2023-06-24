@@ -34,14 +34,6 @@ use Seat\Notifications\Notifications\AbstractMailNotification;
  */
 class CharLeftCorpMsg extends AbstractMailNotification
 {
-    /**
-     * @param  $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
 
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification

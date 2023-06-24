@@ -54,17 +54,6 @@ class OwnershipTransferred extends AbstractSlackNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */

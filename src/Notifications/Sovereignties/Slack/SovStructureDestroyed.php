@@ -39,15 +39,6 @@ class SovStructureDestroyed extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @param  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
      * @var CharacterNotification
      */
     private $notification;

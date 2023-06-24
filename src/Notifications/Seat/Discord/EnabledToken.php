@@ -47,14 +47,6 @@ class EnabledToken extends AbstractDiscordNotification
     }
 
     /**
-     * @inheritDoc
-     */
-    public function via($notifiable)
-    {
-        return ['discord'];
-    }
-
-    /**
      * @param DiscordMessage $message
      * @param $notifiable
      */

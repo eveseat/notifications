@@ -38,15 +38,6 @@ class SovStructureDestroyed extends AbstractMailNotification
     use NotificationTools;
 
     /**
-     * @param  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;

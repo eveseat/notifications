@@ -50,15 +50,6 @@ class AllyJoinedWarAllyMsg extends AbstractSlackNotification
 
     /**
      * @param  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

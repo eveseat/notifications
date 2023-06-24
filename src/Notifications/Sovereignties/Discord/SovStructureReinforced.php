@@ -39,15 +39,6 @@ class SovStructureReinforced extends AbstractDiscordNotification
     use NotificationTools;
 
     /**
-     * @param  $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['discord'];
-    }
-
-    /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;

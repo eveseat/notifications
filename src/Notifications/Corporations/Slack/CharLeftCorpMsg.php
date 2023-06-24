@@ -35,14 +35,6 @@ use Seat\Notifications\Notifications\AbstractSlackNotification;
  */
 class CharLeftCorpMsg extends AbstractSlackNotification
 {
-    /**
-     * @param  $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
 
     /**
      * @var CharacterNotification

@@ -54,14 +54,6 @@ class MoonMiningExtractionFinished
 
     /**
      * @param  $notifiable
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
-     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)

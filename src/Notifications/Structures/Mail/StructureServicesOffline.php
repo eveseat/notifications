@@ -51,15 +51,6 @@ class StructureServicesOffline extends AbstractMailNotification
 
     /**
      * @param  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
-     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)

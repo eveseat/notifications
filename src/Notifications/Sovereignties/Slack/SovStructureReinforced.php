@@ -38,15 +38,6 @@ class SovStructureReinforced extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @param  $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
      * @var CharacterNotification
      */
     private $notification;

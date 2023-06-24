@@ -40,4 +40,15 @@ abstract class AbstractMailNotification extends AbstractNotification
     {
         return now()->addMinutes(60);
     }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return ['mail'];
+    }
 }

@@ -37,15 +37,6 @@ class SovStructureReinforced extends AbstractMailNotification
     use NotificationTools;
 
     /**
-     * @param  $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;

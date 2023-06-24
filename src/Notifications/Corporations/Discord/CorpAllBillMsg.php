@@ -39,14 +39,6 @@ class CorpAllBillMsg extends AbstractDiscordNotification
     use NotificationTools;
 
     /**
-     * @inheritDoc
-     */
-    public function via($notifiable)
-    {
-        return ['discord'];
-    }
-
-    /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;

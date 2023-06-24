@@ -51,18 +51,6 @@ class StarbaseStateChange extends AbstractMailNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-
-        return ['mail'];
-    }
-
-    /**
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable

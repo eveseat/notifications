@@ -43,6 +43,17 @@ abstract class AbstractDiscordNotification extends AbstractNotification
     }
 
     /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return ['discord'];
+    }
+
+    /**
      * @param  $notifiable
      * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
      */

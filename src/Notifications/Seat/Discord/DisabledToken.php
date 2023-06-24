@@ -52,17 +52,6 @@ class DisabledToken extends AbstractDiscordNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['discord'];
-    }
-
-    /**
      * @param DiscordMessage $message
      * @param $notifiable
      */
