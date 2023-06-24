@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,8 +40,7 @@ class AllianceCapitalChanged extends AbstractDiscordNotification
     use NotificationTools;
 
     /**
-     * @param $notifiable
-     *
+     * @param  $notifiable
      * @return array|string[]
      */
     public function via($notifiable)
@@ -49,14 +48,13 @@ class AllianceCapitalChanged extends AbstractDiscordNotification
         return ['discord'];
     }
 
-
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
      */
@@ -66,8 +64,7 @@ class AllianceCapitalChanged extends AbstractDiscordNotification
     }
 
     /**
-     * @param $notifiable
-     *
+     * @param  $notifiable
      * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
      */
     public function toDiscord($notifiable)

@@ -44,7 +44,7 @@ abstract class AbstractNotification extends AbstractNotificationJob
     /**
      * Get the notification's delivery channels.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     abstract public function via($notifiable);

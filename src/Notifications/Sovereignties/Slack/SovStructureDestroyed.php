@@ -39,7 +39,7 @@ class SovStructureDestroyed extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -55,7 +55,7 @@ class SovStructureDestroyed extends AbstractSlackNotification
     /**
      * SovStructureDestroyed constructor.
      *
-     * @param CharacterNotification $notification
+     * @param  CharacterNotification  $notification
      */
     public function __construct(CharacterNotification $notification)
     {
@@ -63,7 +63,7 @@ class SovStructureDestroyed extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -97,7 +97,7 @@ class SovStructureDestroyed extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

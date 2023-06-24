@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ class InActiveCorpMember extends AbstractNotification
     /**
      * InActiveCorpMember constructor.
      *
-     * @param \Seat\Eveapi\Models\Corporation\CorporationMemberTracking $member
+     * @param  \Seat\Eveapi\Models\Corporation\CorporationMemberTracking  $member
      */
     public function __construct(CorporationMemberTracking $member)
     {
@@ -53,8 +53,7 @@ class InActiveCorpMember extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     *
+     * @param  $notifiable
      * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
      */
     public function toDiscord($notifiable)

@@ -64,7 +64,7 @@ class StructureFuelAlert extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -96,7 +96,7 @@ class StructureFuelAlert extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

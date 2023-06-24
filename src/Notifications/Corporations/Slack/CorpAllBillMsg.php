@@ -39,7 +39,7 @@ class CorpAllBillMsg extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return mixed
      */
     public function via($notifiable)
@@ -55,7 +55,7 @@ class CorpAllBillMsg extends AbstractSlackNotification
     /**
      * CorpAllBillMsg constructor.
      *
-     * @param CharacterNotification $notification
+     * @param  CharacterNotification  $notification
      */
     public function __construct(CharacterNotification $notification)
     {
@@ -63,7 +63,7 @@ class CorpAllBillMsg extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -115,7 +115,7 @@ class CorpAllBillMsg extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

@@ -35,7 +35,7 @@ use Seat\Notifications\Notifications\AbstractMailNotification;
 class CharLeftCorpMsg extends AbstractMailNotification
 {
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return mixed
      */
     public function via($notifiable)
@@ -49,7 +49,7 @@ class CharLeftCorpMsg extends AbstractMailNotification
     private $notification;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
      */
@@ -59,7 +59,7 @@ class CharLeftCorpMsg extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -93,7 +93,7 @@ class CharLeftCorpMsg extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

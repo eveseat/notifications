@@ -64,7 +64,7 @@ class StructureFuelAlert extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

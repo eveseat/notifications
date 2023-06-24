@@ -40,7 +40,7 @@ class InActiveCorpMember extends AbstractNotification
     /**
      * Create a new notification instance.
      *
-     * @param $member \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
+     * @param  $member  \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
      */
     public function __construct($member)
     {

@@ -38,7 +38,7 @@ class CorpAppNewMsg extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -54,7 +54,7 @@ class CorpAppNewMsg extends AbstractSlackNotification
     /**
      * CorpAppNewMsg constructor.
      *
-     * @param CharacterNotification $notification
+     * @param  CharacterNotification  $notification
      */
     public function __construct(CharacterNotification $notification)
     {
@@ -62,7 +62,7 @@ class CorpAppNewMsg extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

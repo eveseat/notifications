@@ -42,7 +42,7 @@ class StarbaseSiphons extends AbstractNotification
     /**
      * Create a new notification instance.
      *
-     * @param $starbase
+     * @param  $starbase
      */
     public function __construct($starbase)
     {

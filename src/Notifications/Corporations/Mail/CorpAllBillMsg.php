@@ -38,7 +38,7 @@ class CorpAllBillMsg extends AbstractMailNotification
     use NotificationTools;
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return mixed
      */
     public function via($notifiable)
@@ -52,7 +52,7 @@ class CorpAllBillMsg extends AbstractMailNotification
     private $notification;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
      */
@@ -61,9 +61,8 @@ class CorpAllBillMsg extends AbstractMailNotification
         $this->notification = $notification;
     }
 
-
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -101,7 +100,7 @@ class CorpAllBillMsg extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

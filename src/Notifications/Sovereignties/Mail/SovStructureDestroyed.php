@@ -38,7 +38,7 @@ class SovStructureDestroyed extends AbstractMailNotification
     use NotificationTools;
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -52,7 +52,7 @@ class SovStructureDestroyed extends AbstractMailNotification
     private $notification;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
      */
@@ -62,7 +62,7 @@ class SovStructureDestroyed extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -81,7 +81,7 @@ class SovStructureDestroyed extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

@@ -53,7 +53,7 @@ class OrbitalAttacked extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return mixed
      */
     public function via($notifiable)
@@ -63,7 +63,7 @@ class OrbitalAttacked extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,8 +53,7 @@ class DiscordEmbedField
     /**
      * Set the name of the field.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return $this
      */
     public function name(string $name): DiscordEmbedField
@@ -67,8 +66,7 @@ class DiscordEmbedField
     /**
      * Set the value of the field.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return $this
      */
     public function value(string $value): DiscordEmbedField

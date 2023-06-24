@@ -41,7 +41,7 @@ class NewMailMessage extends AbstractNotification
     /**
      * Create a new notification instance.
      *
-     * @param $message
+     * @param  $message
      */
     public function __construct($message)
     {

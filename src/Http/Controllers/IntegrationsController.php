@@ -118,8 +118,7 @@ class IntegrationsController extends Controller
     }
 
     /**
-     * @param \Seat\Notifications\Http\Validation\DiscordIntegration $request
-     *
+     * @param  \Seat\Notifications\Http\Validation\DiscordIntegration  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postNewDiscord(DiscordIntegration $request)

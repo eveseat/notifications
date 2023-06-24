@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class Killmail
+ * Class Killmail.
  *
  * @package Seat\Notifications\Notifications\Characters\Discord
  */
@@ -47,7 +47,7 @@ class Killmail extends AbstractNotification
     /**
      * Killmail constructor.
      *
-     * @param \Seat\Eveapi\Models\Killmails\KillmailDetail $killmail
+     * @param  \Seat\Eveapi\Models\Killmails\KillmailDetail  $killmail
      */
     public function __construct(KillmailDetail $killmail)
     {
@@ -63,8 +63,7 @@ class Killmail extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     *
+     * @param  $notifiable
      * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
      */
     public function toDiscord($notifiable)

@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,9 +106,8 @@ class DiscordEmbed
     /**
      * Set the title of the embed.
      *
-     * @param string $title
-     * @param string|null $url
-     *
+     * @param  string  $title
+     * @param  string|null  $url
      * @return $this
      */
     public function title(string $title, ?string $url = null): DiscordEmbed
@@ -122,8 +121,7 @@ class DiscordEmbed
     /**
      * Set the description of the embed.
      *
-     * @param string $description
-     *
+     * @param  string  $description
      * @return $this
      */
     public function description(string $description): DiscordEmbed
@@ -136,8 +134,7 @@ class DiscordEmbed
     /**
      * Set the embed's timestamp.
      *
-     * @param \DateTimeInterface|\DateInterval|int $timestamp
-     *
+     * @param  \DateTimeInterface|\DateInterval|int  $timestamp
      * @return $this
      */
     public function timestamp($timestamp): DiscordEmbed
@@ -150,8 +147,7 @@ class DiscordEmbed
     /**
      * Set the embed's color.
      *
-     * @param int $color
-     *
+     * @param  int  $color
      * @return $this
      */
     public function color(int $color): DiscordEmbed
@@ -164,9 +160,8 @@ class DiscordEmbed
     /**
      * Set the embed's footer.
      *
-     * @param string $text
-     * @param string|null $icon
-     *
+     * @param  string  $text
+     * @param  string|null  $icon
      * @return $this
      */
     public function footer(string $text, ?string $icon = null): DiscordEmbed
@@ -181,8 +176,7 @@ class DiscordEmbed
     /**
      * Set the embed's image.
      *
-     * @param string $url
-     *
+     * @param  string  $url
      * @return $this
      */
     public function image(string $url): DiscordEmbed
@@ -195,10 +189,9 @@ class DiscordEmbed
     /**
      * Set the embed's thumbnail.
      *
-     * @param string $url
-     * @param int|null $height
-     * @param int|null $width
-     *
+     * @param  string  $url
+     * @param  int|null  $height
+     * @param  int|null  $width
      * @return $this
      */
     public function thumb(string $url): DiscordEmbed
@@ -211,10 +204,9 @@ class DiscordEmbed
     /**
      * Set the embed's author.
      *
-     * @param string $name
-     * * @param string|null $icon
-     * @param string|null $link
-     *
+     * @param  string  $name
+     *                        * @param string|null $icon
+     * @param  string|null  $link
      * @return $this
      */
     public function author(string $name, ?string $icon = null, ?string $link = null): DiscordEmbed
@@ -230,9 +222,8 @@ class DiscordEmbed
     /**
      * Add a field to the embed.
      *
-     * @param  \Closure|string $title
-     * @param string $value
-     *
+     * @param  \Closure|string  $title
+     * @param  string  $value
      * @return $this
      */
     public function field($title, $value = ''): DiscordEmbed
@@ -255,8 +246,7 @@ class DiscordEmbed
     /**
      * Set the embed's fields.
      *
-     * @param \Seat\Notifications\Services\Discord\Messages\DiscordEmbedField[] $fields
-     *
+     * @param  \Seat\Notifications\Services\Discord\Messages\DiscordEmbedField[]  $fields
      * @return $this
      */
     public function fields(array $fields): DiscordEmbed

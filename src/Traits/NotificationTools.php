@@ -71,10 +71,9 @@ trait NotificationTools
     /**
      * Build a link to zKillboard using Discord message formatting.
      *
-     * @param string $type
-     * @param int $id
-     * @param string $name
-     *
+     * @param  string  $type
+     * @param  int  $id
+     * @param  string  $name
      * @return string
      */
     public function zKillBoardToDiscordLink(string $type, int $id, string $name): string
@@ -86,7 +85,7 @@ trait NotificationTools
     }
 
     /**
-     * @param int $timestamp
+     * @param  int  $timestamp
      * @return \Carbon\Carbon
      *
      * @author https://github.com/flakas/reconbot/blob/master/reconbot/notificationprinters/esi/printer.py#L317

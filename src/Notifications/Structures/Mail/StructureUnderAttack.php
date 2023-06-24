@@ -53,7 +53,7 @@ class StructureUnderAttack extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return mixed
      */
     public function via($notifiable)
@@ -63,7 +63,7 @@ class StructureUnderAttack extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -90,7 +90,7 @@ class StructureUnderAttack extends AbstractMailNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return mixed
      */
     public function toArray($notifiable)

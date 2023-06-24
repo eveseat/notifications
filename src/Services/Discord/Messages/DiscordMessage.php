@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -150,9 +150,8 @@ class DiscordMessage
     /**
      * Set a custom username and optional emoji icon for the Discord message.
      *
-     * @param string $username
-     * @param string|null $icon
-     *
+     * @param  string  $username
+     * @param  string|null  $icon
      * @return $this
      */
     public function from(string $username, ?string $icon = null): DiscordMessage
@@ -168,8 +167,7 @@ class DiscordMessage
     /**
      * Set the Discord channel the message should be sent to.
      *
-     * @param string $channel
-     *
+     * @param  string  $channel
      * @return $this
      */
     public function to(string $channel): DiscordMessage
@@ -182,8 +180,7 @@ class DiscordMessage
     /**
      * Set the content of the Discord message.
      *
-     * @param string $content
-     *
+     * @param  string  $content
      * @return $this
      */
     public function content(string $content): DiscordMessage
@@ -196,8 +193,7 @@ class DiscordMessage
     /**
      * Add an embed to the Discord message.
      *
-     * @param \Closure $callback
-     *
+     * @param  \Closure  $callback
      * @return $this
      */
     public function embed(Closure $callback): DiscordMessage

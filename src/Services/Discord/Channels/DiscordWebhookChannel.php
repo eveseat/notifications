@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class DiscordWebhookChannel
     /**
      * DiscordWebhookChannel constructor.
      *
-     * @param \GuzzleHttp\Client $http
+     * @param  \GuzzleHttp\Client  $http
      */
     public function __construct(HttpClient $http)
     {
@@ -55,9 +55,8 @@ class DiscordWebhookChannel
     /**
      * Send the given notification.
      *
-     * @param $notifiable
-     * @param \Illuminate\Notifications\Notification $notification
-     *
+     * @param  $notifiable
+     * @param  \Illuminate\Notifications\Notification  $notification
      * @return \Psr\Http\Message\ResponseInterface|void
      */
     public function send($notifiable, Notification $notification)
@@ -77,8 +76,7 @@ class DiscordWebhookChannel
     /**
      * Build up a JSON payload for the Slack webhook.
      *
-     * @param \Seat\Notifications\Services\Discord\Messages\DiscordMessage $message
-     *
+     * @param  \Seat\Notifications\Services\Discord\Messages\DiscordMessage  $message
      * @return array
      */
     private function buildJsonPayload(DiscordMessage $message)
@@ -101,8 +99,7 @@ class DiscordWebhookChannel
     /**
      * Format the message's embeds.
      *
-     * @param \Seat\Notifications\Services\Discord\Messages\DiscordMessage $message
-     *
+     * @param  \Seat\Notifications\Services\Discord\Messages\DiscordMessage  $message
      * @return array
      */
     private function embeds(DiscordMessage $message)
@@ -126,8 +123,7 @@ class DiscordWebhookChannel
     /**
      * Format the embed's fields.
      *
-     * @param \Seat\Notifications\Services\Discord\Messages\DiscordEmbed $embed
-     *
+     * @param  \Seat\Notifications\Services\Discord\Messages\DiscordEmbed  $embed
      * @return array
      */
     private function fields(DiscordEmbed $embed)

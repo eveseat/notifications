@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2020 Leon Jacobs
+ * Copyright (C) 2015 to 2022 Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class SovStructureDestroyed extends AbstractDiscordNotification
     use NotificationTools;
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -54,7 +54,7 @@ class SovStructureDestroyed extends AbstractDiscordNotification
     private $notification;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
      */
@@ -64,8 +64,7 @@ class SovStructureDestroyed extends AbstractDiscordNotification
     }
 
     /**
-     * @param $notifiable
-     *
+     * @param  $notifiable
      * @return \Seat\Notifications\Services\Discord\Messages\DiscordMessage
      */
     public function toDiscord($notifiable)
