@@ -55,7 +55,6 @@ abstract class AbstractNotification extends AbstractNotificationJob
      */
     abstract public function via($notifiable);
 
-
     /**
      * @return mixed
      */

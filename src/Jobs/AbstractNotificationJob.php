@@ -65,9 +65,9 @@ abstract class AbstractNotificationJob extends Notification implements ShouldQue
         logger()->error(
             sprintf('[Jobs][Notifications][%s] An error occurred while processing notification:', $this->job->getJobId()),
             [
-            'error' => $exception->getMessage(),
-            'trace' => $exception->getTrace(),
-        ]);
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
+            ]);
 
         // Rethrow the original exception for Horizon
         $this->fail($exception);
