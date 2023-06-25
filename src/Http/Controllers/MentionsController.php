@@ -40,7 +40,7 @@ class MentionsController extends Controller
         $group = NotificationGroup::find($request->id);
 
         $mention = new GroupMention();
-        $mention->type = 'discord_@everyone';
+        $mention->type = 'discord_everyone';
         $mention->data = [];
 
         $group->mentions()->save($mention);
@@ -54,7 +54,7 @@ class MentionsController extends Controller
         $group = NotificationGroup::find($request->id);
 
         $mention = new GroupMention();
-        $mention->type = 'discord_@here';
+        $mention->type = 'discord_here';
         $mention->data = [];
 
         $group->mentions()->save($mention);
@@ -72,7 +72,7 @@ class MentionsController extends Controller
         $group = NotificationGroup::find($request->group_id);
 
         $mention = new GroupMention();
-        $mention->type = 'discord_@role';
+        $mention->type = 'discord_role';
         $mention->data = ['role'=>(int) $request->role_id];
 
         $group->mentions()->save($mention);
@@ -90,7 +90,7 @@ class MentionsController extends Controller
         $group = NotificationGroup::find($request->group_id);
 
         $mention = new GroupMention();
-        $mention->type = 'discord_@user';
+        $mention->type = 'discord_user';
         $mention->data = ['user'=>(int) $request->user_id];
 
         $group->mentions()->save($mention);

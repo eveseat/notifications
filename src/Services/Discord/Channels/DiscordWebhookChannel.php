@@ -64,7 +64,7 @@ class DiscordWebhookChannel
         if (! $url = $notifiable->routeNotificationFor('discord', $notification))
             return;
 
-        logger()->debug('sending Discord Notification via webhook', [
+        logger()->debug('[Notifications][Discord] Sending a notification via webhook', [
             'data' => $this->buildJsonPayload($notification->toDiscord($notifiable)),
         ]);
 

@@ -92,7 +92,7 @@
                         <select name="mention_type" id="mention" class="form-control">
                             @foreach(config("notifications.mentions") as $mention_type=>$mention)
                                 <option value="{{ $mention_type }}">
-                                        {{ ucfirst($mention["type"]) }}: {{ trans($mention["name"]) }}
+                                        {{ ucfirst($mention["type"]) }}: {{ trans($mention["label"]) }}
                                 </option>
                             @endforeach
                         </select>

@@ -45,6 +45,8 @@ abstract class AbstractNotification extends AbstractNotificationJob
      */
     public $tries = 2;
 
+    public $mentions;
+
     /**
      * Get the notification's delivery channels.
      *
@@ -53,7 +55,6 @@ abstract class AbstractNotification extends AbstractNotificationJob
      */
     abstract public function via($notifiable);
 
-    public $mentions;
 
     /**
      * @return mixed
