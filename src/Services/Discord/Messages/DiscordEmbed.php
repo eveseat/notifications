@@ -134,10 +134,10 @@ class DiscordEmbed
     /**
      * Set the embed's timestamp.
      *
-     * @param  \DateTimeInterface|\DateInterval|int  $timestamp
+     * @param \DateInterval|\DateTimeInterface|int $timestamp
      * @return $this
      */
-    public function timestamp($timestamp): DiscordEmbed
+    public function timestamp(\DateInterval|\DateTimeInterface|int $timestamp): DiscordEmbed
     {
         $this->timestamp = $this->availableAt($timestamp);
 

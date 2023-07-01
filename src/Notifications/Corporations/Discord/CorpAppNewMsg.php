@@ -63,7 +63,7 @@ class CorpAppNewMsg extends AbstractDiscordNotification
         $message
             ->content($this->notification->text['applicationText'])
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp($this->notification->timestamp);
+                $embed->timestamp(carbon($this->notification->timestamp));
 
                 $embed->author(
                     'SeAT - New Application',
@@ -72,19 +72,29 @@ class CorpAppNewMsg extends AbstractDiscordNotification
                 );
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $entity = UniverseName::find($this->notification->text['corporationID']) ?? trans('web::seat.unknown');
-
-                    $field->name('Corporation Name')
-                        ->value($this->zKillBoardToDiscordLink('corporation', $entity->entity_id, $entity->name))
+                    $field
+                        ->name('Character Name')
                         ->long();
+
+                    $entity = UniverseName::find($this->notification->text['corpID']);
+                    if($entity) {
+                        $field->value($this->zKillBoardToDiscordLink('character', $entity->entity_id, $entity->name));
+                    } else {
+                        $field->value(trans('web::seat.unknown'));
+                    }
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $entity = UniverseName::find($this->notification->text['characterID']) ?? trans('web::seat.unknown');
-
-                    $field->name('Character Name')
-                        ->value($this->zKillBoardToDiscordLink('character', $entity->entity_id, $entity->name))
+                    $field
+                        ->name('Character Name')
                         ->long();
+
+                    $entity = UniverseName::find($this->notification->text['charID']);
+                    if($entity) {
+                        $field->value($this->zKillBoardToDiscordLink('character', $entity->entity_id, $entity->name));
+                    } else {
+                        $field->value(trans('web::seat.unknown'));
+                    }
                 });
             })
             ->info();
