@@ -28,6 +28,8 @@ use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Observers\CharacterNotificationObserver;
 use Seat\Notifications\Observers\ContractDetailObserver;
@@ -169,6 +171,7 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     {
         $this->publishes([
             __DIR__ . '/Config/notifications.alerts.php' => config_path('notifications.alerts.php'),
+            __DIR__ . '/Config/notifications.mentions.php' => config_path('notifications.mentions.php'),
         ], ['config', 'seat']);
     }
 
@@ -207,9 +210,19 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     }
 
     private function add_rate_limiters() {
-        https://api.slack.com/docs/rate-limits
+        // https://api.slack.com/docs/rate-limits
         RateLimiter::for(AbstractSlackNotification::RATE_LIMIT_KEY, function (object $job) {
             return Limit::perMinute(AbstractSlackNotification::RATE_LIMIT);
+        });
+
+        // just make usre we don't spam the mail server
+        RateLimiter::for(AbstractMailNotification::RATE_LIMIT_KEY, function (object $job) {
+            return Limit::perMinute(AbstractMailNotification::RATE_LIMIT);
+        });
+
+        // https://discord.com/developers/docs/topics/rate-limits#global-rate-limit
+        RateLimiter::for(AbstractDiscordNotification::RATE_LIMIT_KEY, function (object $job) {
+            return Limit::perMinute(AbstractDiscordNotification::RATE_LIMIT);
         });
     }
 }

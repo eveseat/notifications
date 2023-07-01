@@ -53,27 +53,15 @@ class ContractNotification extends AbstractSlackNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-
-        return ['slack'];
-    }
-
-    /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return SlackMessage
      */
     public function toSlack($notifiable)
     {
         $message = (new SlackMessage)
-            ->content('A new contract has been created!')
+            ->content('A new event related to a contract has been recorded!')
             ->from('SeAT Contract Monitor')
             ->attachment(function ($attachment) {
                 $type = $this->contract->type;

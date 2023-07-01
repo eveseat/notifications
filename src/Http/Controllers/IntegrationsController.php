@@ -23,6 +23,7 @@
 namespace Seat\Notifications\Http\Controllers;
 
 use Illuminate\Support\Facades\Notification;
+use Seat\Notifications\Http\Validation\DiscordIntegration;
 use Seat\Notifications\Http\Validation\EmailIntegration;
 use Seat\Notifications\Http\Validation\SlackIntegration;
 use Seat\Notifications\Models\Integration;
@@ -105,6 +106,32 @@ class IntegrationsController extends Controller
 
         return redirect()->back()
             ->with('success', 'Successfully scheduled notification test');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getNewDiscord()
+    {
+
+        return view('notifications::integrations.forms.discord');
+    }
+
+    /**
+     * @param  \Seat\Notifications\Http\Validation\DiscordIntegration  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postNewDiscord(DiscordIntegration $request)
+    {
+
+        Integration::create([
+            'name'     => $request->input('name'),
+            'settings' => ['url' => $request->input('url')],
+            'type'     => 'discord',
+        ]);
+
+        return redirect()->route('seatcore::notifications.integrations.list')
+            ->with('success', 'Discord Integration Added!');
     }
 
     /**

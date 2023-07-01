@@ -48,6 +48,15 @@ Route::group([
 
         // New Integrations
 
+        // Discord
+        Route::get('/new/discord')
+            ->name('seatcore::notifications.integrations.new.discord')
+            ->uses('IntegrationsController@getNewDiscord');
+
+        Route::post('/new/discord')
+            ->name('seatcore::notifications.integrations.new.discord.add')
+            ->uses('IntegrationsController@postNewDiscord');
+
         // Email
         Route::get('/new/email')
             ->name('seatcore::notifications.integrations.new.email')
@@ -97,6 +106,22 @@ Route::group([
             ->name('seatcore::notifications.groups.edit.integration.delete')
             ->uses('GroupsController@getDeleteIntegration');
 
+        Route::post('/edit/mentions/add')
+            ->name('seatcore::notifications.groups.edit.mention.add')
+            ->uses('GroupsController@postAddGroupMention');
+
+        Route::get('/edit/mentions/delete/{mention_id}')
+            ->name('seatcore::notifications.groups.edit.mention.delete')
+            ->uses('GroupsController@postDeleteGroupMention');
+
+        Route::post('/edit/mentions/add/discord/role')
+            ->name('seatcore::notifications.mentions.edit.discord.role.add')
+            ->uses('MentionsController@postCreateDiscordAtRole');
+
+        Route::post('/edit/mentions/add/discord/user')
+            ->name('seatcore::notifications.mentions.edit.discord.user.add')
+            ->uses('MentionsController@postCreateDiscordAtUser');
+
         Route::get('/ajax/alerts/')
             ->name('seatcore::notifications.ajax.alerts')
             ->uses('GroupsController@getAjaxAlerts');
@@ -122,5 +147,4 @@ Route::group([
             ->uses('GroupsController@getDeleteAffiliation');
 
     });
-
 });

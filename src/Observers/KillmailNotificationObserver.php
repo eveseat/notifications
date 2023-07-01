@@ -26,6 +26,7 @@ use Illuminate\Notifications\AnonymousNotifiable;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Notifications\Characters\Slack\Killmail;
+use Seat\Notifications\Traits\NotificationDispatchTool;
 
 /**
  * Class KillmailNotificationObserver.
@@ -34,6 +35,8 @@ use Seat\Notifications\Notifications\Characters\Slack\Killmail;
  */
 class KillmailNotificationObserver
 {
+    use NotificationDispatchTool;
+
     const EXPIRATION_DELAY = 3600;
 
     /**
@@ -41,6 +44,10 @@ class KillmailNotificationObserver
      */
     public function updated(KillmailDetail $killmail)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Killmail - Queuing job due to updated killmail.', $killmail->killmail_id),
+            $killmail->toArray());
+
         $this->dispatch($killmail);
     }
 
@@ -91,21 +98,6 @@ class KillmailNotificationObserver
                 $query->orWhereIn('affiliation_id', $killmail->attackers->pluck('corporation_id'));
             })->get();
 
-        $routes = $settings->map(function ($group) {
-            return $group->integrations->map(function ($channel) {
-                $setting = (array) $channel->settings;
-                $key = array_key_first($setting);
-                $route = $setting[$key];
-
-                return (object) [
-                    'channel' => $channel->type,
-                    'route' => $route,
-                ];
-            });
-        });
-
-        return $routes->flatten()->unique(function ($integration) {
-            return $integration->channel . $integration->route;
-        });
+        return $this->mapGroups($settings);
     }
 }

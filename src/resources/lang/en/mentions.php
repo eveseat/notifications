@@ -20,27 +20,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications;
-
-use Seat\Notifications\Jobs\AbstractNotificationJob;
-
-/**
- * Class AbstractNotification.
- *
- * @package Seat\Notifications\Jobs
- */
-abstract class AbstractNotification extends AbstractNotificationJob
-{
-    /**
-     * {@inheritdoc}
-     */
-    public $queue = 'notifications';
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param $notifiable
-     * @return array
-     */
-    abstract public function via($notifiable);
-}
+return [
+    'discord_everyone' => 'Ping @everyone',
+    'discord_here'=>'Ping @here',
+    'discord_role'=>'Ping Role',
+    'discord_user'=>'Ping User',
+    'unknown' => 'Unknown',
+];

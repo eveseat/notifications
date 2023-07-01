@@ -41,7 +41,7 @@ class NewMailMessage extends AbstractSlackNotification
     /**
      * Create a new notification instance.
      *
-     * @param $message
+     * @param  $message
      */
     public function __construct($message)
     {
@@ -50,21 +50,9 @@ class NewMailMessage extends AbstractSlackNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-
-        return ['slack'];
-    }
-
-    /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -75,7 +63,7 @@ class NewMailMessage extends AbstractSlackNotification
             ->from('SeAT Personal Agent')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Read on SeAT', route('character.view.mail.timeline.read', [
+                $attachment->title('Read on SeAT', route('seatcore::character.view.mail.timeline.read', [
                     'message_id' => $this->message->mail_id,
                 ]))->fields([
                     'Subject'   => $this->message->subject,
@@ -85,21 +73,5 @@ class NewMailMessage extends AbstractSlackNotification
                         2000),
                 ]);
             });
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-
-        return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
-            'sent_date' => $this->message->sentDate,
-        ];
     }
 }

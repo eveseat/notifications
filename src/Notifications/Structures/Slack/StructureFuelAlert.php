@@ -54,18 +54,7 @@ class StructureFuelAlert extends AbstractSlackNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array;
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -109,14 +98,5 @@ class StructureFuelAlert extends AbstractSlackNotification
 
                 $attachment->color('#439fe0');
             });
-    }
-
-    /**
-     * @param $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return $this->notification->text;
     }
 }

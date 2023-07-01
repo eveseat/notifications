@@ -23,14 +23,14 @@
 namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 
 /**
  * Class InActiveCorpMember.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class InActiveCorpMember extends AbstractNotification
+class InActiveCorpMember extends AbstractMailNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
@@ -40,24 +40,12 @@ class InActiveCorpMember extends AbstractNotification
     /**
      * Create a new notification instance.
      *
-     * @param $member \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
+     * @param  $member  \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
      */
     public function __construct($member)
     {
 
         $this->member = $member;
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-
-        return ['mail'];
     }
 
     /**
@@ -77,7 +65,7 @@ class InActiveCorpMember extends AbstractNotification
                 $this->member->character->name . ' logged off more than 3 months ago at ' .
                 $this->member->logoff_date . '.'
             )
-            ->action('View Corporation Tracking', route('corporation.view.tracking', [
+            ->action('View Corporation Tracking', route('seatcore::corporation.view.tracking', [
                 'corporation' => $this->member->corporation_id,
             ]))
             ->line(

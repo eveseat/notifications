@@ -26,14 +26,14 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 
 /**
  * Class StructureServicesOffline.
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class StructureServicesOffline extends AbstractNotification
+class StructureServicesOffline extends AbstractMailNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
@@ -51,16 +51,7 @@ class StructureServicesOffline extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -84,7 +75,7 @@ class StructureServicesOffline extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)
