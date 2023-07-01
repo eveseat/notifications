@@ -133,7 +133,7 @@ class DiscordWebhookChannel
                 return $value->toArray();
 
             return [
-                'title' => $title,
+                'name' => $title,
                 'value' => $value,
                 'inline' => true,
             ];
