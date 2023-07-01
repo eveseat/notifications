@@ -42,6 +42,10 @@ class CharacterNotificationObserver
      */
     public function created(CharacterNotification $notification)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Character Notification - Queuing job due to registered in-game notification.', $notification->notification_id),
+            $notification->toArray());
+
         $this->dispatch($notification);
     }
 

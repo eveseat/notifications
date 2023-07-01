@@ -43,6 +43,15 @@ abstract class AbstractNotification extends AbstractNotificationJob
     public $mentions;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 2;
+
+    public $mentions;
+
+    /**
      * Get the notification's delivery channels.
      *
      * @param  $notifiable

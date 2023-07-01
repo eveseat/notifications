@@ -40,6 +40,9 @@ class UserObserver
      */
     public function created(User $user)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] User Account - Queuing job due to new user account creation.', $user->id));
+
         $this->dispatch($user);
     }
 
