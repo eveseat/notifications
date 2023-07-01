@@ -40,6 +40,10 @@ class SquadMemberObserver
      */
     public function created(SquadMember $member)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Squad Member - Queuing job due to joining squad member.', $member->user_id),
+            $member->toArray());
+
         $this->dispatch($member, 'squad_member');
     }
 
@@ -48,6 +52,10 @@ class SquadMemberObserver
      */
     public function deleted(SquadMember $member)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Corporation Member Tracking - Queuing job due to leaving squad member.', $member->user_id),
+            $member->toArray());
+
         $this->dispatch($member, 'squad_member_removed');
     }
 

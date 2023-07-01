@@ -40,6 +40,10 @@ class SquadApplicationObserver
      */
     public function created(SquadApplication $member)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Squad Application - Queuing job due to new squad application.', $member->application_id),
+            $member->toArray());
+
         $this->dispatch($member);
     }
 

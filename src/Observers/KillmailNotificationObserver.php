@@ -44,6 +44,10 @@ class KillmailNotificationObserver
      */
     public function updated(KillmailDetail $killmail)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Killmail - Queuing job due to updated killmail.', $killmail->killmail_id),
+            $killmail->toArray());
+
         $this->dispatch($killmail);
     }
 

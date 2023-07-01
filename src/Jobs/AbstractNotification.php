@@ -39,7 +39,6 @@ abstract class AbstractNotification extends AbstractNotificationJob
      */
     public $queue = 'notifications';
 
-
     public $mentions;
 
     /**

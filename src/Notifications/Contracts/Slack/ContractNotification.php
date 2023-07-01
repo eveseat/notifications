@@ -61,7 +61,7 @@ class ContractNotification extends AbstractSlackNotification
     public function toSlack($notifiable)
     {
         $message = (new SlackMessage)
-            ->content('A new contract has been created!')
+            ->content('A new event related to a contract has been recorded!')
             ->from('SeAT Contract Monitor')
             ->attachment(function ($attachment) {
                 $type = $this->contract->type;
