@@ -26,24 +26,25 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 
 /**
  * Class CharLeftCorpMsg.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class CharLeftCorpMsg extends AbstractNotification
+class CharLeftCorpMsg extends AbstractMailNotification
 {
+
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
     private $notification;
 
     /**
-     * CharLeftCorpMsg constructor.
+     * Constructor.
      *
-     * @param $notification
+     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
      */
     public function __construct(CharacterNotification $notification)
     {
@@ -51,16 +52,7 @@ class CharLeftCorpMsg extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -94,7 +86,7 @@ class CharLeftCorpMsg extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

@@ -23,6 +23,8 @@
 return [
     // Core
     'created_user'                     => 'Created User',
+    'disabled_token' => 'Invalidated Token',
+    'enabled_token' => 'Registered Token',
 
     //Squads
     'squad_application'                => 'Squad Applications',
@@ -64,4 +66,5 @@ return [
     'structure_went_low_power'         => 'Structures Low Power',
     'killmails'                        => 'Killmails',
     'contract_created'                 => 'Contract created',
+    'war_inactive_member' => 'War Inactive Member',
 ];

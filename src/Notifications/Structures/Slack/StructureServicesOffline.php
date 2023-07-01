@@ -51,16 +51,7 @@ class StructureServicesOffline extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -105,14 +96,5 @@ class StructureServicesOffline extends AbstractSlackNotification
 
                 $attachment->color('danger');
             });
-    }
-
-    /**
-     * @param $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return $this->notification->text;
     }
 }

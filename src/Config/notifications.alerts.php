@@ -26,18 +26,21 @@ return [
         'label' => 'notifications::alerts.created_user',
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Seat\Mail\CreatedUser::class,
+            'discord' => \Seat\Notifications\Notifications\Seat\Discord\CreatedUser::class,
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\CreatedUser::class,
         ],
     ],
     'disabled_token' => [
         'label' => 'notifications::alerts.disabled_token',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Seat\Discord\DisabledToken::class,
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\DisabledToken::class,
         ],
     ],
     'enabled_token' => [
         'label' => 'notifications::alerts.enabled_token',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Seat\Discord\EnabledToken::class,
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\EnabledToken::class,
         ],
     ],
@@ -87,48 +90,56 @@ return [
     'AllWarDeclaredMsg' => [
         'label'   => 'notifications::alerts.alliance_war_declared',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllWarDeclaredMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarDeclaredMsg::class,
         ],
     ],
     'AllWarInvalidatedMsg' => [
         'label'   => 'notifications::alerts.alliance_war_invalidated',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllWarInvalidatedMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarInvalidatedMsg::class,
         ],
     ],
     'AllianceCapitalChanged' => [
         'label'   => 'notifications::alerts.alliance_capital_changed',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Alliances\Discord\AllianceCapitalChanged::class,
             'slack' => \Seat\Notifications\Notifications\Alliances\Slack\AllianceCapitalChanged::class,
         ],
     ],
     'AllyJoinedWarAggressorMsg' => [
-        'label'   => 'notifications::alerts.all_joined_war_aggressor',
+        'label'   => 'notifications::alerts.ally_joined_war_aggressor',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllyJoinedWarAggressorMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAggressorMsg::class,
         ],
     ],
     'AllyJoinedWarAllyMsg' => [
         'label'   => 'notifications::alerts.ally_joined_war_ally',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllyJoinedWarAllyMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAllyMsg::class,
         ],
     ],
     'AllyJoinedWarDefenderMsg' => [
         'label'   => 'notifications::alerts.ally_joined_war_defender',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllyJoinedWarDefenderMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarDefenderMsg::class,
         ],
     ],
     'BillPaidCorpAllMsg' => [
         'label'   => 'notifications::alerts.bill_paid_corporation_alliance',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Corporations\Discord\BillPaidCorpAllMsg::class,
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\BillPaidCorpAllMsg::class,
         ],
     ],
     'CharLeftCorpMsg' => [
         'label'   => 'notifications::alerts.character_left_corporation',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Corporations\Discord\CharLeftCorpMsg::class,
             'mail' => \Seat\Notifications\Notifications\Corporations\Mail\CharLeftCorpMsg::class,
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CharLeftCorpMsg::class,
         ],
@@ -136,6 +147,7 @@ return [
     'CorpAllBillMsg' => [
         'label'   => 'notifications::alerts.corporation_alliance_bill',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Corporations\Discord\CorpAllBillMsg::class,
             'mail' => \Seat\Notifications\Notifications\Corporations\Mail\CorpAllBillMsg::class,
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CorpAllBillMsg::class,
         ],
@@ -143,6 +155,7 @@ return [
     'CorpAppNewMsg' => [
         'label'   => 'notifications::alerts.corporation_application_new',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Corporations\Discord\CorpAppNewMsg::class,
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CorpAppNewMsg::class,
         ],
     ],
@@ -169,7 +182,6 @@ return [
     'OwnershipTransferred' => [
         'label'   => 'notifications::alerts.ownership_transferred',
         'handlers' => [
-            'mail' => \Seat\Notifications\Notifications\Structures\Mail\OwnershipTransferred::class,
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\OwnershipTransferred::class,
         ],
     ],
@@ -200,6 +212,7 @@ return [
     'SovStructureDestroyed' => [
         'label'   => 'notifications::alerts.sovereignty_structure_destroyed',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Sovereignties\Discord\SovStructureDestroyed::class,
             'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\SovStructureDestroyed::class,
             'slack' => \Seat\Notifications\Notifications\Sovereignties\Slack\SovStructureDestroyed::class,
         ],
@@ -207,6 +220,7 @@ return [
     'SovStructureReinforced' => [
         'label'   => 'notifications::alerts.sovereignty_structure_reinforced',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Sovereignties\Discord\SovStructureReinforced::class,
             'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\SovStructureReinforced::class,
             'slack' => \Seat\Notifications\Notifications\Sovereignties\Slack\SovStructureReinforced::class,
         ],
@@ -283,6 +297,7 @@ return [
     'inactive_member' => [
         'label' => 'notifications::alerts.war_inactive_member',
         'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Corporations\Discord\InActiveCorpMember::class,
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\InActiveCorpMember::class,
         ],
     ],
@@ -298,6 +313,7 @@ return [
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Seat\Mail\TestNotification::class,
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\TestNotification::class,
+            'discord'=>\Seat\Notifications\Notifications\Seat\Discord\TestNotification::class,
         ],
         'visible' => false,
     ],

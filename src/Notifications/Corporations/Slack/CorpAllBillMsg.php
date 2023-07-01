@@ -24,6 +24,7 @@ namespace Seat\Notifications\Notifications\Corporations\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Alliances\Alliance;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
@@ -38,31 +39,22 @@ class CorpAllBillMsg extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     * @var CharacterNotification
      */
     private $notification;
 
     /**
      * CorpAllBillMsg constructor.
      *
-     * @param $notification
+     * @param  CharacterNotification  $notification
      */
-    public function __construct($notification)
+    public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
     }
 
     /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -114,7 +106,7 @@ class CorpAllBillMsg extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

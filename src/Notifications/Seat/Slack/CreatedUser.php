@@ -49,20 +49,9 @@ class CreatedUser extends AbstractSlackNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -73,7 +62,7 @@ class CreatedUser extends AbstractSlackNotification
             ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Account Details', route('configuration.users.edit', [
+                $attachment->title('Account Details', route('seatcore::configuration.users.edit', [
                     'user_id' => $this->user->id,
                 ]))->fields([
                     'Account Name'            => $this->user->name,

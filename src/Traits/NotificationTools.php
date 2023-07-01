@@ -69,6 +69,22 @@ trait NotificationTools
     }
 
     /**
+     * Build a link to zKillboard using Discord message formatting.
+     *
+     * @param  string  $type
+     * @param  int  $id
+     * @param  string  $name
+     * @return string
+     */
+    public function zKillBoardToDiscordLink(string $type, int $id, string $name): string
+    {
+        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system', 'location']))
+            return '';
+
+        return sprintf('[%s](https://zkillboard.com/%s/%d/)', $name, $type, $id);
+    }
+
+    /**
      * @param  int  $timestamp
      * @return \Carbon\Carbon
      *

@@ -24,14 +24,14 @@ namespace Seat\Notifications\Notifications\Characters\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Str;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 
 /**
  * Class NewMailMessage.
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class NewMailMessage extends AbstractNotification
+class NewMailMessage extends AbstractMailNotification
 {
     /**
      * @var
@@ -41,24 +41,12 @@ class NewMailMessage extends AbstractNotification
     /**
      * Create a new notification instance.
      *
-     * @param $message
+     * @param  $message
      */
     public function __construct($message)
     {
 
         $this->message = $message;
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-
-        return ['mail'];
     }
 
     /**
@@ -82,7 +70,7 @@ class NewMailMessage extends AbstractNotification
                     2000) .
                 '"'
             )
-            ->action('Read it on SeAT', route('character.view.mail.timeline.read', [
+            ->action('Read it on SeAT', route('seatcore::character.view.mail.timeline.read', [
                 'message_id' => $this->message->mail_id,
             ]));
     }

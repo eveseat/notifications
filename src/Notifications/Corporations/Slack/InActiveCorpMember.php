@@ -49,18 +49,7 @@ class InActiveCorpMember extends AbstractSlackNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -70,7 +59,7 @@ class InActiveCorpMember extends AbstractSlackNotification
             ->from('SeAT Corporation Supervisor')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Tracking Details', route('corporation.view.tracking', [
+                $attachment->title('Tracking Details', route('seatcore::corporation.view.tracking', [
                     'corporation' => $this->member->corporation_id,
                 ]))->fields([
                     'Last Logoff' => $this->member->logoff_date,

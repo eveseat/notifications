@@ -22,21 +22,51 @@
 
 namespace Seat\Notifications\Notifications;
 
-use DateTime;
+use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+use Seat\Notifications\Jobs\AbstractNotification;
 
 abstract class AbstractSlackNotification extends AbstractNotification
 {
     public const RATE_LIMIT_KEY = 'slack_webhook';
-    public const RATE_LIMIT = 60;
+    public const RATE_LIMIT = 60; // https://api.slack.com/docs/rate-limits
 
     public function middleware(): array
     {
         return [new RateLimitedWithRedis(self::RATE_LIMIT_KEY)];
     }
 
-    public function retryUntil(): DateTime
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via($notifiable)
     {
-        return now()->addMinutes(60);
+        return ['slack'];
     }
+
+    /**
+     * @deprecated 5.0 Child classes should move to using populateMessage instead of overwriting toSlack. In the future, toMail will become final.
+     *
+     * @param  $notifiable
+     * @return SlackMessage
+     */
+    // don't type hint this function, it sometimes breaks notification that still override this
+    public function toSlack($notifiable)
+    {
+        $message = new SlackMessage();
+        $this->populateMessage($message, $notifiable);
+
+        return $message;
+    }
+
+    /**
+     * Populate the content of the notification.
+     *
+     * @param  SlackMessage  $message
+     * @param  $notifiable
+     * */
+    protected function populateMessage(SlackMessage $message, $notifiable) {}
 }

@@ -38,14 +38,14 @@ class CorpAppNewMsg extends AbstractSlackNotification
     use NotificationTools;
 
     /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     * @var CharacterNotification
      */
     private $notification;
 
-    /***
+    /**
      * CorpAppNewMsg constructor.
      *
-     * @param \Seat\Eveapi\Models\Character\CharacterNotification $notification
+     * @param  CharacterNotification  $notification
      */
     public function __construct(CharacterNotification $notification)
     {
@@ -53,16 +53,7 @@ class CorpAppNewMsg extends AbstractSlackNotification
     }
 
     /**
-     * @param $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

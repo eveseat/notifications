@@ -22,8 +22,8 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Models\NotificationGroup;
+use Seat\Notifications\Traits\NotificationDispatchTool;
 use Seat\Web\Models\User;
 
 /**
@@ -33,6 +33,8 @@ use Seat\Web\Models\User;
  */
 class UserObserver
 {
+    use NotificationDispatchTool;
+
     /**
      * @param  \Seat\Web\Models\User  $user
      */
@@ -51,60 +53,13 @@ class UserObserver
      */
     private function dispatch(User $user)
     {
-        // detect handlers setup for the current notification
-        $handlers = config('notifications.alerts.created_user.handlers', []);
-
-        // retrieve routing candidates for the current notification
-        $routes = $this->getRoutingCandidates();
-
-        // in case no routing candidates has been delivered, exit
-        if ($routes->isEmpty())
-            return;
-
-        // attempt to enqueue a notification for each routing candidates
-        $routes->each(function ($integration) use ($handlers, $user) {
-            if (array_key_exists($integration->channel, $handlers)) {
-
-                // extract handler from the list
-                $handler = $handlers[$integration->channel];
-
-                // enqueue the notification
-                Notification::route($integration->channel, $integration->route)
-                    ->notify(new $handler($user));
-            }
-        });
-    }
-
-    /**
-     * Provide a unique list of notification channels (including driver and route).
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    private function getRoutingCandidates()
-    {
-        $settings = NotificationGroup::with('alerts')
+        $groups = NotificationGroup::with('alerts')
             ->whereHas('alerts', function ($query) {
                 $query->where('alert', 'created_user');
             })->get();
 
-        $routes = $settings->map(function ($group) {
-            return $group->integrations->map(function ($channel) {
-
-                // extract the route value from settings field
-                $settings = (array) $channel->settings;
-                $key = array_key_first($settings);
-                $route = $settings[$key];
-
-                // build a composite object built with channel and route
-                return (object) [
-                    'channel' => $channel->type,
-                    'route' => $route,
-                ];
-            });
-        });
-
-        return $routes->flatten()->unique(function ($integration) {
-            return $integration->channel . $integration->route;
+        $this->dispatchNotifications('created_user', $groups, function ($notificationClass) use ($user) {
+            return new $notificationClass($user);
         });
     }
 }

@@ -20,33 +20,51 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures\Mail;
+namespace Seat\Notifications\Models;
 
-use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Notifications\Notifications\AbstractNotification;
-use Seat\Notifications\Traits\NotificationTools;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class OwnershipTransferred.
+ * Class GroupAffiliation.
  *
- * @package Seat\Notifications\Notifications\Structures
+ * @package Seat\Notifications\Models
  */
-class OwnershipTransferred extends AbstractNotification
+class GroupMention extends Model
 {
-    use NotificationTools;
-
     /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     * @var array
      */
-    private $notification;
+    protected $fillable = ['type', 'data'];
+
+    protected $table = 'notification_groups_mentions';
 
     /**
-     * OwnershipTransferred constructor.
+     * The attributes that should be cast.
      *
-     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
+     * @var array
      */
-    public function __construct(CharacterNotification $notification)
+    protected $casts = [
+        'data' => 'array',
+    ];
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
     {
-        $this->notification = $notification;
+        return $this->belongsTo(NotificationGroup::class);
+    }
+
+    public function getType(): object
+    {
+        return (object) (config('notifications.mentions')[$this->type] ?? [
+            'type' => 'mail',
+            'name' => 'notifications::mentions.unknown',
+        ]);
     }
 }

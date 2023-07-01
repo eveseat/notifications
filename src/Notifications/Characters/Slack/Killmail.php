@@ -54,21 +54,9 @@ class Killmail extends AbstractSlackNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-
-        return ['slack'];
-    }
-
-    /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return SlackMessage
      */
     public function toSlack($notifiable)
