@@ -22,6 +22,7 @@
 
 namespace Seat\Notifications\Jobs;
 
+use DateTime;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -38,12 +39,6 @@ abstract class AbstractNotification extends AbstractNotificationJob
      */
     public $queue = 'notifications';
 
-    /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
-     */
-    public $tries = 2;
 
     public $mentions;
 
@@ -54,6 +49,11 @@ abstract class AbstractNotification extends AbstractNotificationJob
      * @return array
      */
     abstract public function via($notifiable);
+
+    public function retryUntil(): DateTime
+    {
+        return now()->addMinutes(10);
+    }
 
     /**
      * @return mixed

@@ -63,7 +63,7 @@ abstract class AbstractNotificationJob extends Notification implements ShouldQue
             ->set('exf', 1)))->onQueue('default');
 
         logger()->error(
-            sprintf('[Jobs][Notifications][%s] An error occurred while processing notification:', $this->job->getJobId() ?? null),
+            sprintf('[Jobs][Notifications][%s] An error occurred while processing notification:', $this->job?->getJobId()),
             [
                 'error' => $exception->getMessage(),
                 'trace' => $exception->getTrace(),
