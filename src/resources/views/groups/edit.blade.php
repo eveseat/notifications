@@ -121,7 +121,7 @@
                 @foreach($group->mentions as $mention)
 
                     <tr>
-                        <td>{{ trans($mention->getType()->name) }}</td>
+                        <td>{{ trans($mention->getType()->label) }}</td>
                         <td>{{ ucfirst($mention->getType()->type) }}</td>
                         <th>
                             @if($mention->data !== [])
