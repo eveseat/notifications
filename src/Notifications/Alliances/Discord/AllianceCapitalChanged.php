@@ -64,7 +64,7 @@ class AllianceCapitalChanged extends AbstractDiscordNotification
         $message
             ->content('Capital has been modified! :white_sun_small_cloud:')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp($this->notification->timestamps);
+                $embed->timestamp(carbon($this->notification->timestamps));
                 $embed->author('SeAT Alliance Weather', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {

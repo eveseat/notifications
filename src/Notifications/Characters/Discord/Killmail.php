@@ -40,14 +40,14 @@ class Killmail extends AbstractDiscordNotification
     use NotificationTools;
 
     /**
-     * @var \Seat\Eveapi\Models\Killmails\KillmailDetail
+     * @var KillmailDetail
      */
-    private $killmail;
+    private KillmailDetail $killmail;
 
     /**
      * Killmail constructor.
      *
-     * @param  \Seat\Eveapi\Models\Killmails\KillmailDetail  $killmail
+     * @param KillmailDetail $killmail
      */
     public function __construct(KillmailDetail $killmail)
     {

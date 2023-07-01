@@ -60,7 +60,7 @@ class CharLeftCorpMsg extends AbstractDiscordNotification
         $message
             ->content('A character has left corporation!')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp($this->notification->timestamp);
+                $embed->timestamp(carbon($this->notification->timestamp));
                 $embed->author(
                     'SeAT Corporation Supervisor',
                     asset('web/img/favico/apple-icon-180x180.png'),
