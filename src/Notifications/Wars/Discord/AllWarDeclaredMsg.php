@@ -63,7 +63,7 @@ class AllWarDeclaredMsg extends AbstractDiscordNotification
         $message
             ->content('A new War has been declared ! :boom:')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp(carbon($this->notification->timestamp));
+                $embed->timestamp($this->notification->timestamp);
                 $embed->color($this->notification->text['hostileState'] ? 13632027 : 16098851);
                 $embed->author('SeAT War Observer', asset('web/img/favico/apple-icon-180x180.png'));
 

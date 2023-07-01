@@ -63,7 +63,7 @@ class SovStructureReinforced extends AbstractDiscordNotification
         $message
             ->content('A sovereignty structure has been reinforced! :broken_heart:')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp(carbon($this->notification->timestamp));
+                $embed->timestamp($this->notification->timestamp);
                 $embed->author('SeAT Sovereignty Health', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {

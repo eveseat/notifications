@@ -63,7 +63,7 @@ class CorpAllBillMsg extends AbstractDiscordNotification
         $message
             ->content('A new corporation bill has been issued!')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp(carbon($this->notification->timestamp));
+                $embed->timestamp($this->notification->timestamp);
                 $embed->author('SeAT Corporation Accountant', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
