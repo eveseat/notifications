@@ -22,7 +22,6 @@
 
 namespace Seat\Notifications\Jobs;
 
-use DateTime;
 use Illuminate\Queue\SerializesModels;
 
 /**
@@ -53,12 +52,11 @@ abstract class AbstractNotification extends AbstractNotificationJob
      * The maximum number of unhandled exceptions to allow before failing.
      * The rate limiter can delay it many times, so $tries is not optimal
      * At the same time, retryUntil is not wise either, as it might keep spamming discord's server with erroneous requests.
-     * $maxExceptions is perfect: the rate limiter can do his job, and we fail with errors
+     * $maxExceptions is perfect: the rate limiter can do his job, and we fail with errors.
      *
      * @var int
      */
     public $maxExceptions = 3;
-
 
     /**
      * @return mixed
