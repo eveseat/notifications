@@ -29,7 +29,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 abstract class AbstractDiscordNotification extends AbstractNotification
 {
     public const RATE_LIMIT_KEY = 'discord_webhook';
-    public const RATE_LIMIT = 50; //https://discord.com/developers/docs/topics/rate-limits#global-rate-limit
+    public const RATE_LIMIT = 45; //https://discord.com/developers/docs/topics/rate-limits#global-rate-limit, but stay a bit below it
 
     public function middleware(): array
     {
