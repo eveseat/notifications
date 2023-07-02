@@ -56,6 +56,17 @@ abstract class AbstractNotification extends AbstractNotificationJob
     abstract public function via($notifiable);
 
     /**
+     * The maximum number of unhandled exceptions to allow before failing.
+     * The rate limiter can delay it many times, so $tries is not optimal
+     * At the same time, retryUntil is not wise either, as it might keep spamming discord's server with erroneous requests.
+     * $maxExceptions is perfect: the rate limiter can do his job, and we fail with errors
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+
+    /**
      * @return mixed
      */
     public function getMentions()
