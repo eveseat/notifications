@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 abstract class AbstractDiscordNotification extends AbstractNotification
 {
     public const RATE_LIMIT_KEY = 'discord_webhook';
-    public const RATE_LIMIT = 50; //https://discord.com/developers/docs/topics/rate-limits#global-rate-limit
+    public const RATE_LIMIT = 45; //https://discord.com/developers/docs/topics/rate-limits#global-rate-limit, but stay a bit below it
 
     public function middleware(): array
     {
