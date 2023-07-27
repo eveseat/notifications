@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 class InActiveCorpMember extends AbstractDiscordNotification
 {
      /**
-      * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
+       * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
       */
      private $member;
 
