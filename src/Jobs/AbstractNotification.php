@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,13 +38,6 @@ abstract class AbstractNotification extends AbstractNotificationJob
      */
     public $queue = 'notifications';
 
-    /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
-     */
-    public $tries = 2;
-
     public $mentions;
 
     /**
@@ -59,12 +52,11 @@ abstract class AbstractNotification extends AbstractNotificationJob
      * The maximum number of unhandled exceptions to allow before failing.
      * The rate limiter can delay it many times, so $tries is not optimal
      * At the same time, retryUntil is not wise either, as it might keep spamming discord's server with erroneous requests.
-     * $maxExceptions is perfect: the rate limiter can do his job, and we fail with errors
+     * $maxExceptions is perfect: the rate limiter can do his job, and we fail with errors.
      *
      * @var int
      */
     public $maxExceptions = 3;
-
 
     /**
      * @return mixed
