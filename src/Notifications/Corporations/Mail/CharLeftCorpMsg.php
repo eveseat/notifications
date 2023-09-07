@@ -73,7 +73,7 @@ class CharLeftCorpMsg extends AbstractNotification
 
         $corporation = CorporationInfo::find($this->notification->text['corpID']);
 
-        if (! is_null($corporation) && ! is_null($character)) {
+        if (! is_null($corporation) || ! is_null($character)) {
 
             if (! is_null($corporation)) {
 
