@@ -61,7 +61,6 @@ class Killmail extends AbstractSlackNotification
      */
     public function toSlack($notifiable)
     {
-
         $message = (new SlackMessage)
             //->content('A kill has been recorded for your corporation!')
             ->from('SeAT Kilometer', $this->typeIconUrl($this->killmail->victim->ship_type_id))
@@ -98,9 +97,9 @@ class Killmail extends AbstractSlackNotification
                             ->limit(5)
                             ->get()
                             ->map(function ($attacker){
-                                return sprintf('%s | %d dmg',
+                                return sprintf('%s | %s dmg',
                                     $this->zKillBoardToSlackLink('character', $attacker->character_id, $attacker->character->name),
-                                    $attacker->damage_done,
+                                    number_format($attacker->damage_done),
                                 );
                             });
 
@@ -117,7 +116,9 @@ class Killmail extends AbstractSlackNotification
                     ->field(function ($field){
                         $field
                             ->title('Details')
-                            ->content(sprintf("Time: %s\nISK Value: %d",$this->killmail->killmail_time,$this->killmail->victim->getTotalEstimateAttribute()))
+                            ->content(sprintf("Time: %s Eve Time\nISK Value: %s ISK",
+                                carbon($this->killmail->killmail_time)->toTimeString(),
+                                number_format($this->killmail->victim->getTotalEstimateAttribute())))
                             ->long();
                     })
 
