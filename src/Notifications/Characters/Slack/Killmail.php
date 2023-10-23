@@ -59,10 +59,9 @@ class Killmail extends AbstractSlackNotification
      * @param  $notifiable
      * @return SlackMessage
      */
-    public function toSlack($notifiable)
+    public function populateMessage(SlackMessage $message,$notifiable)
     {
-        $message = (new SlackMessage)
-            //->content('A kill has been recorded for your corporation!')
+        $message
             ->from('SeAT Kilometer', $this->typeIconUrl($this->killmail->victim->ship_type_id))
             ->attachment(function ($attachment) {
 
