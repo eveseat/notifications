@@ -117,15 +117,6 @@ class GroupsController extends Controller
 
         // Attach the integrations to the group.
         foreach ($request->integrations as $integration_id) {
-
-            $integration = Integration::find($integration_id);
-
-            // Make sure only one integration type is added.
-            if ($group->integrations->contains('type', $integration->type))
-                return redirect()->back()
-                    ->with('warning', 'A ' . $integration->type .
-                        ' integration already exists. Please choose another type.');
-
             // Add the integration
             if (! $group->integrations->contains($integration_id))
                 $group->integrations()
