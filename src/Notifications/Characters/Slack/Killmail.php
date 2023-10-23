@@ -45,7 +45,7 @@ class Killmail extends AbstractSlackNotification
     /**
      * Create a new notification instance.
      *
-     * @param  \Seat\Eveapi\Models\Killmails\KillmailDetail  $killmail
+     * @param \Seat\Eveapi\Models\Killmails\KillmailDetail $killmail
      */
     public function __construct(KillmailDetail $killmail)
     {
@@ -63,25 +63,64 @@ class Killmail extends AbstractSlackNotification
     {
 
         $message = (new SlackMessage)
-            ->content('A kill has been recorded for your corporation!')
+            //->content('A kill has been recorded for your corporation!')
             ->from('SeAT Kilometer', $this->typeIconUrl($this->killmail->victim->ship_type_id))
             ->attachment(function ($attachment) {
 
                 $attachment
                     ->timestamp(carbon($this->killmail->killmail_time))
-                    ->fields([
-                        'Ship Type' => $this->killmail->victim->ship->typeName,
-                        'zKB Link'  => 'https://zkillboard.com/kill/' . $this->killmail->killmail_id . '/',
-                    ])
-                    ->field(function ($field) {
-
-                        $field->title('System')
-                            ->content($this->zKillBoardToSlackLink(
-                                'system',
-                                $this->killmail->solar_system_id,
-                                $this->killmail->solar_system->name . ' (' .
-                                number_format($this->killmail->solar_system->security, 2) . ')'));
+                    //title with zkb link
+                    ->title(sprintf('%s destroyed in %s', $this->killmail->victim->ship->typeName, $this->killmail->solar_system->name))
+                    ->field('ZKB','https://zkillboard.com/kill/' . $this->killmail->killmail_id . '/')
+                    ->field(function ($field){
+                        $field
+                            ->title('Victim')
+                            ->content(sprintf("Name: %s\nCorp: %s",
+                                $this->zKillBoardToSlackLink('character',$this->killmail->victim->character_id,$this->killmail->victim->character->name),
+                                $this->zKillBoardToSlackLink('corporation',$this->killmail->victim->corporation_id,$this->killmail->victim->corporation->name)
+                            ))
+                            ->long();
                     })
+                    ->field(function ($field){
+                        $final_blow = $this->killmail->attackers()->where('final_blow', true)->first();
+                        $field
+                            ->title('Final Blow')
+                            ->content(sprintf("Name: %s\nCorp:%s",
+                                $this->zKillBoardToSlackLink('character',$final_blow->character_id,$final_blow->character->name),
+                                $this->zKillBoardToSlackLink('corporation',$final_blow->corporation_id,$final_blow->corporation->name)
+                            ))
+                            ->long();
+                    })
+                    ->field(function ($field){
+                        $attacker_count = $this->killmail->attackers()->count();
+                        $attackers = $this->killmail->attackers()
+                            ->orderByDesc('damage_done')
+                            ->limit(5)
+                            ->get()
+                            ->map(function ($attacker){
+                                return sprintf('%s | %d dmg',
+                                    $this->zKillBoardToSlackLink('character', $attacker->character_id, $attacker->character->name),
+                                    $attacker->damage_done,
+                                );
+                            });
+
+                        $others = $attacker_count - $attackers->count();
+                        if($others > 0){
+                            $attackers = $attackers->push(sprintf('%d more',$others));
+                        }
+
+                        $field
+                            ->title(sprintf('Attackers (%d)',$attacker_count))
+                            ->content(implode("\n",$attackers->toArray()))
+                            ->long();
+                    })
+                    ->field(function ($field){
+                        $field
+                            ->title('Details')
+                            ->content(sprintf("Time: %s\nISK Value: %d",$this->killmail->killmail_time,$this->killmail->victim->getTotalEstimateAttribute()))
+                            ->long();
+                    })
+
                     ->thumb($this->typeIconUrl($this->killmail->victim->ship_type_id))
                     ->fallback('Kill details')
                     ->footer('zKillboard')
@@ -99,18 +138,18 @@ class Killmail extends AbstractSlackNotification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function toArray($notifiable)
     {
 
         return [
-            'characterName'   => $this->killmail->attacker->character->name,
+            'characterName' => $this->killmail->attacker->character->name,
             'corporationName' => $this->killmail->attacker->corporation->name,
-            'typeName'        => $this->killmail->victim->ship->typeName,
-            'system'          => $this->killmail->solar_system->name,
-            'security'        => $this->killmail->solar_system->security,
+            'typeName' => $this->killmail->victim->ship->typeName,
+            'system' => $this->killmail->solar_system->name,
+            'security' => $this->killmail->solar_system->security,
         ];
     }
 }
