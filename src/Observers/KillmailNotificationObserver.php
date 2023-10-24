@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,8 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Notifications\AnonymousNotifiable;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Models\NotificationGroup;
-use Seat\Notifications\Notifications\Characters\Slack\Killmail;
 use Seat\Notifications\Traits\NotificationDispatchTool;
 
 /**
