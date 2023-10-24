@@ -60,35 +60,7 @@ class KillmailNotificationObserver
         if (carbon()->diffInSeconds($killmail->killmail_time) > self::EXPIRATION_DELAY)
             return;
 
-        // ask Laravel to enqueue the notification
-        $manager = new AnonymousNotifiable();
-
-        // retrieve routing candidates for the current notification
-        $routes = $this->getRoutingCandidates($killmail);
-
-        // in case no routing candidates has been delivered, exit
-        if ($routes->isEmpty())
-            return;
-
-        // append each routing candidate to the notification process
-        $routes->each(function ($integration) use ($manager) {
-            $manager->route($integration->channel, $integration->route);
-        });
-
-        // enqueue the notification - delay by 5 minutes to leave time to SeAT to pull complete killmail from ESI
-        $when = now()->addMinutes(5);
-        $manager->notify((new Killmail($killmail))->delay($when));
-    }
-
-    /**
-     * Provide a unique list of notification channels (including driver and route).
-     *
-     * @param  \Seat\Eveapi\Models\Killmails\KillmailDetail  $killmail
-     * @return \Illuminate\Support\Collection
-     */
-    private function getRoutingCandidates(KillmailDetail $killmail)
-    {
-        $settings = NotificationGroup::with('alerts', 'affiliations')
+        $groups = NotificationGroup::with('alerts', 'affiliations')
             ->whereHas('alerts', function ($query) {
                 $query->where('alert', 'killmail');
             })->whereHas('affiliations', function ($query) use ($killmail) {
@@ -97,7 +69,10 @@ class KillmailNotificationObserver
                 $query->orWhereIn('affiliation_id', $killmail->attackers->pluck('character_id'));
                 $query->orWhereIn('affiliation_id', $killmail->attackers->pluck('corporation_id'));
             })->get();
+        $when = now()->addMinutes(5);
 
-        return $this->mapGroups($settings);
+        $this->dispatchNotifications('Killmail', $groups, function ($notificationClass) use ($when, $killmail) {
+            return (new $notificationClass($killmail))->delay($when);
+        });
     }
 }
