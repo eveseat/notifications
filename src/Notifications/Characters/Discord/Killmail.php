@@ -61,24 +61,76 @@ class Killmail extends AbstractDiscordNotification
     public function populateMessage(DiscordMessage $message, $notifiable)
     {
         $message
-            ->content('A kill has been recorded for your corporation!')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->killmail->killmail_time);
                 $embed->author('SeAT Kilometer', asset('web/img/favico/apple-icon-180x180.png'));
 
-                $embed->field('Ship Type', $this->killmail->victim->ship->typeName);
-                $embed->field('zKB Link', sprintf('https://zkillboard.com/kill/%d/', $this->killmail->killmail_id));
-                $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('System');
-                    $field->value(
-                        $this->zKillBoardToDiscordLink(
-                            'system',
-                            $this->killmail->solar_system_id,
-                            sprintf('%s (%s)',
-                                $this->killmail->solar_system->name,
-                                number_format($this->killmail->solar_system->security, 2))));
+                // title
+                $embed->title(sprintf('%s destroyed in %s', $this->killmail->victim->ship->typeName, $this->killmail->solar_system->name));
+
+                // zkb link
+                $embed->field(function (DiscordEmbedField $field){
+                   $field
+                       ->name('ZKB')
+                       ->value('https://zkillboard.com/kill/' . $this->killmail->killmail_id . '/')
+                       ->long();
                 });
 
+                // victim
+                $embed->field(function(DiscordEmbedField $field){
+                    $field
+                        ->name('Victim')
+                        ->value(sprintf("Name: %s\nCorp: %s",
+                            $this->zKillBoardToDiscordLink('character',$this->killmail->victim->character_id,$this->killmail->victim->character->name),
+                            $this->zKillBoardToDiscordLink('corporation',$this->killmail->victim->corporation_id,$this->killmail->victim->corporation->name)
+                        ))->long();
+                });
+
+                //final blow
+                $final_blow = $this->killmail->attackers()->where('final_blow', true)->first();
+                $embed->field(function (DiscordEmbedField $field) use ($final_blow) {
+                    $field
+                        ->name('Final Blow')
+                        ->value(sprintf("Name: %s\nCorp:%s",
+                            $this->zKillBoardToDiscordLink('character',$final_blow->character_id,$final_blow->character->name),
+                            $this->zKillBoardToDiscordLink('corporation',$final_blow->corporation_id,$final_blow->corporation->name)
+                        ))->long();
+                });
+
+                // attackers
+                $attacker_count = $this->killmail->attackers()->count();
+                $attackers = $this->killmail->attackers()
+                    ->orderByDesc('damage_done')
+                    ->limit(5)
+                    ->get()
+                    ->map(function ($attacker){
+                        return sprintf('%s | %s dmg',
+                            $this->zKillBoardToDiscordLink('character', $attacker->character_id, $attacker->character->name),
+                            number_format($attacker->damage_done),
+                        );
+                    });
+                $others = $attacker_count - $attackers->count();
+                if($others > 0){
+                    $attackers = $attackers->push(sprintf('%d more',$others));
+                }
+                $embed->field(function (DiscordEmbedField $field) use ($attackers, $attacker_count) {
+                    $field
+                        ->name(sprintf('Attackers (%d)',$attacker_count))
+                        ->value(implode("\n",$attackers->toArray()))
+                        ->long();
+                });
+
+                // details
+                $embed->field(function (DiscordEmbedField $field){
+                    $field
+                        ->name('Details')
+                        ->value(sprintf("Time: %s Eve Time\nISK Value: %s ISK",
+                            carbon($this->killmail->killmail_time)->toTimeString(),
+                            number_format($this->killmail->victim->getTotalEstimateAttribute())
+                        ))->long();
+                });
+
+                //footer
                 $embed->thumb($this->typeIconUrl($this->killmail->victim->ship_type_id));
                 $embed->footer('zKillboard', 'https://zkillboard.com/img/wreck.png');
 
