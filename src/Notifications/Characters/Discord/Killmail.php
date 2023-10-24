@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ class Killmail extends AbstractDiscordNotification
                 $embed->title(sprintf('%s destroyed in %s', $this->killmail->victim->ship->typeName, $this->killmail->solar_system->name));
 
                 // zkb link
-                $embed->field(function (DiscordEmbedField $field){
+                $embed->field(function (DiscordEmbedField $field) {
                    $field
                        ->name('ZKB')
                        ->value('https://zkillboard.com/kill/' . $this->killmail->killmail_id . '/')
@@ -77,12 +77,12 @@ class Killmail extends AbstractDiscordNotification
                 });
 
                 // victim
-                $embed->field(function(DiscordEmbedField $field){
+                $embed->field(function (DiscordEmbedField $field) {
                     $field
                         ->name('Victim')
                         ->value(sprintf("Name: %s\nCorp: %s",
-                            $this->zKillBoardToDiscordLink('character',$this->killmail->victim->character_id,$this->killmail->victim->character->name),
-                            $this->zKillBoardToDiscordLink('corporation',$this->killmail->victim->corporation_id,$this->killmail->victim->corporation->name)
+                            $this->zKillBoardToDiscordLink('character', $this->killmail->victim->character_id, $this->killmail->victim->character->name),
+                            $this->zKillBoardToDiscordLink('corporation', $this->killmail->victim->corporation_id, $this->killmail->victim->corporation->name)
                         ))->long();
                 });
 
@@ -92,8 +92,8 @@ class Killmail extends AbstractDiscordNotification
                     $field
                         ->name('Final Blow')
                         ->value(sprintf("Name: %s\nCorp:%s",
-                            $this->zKillBoardToDiscordLink('character',$final_blow->character_id,$final_blow->character->name),
-                            $this->zKillBoardToDiscordLink('corporation',$final_blow->corporation_id,$final_blow->corporation->name)
+                            $this->zKillBoardToDiscordLink('character', $final_blow->character_id, $final_blow->character->name),
+                            $this->zKillBoardToDiscordLink('corporation', $final_blow->corporation_id, $final_blow->corporation->name)
                         ))->long();
                 });
 
@@ -103,7 +103,7 @@ class Killmail extends AbstractDiscordNotification
                     ->orderByDesc('damage_done')
                     ->limit(5)
                     ->get()
-                    ->map(function ($attacker){
+                    ->map(function ($attacker) {
                         return sprintf('%s | %s dmg',
                             $this->zKillBoardToDiscordLink('character', $attacker->character_id, $attacker->character->name),
                             number_format($attacker->damage_done),
@@ -111,17 +111,17 @@ class Killmail extends AbstractDiscordNotification
                     });
                 $others = $attacker_count - $attackers->count();
                 if($others > 0){
-                    $attackers = $attackers->push(sprintf('%d more',$others));
+                    $attackers = $attackers->push(sprintf('%d more', $others));
                 }
                 $embed->field(function (DiscordEmbedField $field) use ($attackers, $attacker_count) {
                     $field
-                        ->name(sprintf('Attackers (%d)',$attacker_count))
-                        ->value(implode("\n",$attackers->toArray()))
+                        ->name(sprintf('Attackers (%d)', $attacker_count))
+                        ->value(implode("\n", $attackers->toArray()))
                         ->long();
                 });
 
                 // details
-                $embed->field(function (DiscordEmbedField $field){
+                $embed->field(function (DiscordEmbedField $field) {
                     $field
                         ->name('Details')
                         ->value(sprintf("Time: %s Eve Time\nISK Value: %s ISK",
