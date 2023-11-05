@@ -22,13 +22,13 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
-use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
+use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -59,19 +59,24 @@ class StructureDestroyed extends AbstractDiscordNotification
                     );
 
                     $field->name('System')
-                        ->value($this->zKillBoardToDiscordLink(
-                            'system',
-                            $system->itemID,
-                            sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))));
+                        ->value(
+                            $this->zKillBoardToDiscordLink(
+                                'system',
+                                $system->itemID,
+                                sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
+                            )
+                        );
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $field->name('Owner')
-                        ->value($this->zKillBoardToDiscordLink(
-                            'corporation',
-                            $this->notification->text['ownerCorpLinkData'][2],
-                            $this->notification->text['ownerCorpName']
-                        ));
+                        ->value(
+                            $this->zKillBoardToDiscordLink(
+                                'corporation',
+                                $this->notification->text['ownerCorpLinkData'][2],
+                                $this->notification->text['ownerCorpName']
+                            )
+                        );
                 });
             })
             ->embed(function (DiscordEmbed $embed) {

@@ -67,7 +67,8 @@ class AllAnchoringMsg extends AbstractDiscordNotification
                                     'system',
                                     $system->itemID,
                                     sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
-                            ));
+                                )
+                            );
                     })
                     ->field(function (DiscordEmbedField $field) {
                         $moon = MapDenormalize::find($this->notification->text['moonID']);

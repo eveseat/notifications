@@ -78,7 +78,6 @@ class StructureFuelAlert extends AbstractDiscordNotification
             })
             ->embed(function (DiscordEmbed $embed) {
                 foreach ($this->notification->text['listOfTypesAndQty'] as $item) {
-
                     $embed->field(function (DiscordEmbedField $field) use ($item) {
                         $type = InvType::find($item[1]);
                         $quantity = $item[0];

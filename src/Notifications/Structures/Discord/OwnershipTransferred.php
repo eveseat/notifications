@@ -22,14 +22,14 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
-use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
+use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -62,7 +62,11 @@ class OwnershipTransferred extends AbstractDiscordNotification
 
                     $field->name('System')
                         ->value(
-                            $this->zKillBoardToDiscordLink('system', $system->itemID, sprintf('%s (%s)', $system->itemName, number_format($system->security, 2)))
+                            $this->zKillBoardToDiscordLink(
+                                'system',
+                                $system->itemID,
+                                sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
+                            )
                         );
                 });
 

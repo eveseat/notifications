@@ -22,11 +22,11 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
@@ -64,14 +64,18 @@ class OrbitalAttacked extends AbstractDiscordNotification
                                 $this->notification->text['aggressorCorpID'],
                                 UniverseName::firstOrNew(
                                     ['entity_id' => $this->notification->text['aggressorCorpID']],
-                                    ['category' => 'corporation', 'name' => trans('web::seat.unknown')])
-                                ->name
-                            ));
-                    })
+                                    ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+                                )
+                                    ->name
+                            )
+                        );
+                })
                     ->field(function (DiscordEmbedField $field) {
-
-                        if (! array_key_exists('aggressorAllianceID', $this->notification->text) || is_null($this->notification->text['aggressorAllianceID']))
+                        if (!array_key_exists('aggressorAllianceID', $this->notification->text) || is_null(
+                                $this->notification->text['aggressorAllianceID']
+                            )) {
                             return;
+                        }
 
                         $field->name('Alliance')
                             ->value(
@@ -80,14 +84,15 @@ class OrbitalAttacked extends AbstractDiscordNotification
                                     $this->notification->text['aggressorAllianceID'],
                                     UniverseName::firstOrNew(
                                         ['entity_id' => $this->notification->text['aggressorAllianceID']],
-                                        ['category' => 'alliance', 'name' => trans('web::seat.unknown')])
-                                    ->name
-                                ));
+                                        ['category' => 'alliance', 'name' => trans('web::seat.unknown')]
+                                    )
+                                        ->name
+                                )
+                            );
                     });
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
-
                     $system = MapDenormalize::find($this->notification->text['solarSystemID']);
 
                     $field->name('System')
@@ -96,20 +101,21 @@ class OrbitalAttacked extends AbstractDiscordNotification
                                 'system',
                                 $system->itemID,
                                 $system->itemName . ' (' . number_format($system->security, 2) . ')'
-                            ));
+                            )
+                        );
                 })
-                ->field(function (DiscordEmbedField $field) {
+                    ->field(function (DiscordEmbedField $field) {
+                        $planet = MapDenormalize::find($this->notification->text['planetID']);
 
-                    $planet = MapDenormalize::find($this->notification->text['planetID']);
-
-                    $field->name('Planet')
-                        ->value(
-                            $this->zKillBoardToDiscordLink(
-                                'location',
-                                $planet->itemID,
-                                $planet->itemName . ' (' . number_format($planet->security, 2) . ')'
-                            ));
-                });
+                        $field->name('Planet')
+                            ->value(
+                                $this->zKillBoardToDiscordLink(
+                                    'location',
+                                    $planet->itemID,
+                                    $planet->itemName . ' (' . number_format($planet->security, 2) . ')'
+                                )
+                            );
+                    });
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
@@ -117,11 +123,13 @@ class OrbitalAttacked extends AbstractDiscordNotification
                         ->value(number_format($this->notification->text['shieldLevel'] * 100, 2));
                 })->color('good');
 
-                if ($this->notification->text['shieldLevel'] * 100 < 70)
+                if ($this->notification->text['shieldLevel'] * 100 < 70) {
                     $embed->color('warning');
+                }
 
-                if ($this->notification->text['shieldLevel'] * 100 < 40)
+                if ($this->notification->text['shieldLevel'] * 100 < 40) {
                     $embed->color('danger');
+                }
             });
     }
 }

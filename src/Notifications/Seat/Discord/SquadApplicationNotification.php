@@ -50,11 +50,11 @@ class SquadApplicationNotification extends AbstractDiscordNotification
                 $embed->author('SeAT State of Things', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->title('Squad Application', $this->application->squad->link)
-                ->fields([
-                    'User'    => $this->application->user->name,
-                    'Squad'   => $this->application->squad->name,
-                    'Message' => $this->application->message,
-                ]);
+                    ->fields([
+                        'User' => $this->application->user->name,
+                        'Squad' => $this->application->squad->name,
+                        'Message' => $this->application->message,
+                    ]);
             });
     }
 }

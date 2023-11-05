@@ -51,7 +51,6 @@ class MoonMiningExtractionStarted extends AbstractDiscordMoonMiningExtraction
                 $embed->author('SeAT Moon Tracker', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
-
                     $system = MapDenormalize::find($this->notification->text['solarSystemID']);
 
                     $field->name('System')
@@ -60,28 +59,23 @@ class MoonMiningExtractionStarted extends AbstractDiscordMoonMiningExtraction
                                 'system',
                                 $system->itemID,
                                 sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
-                            ));
-
+                            )
+                        );
                 })->field(function (DiscordEmbedField $field) {
-
                     $moon = MapDenormalize::find($this->notification->text['moonID']);
 
                     $field->name('Moon')
                         ->value($moon->itemName);
-
                 })->field(function (DiscordEmbedField $field) {
-
                     $type = InvType::find($this->notification->text['structureTypeID']);
 
                     $field->name('Structure')
                         ->value(
-                            sprintf('%s (%s)', $this->notification->text['structureName'], $type->typeName));
-
+                            sprintf('%s (%s)', $this->notification->text['structureName'], $type->typeName)
+                        );
                 })->field(function (DiscordEmbedField $field) {
-
                     $field->name('Available')
                         ->value($this->mssqlTimestampToDate($this->notification->text['readyTime'])->toRfc7231String());
-
                 });
             });
 

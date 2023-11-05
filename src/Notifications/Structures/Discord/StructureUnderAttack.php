@@ -22,14 +22,14 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
-use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseStructure;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
+use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -64,12 +64,15 @@ class StructureUnderAttack extends AbstractDiscordNotification
                                 'corporation',
                                 $this->notification->text['corpLinkData'][2],
                                 $this->notification->text['corpName']
-                            ));
-                    })
+                            )
+                        );
+                })
                     ->field(function (DiscordEmbedField $field) {
-
-                        if (! array_key_exists('allianceID', $this->notification->text) || is_null($this->notification->text['allianceID']))
+                        if (!array_key_exists('allianceID', $this->notification->text) || is_null(
+                                $this->notification->text['allianceID']
+                            )) {
                             return;
+                        }
 
                         $field->name('Alliance')
                             ->value(
@@ -77,10 +80,10 @@ class StructureUnderAttack extends AbstractDiscordNotification
                                     'alliance',
                                     $this->notification->text['allianceID'],
                                     $this->notification->text['allianceName']
-                                ));
+                                )
+                            );
                     })
                     ->field(function (DiscordEmbedField $field) {
-
                         $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                         $field->name('System')
@@ -89,18 +92,19 @@ class StructureUnderAttack extends AbstractDiscordNotification
                                     'system',
                                     $system->itemID,
                                     $system->itemName . ' (' . number_format($system->security, 2) . ')'
-                                ));
+                                )
+                            );
                     })
                     ->field(function (DiscordEmbedField $field) {
-
                         $structure = UniverseStructure::find($this->notification->text['structureID']);
 
                         $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                         $title = 'Structure';
 
-                        if (! is_null($structure))
+                        if (!is_null($structure)) {
                             $title = $structure->name;
+                        }
 
                         $field->name($title)
                             ->value($type->typeName);
@@ -112,11 +116,13 @@ class StructureUnderAttack extends AbstractDiscordNotification
                         ->value(number_format($this->notification->text['shieldPercentage'], 2));
                 })->color('good');
 
-                if ($this->notification->text['shieldPercentage'] < 70)
+                if ($this->notification->text['shieldPercentage'] < 70) {
                     $embed->color('warning');
+                }
 
-                if ($this->notification->text['shieldPercentage'] < 40)
+                if ($this->notification->text['shieldPercentage'] < 40) {
                     $embed->color('danger');
+                }
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
@@ -124,11 +130,13 @@ class StructureUnderAttack extends AbstractDiscordNotification
                         ->value(number_format($this->notification->text['armorPercentage'], 2));
                 })->color('good');
 
-                if ($this->notification->text['armorPercentage'] < 70)
+                if ($this->notification->text['armorPercentage'] < 70) {
                     $embed->color('warning');
+                }
 
-                if ($this->notification->text['armorPercentage'] < 40)
+                if ($this->notification->text['armorPercentage'] < 40) {
                     $embed->color('danger');
+                }
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
@@ -136,11 +144,13 @@ class StructureUnderAttack extends AbstractDiscordNotification
                         ->value(number_format($this->notification->text['hullPercentage'], 2));
                 })->color('good');
 
-                if ($this->notification->text['hullPercentage'] < 70)
+                if ($this->notification->text['hullPercentage'] < 70) {
                     $embed->color('warning');
+                }
 
-                if ($this->notification->text['hullPercentage'] < 40)
+                if ($this->notification->text['hullPercentage'] < 40) {
                     $embed->color('danger');
+                }
             });
     }
 }

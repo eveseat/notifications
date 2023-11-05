@@ -66,7 +66,7 @@ class RaffleFinished extends AbstractDiscordNotification
                                 'location',
                                 $this->notification->text['location_id'],
                                 $location->itemName
-                                )
+                            )
                         );
                 });
 

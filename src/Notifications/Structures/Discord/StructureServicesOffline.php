@@ -22,13 +22,13 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
-use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
-use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
+use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -39,7 +39,7 @@ use Seat\Notifications\Traits\NotificationTools;
 class StructureServicesOffline extends AbstractDiscordNotification
 {
     use NotificationTools;
-    
+
     private CharacterNotification $notification;
 
     public function __construct(CharacterNotification $notification)
@@ -57,7 +57,6 @@ class StructureServicesOffline extends AbstractDiscordNotification
                 $embed->author('SeAT Structure Monitor', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
-
                     $system = MapDenormalize::find($this->notification->text['solarsystemID']);
 
                     $field->name('System')
@@ -69,23 +68,17 @@ class StructureServicesOffline extends AbstractDiscordNotification
                             )
                         );
                 })->field(function (DiscordEmbedField $field) {
-
                     $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
                     $field->name('Structure')
                         ->value($type->typeName);
-
                 });
-
             })->embed(function (DiscordEmbed $embed) {
-
                 foreach ($this->notification->text['listOfServiceModuleIDs'] as $type_id) {
                     $embed->field(function ($field) use ($type_id) {
+                        $type = InvType::find($type_id);
 
-                            $type = InvType::find($type_id);
-
-                            $field->value($type->typeName);
-
+                        $field->value($type->typeName);
                     });
                 }
 

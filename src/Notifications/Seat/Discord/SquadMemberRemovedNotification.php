@@ -42,7 +42,6 @@ class SquadMemberRemovedNotification extends AbstractDiscordNotification
 
     public function __construct(SquadMember $member)
     {
-
         $squad = Squad::find($member->squad_id);
         $user = User::find($member->user_id);
 
@@ -65,10 +64,10 @@ class SquadMemberRemovedNotification extends AbstractDiscordNotification
                 $embed->author('SeAT State of Things', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->title('Squad', $this->squad->link)
-                ->fields([
-                    'User'  => $this->user->name,
-                    'Squad' => $this->squad->name,
-                ]);
+                    ->fields([
+                        'User' => $this->user->name,
+                        'Squad' => $this->squad->name,
+                    ]);
             });
     }
 }

@@ -23,11 +23,11 @@
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
 use Seat\Eveapi\Models\Character\CharacterNotification;
+use Seat\Eveapi\Models\Sde\InvType;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
-use Seat\Eveapi\Models\Sde\InvType;
-use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -68,14 +68,11 @@ abstract class AbstractDiscordMoonMiningExtraction extends AbstractDiscordNotifi
         $ore_categories = $this->mapOreToColorsArray();
 
         foreach ($ore_categories as $color => $ore) {
-            if (! empty($ore)) {
-
+            if (!empty($ore)) {
                 $message->embed(function (DiscordEmbed $embed) use ($color, $ore) {
-
                     $embed->color($color);
 
                     foreach ($ore as $type_id => $volume) {
-
                         $embed->field(function (DiscordEmbedField $field) use ($type_id, $volume) {
                             $type = InvType::find($type_id);
 
@@ -108,8 +105,9 @@ abstract class AbstractDiscordMoonMiningExtraction extends AbstractDiscordNotifi
 
             $color = self::ORE_COLOR;
 
-            if (array_key_exists($type->marketGroupID, $category_color_map))
+            if (array_key_exists($type->marketGroupID, $category_color_map)) {
                 $color = $category_color_map[$type->marketGroupID];
+            }
 
             $ore_categories[$color][$type_id] = $volume;
         }
