@@ -68,7 +68,7 @@ abstract class AbstractDiscordMoonMiningExtraction extends AbstractDiscordNotifi
         $ore_categories = $this->mapOreToColorsArray();
 
         foreach ($ore_categories as $color => $ore) {
-            if (!empty($ore)) {
+            if (! empty($ore)) {
                 $message->embed(function (DiscordEmbed $embed) use ($color, $ore) {
                     $embed->color($color);
 

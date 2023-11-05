@@ -71,7 +71,7 @@ class OrbitalAttacked extends AbstractDiscordNotification
                         );
                 })
                     ->field(function (DiscordEmbedField $field) {
-                        if (!array_key_exists('aggressorAllianceID', $this->notification->text) || is_null(
+                        if (! array_key_exists('aggressorAllianceID', $this->notification->text) || is_null(
                                 $this->notification->text['aggressorAllianceID']
                             )) {
                             return;
