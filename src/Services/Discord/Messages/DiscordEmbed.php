@@ -134,11 +134,19 @@ class DiscordEmbed
     /**
      * Set the embed's timestamp.
      *
-     * @param  \DateInterval|\DateTimeInterface|int  $timestamp
+     * @param  \DateInterval|\DateTimeInterface|int|string  $timestamp
      * @return $this
      */
-    public function timestamp(\DateInterval|\DateTimeInterface|int $timestamp): DiscordEmbed
+    public function timestamp(\DateInterval|\DateTimeInterface|int|string $timestamp): DiscordEmbed
     {
+        // many notifications directly pass a datetime string from a model into this,
+        // but $this->availableAt doesn't handle strings. Since it's from the laravel
+        // InteractsWithTime trait, we also can't fix this. Therefore, we special-case
+        // strings here.
+        if(is_string($timestamp)){
+            $timestamp = carbon($timestamp);
+        }
+
         $this->timestamp = $this->availableAt($timestamp);
 
         return $this;

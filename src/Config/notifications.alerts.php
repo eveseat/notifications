@@ -76,6 +76,7 @@ return [
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Characters\Mail\Killmail::class,
             'slack' => \Seat\Notifications\Notifications\Characters\Slack\Killmail::class,
+            'discord' => \Seat\Notifications\Notifications\Characters\Discord\Killmail::class,
         ],
     ],
     //
