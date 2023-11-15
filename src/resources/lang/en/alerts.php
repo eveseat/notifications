@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ return [
     'character_left_corporation'       => 'Corporation Leaving Character',
     'corporation_alliance_bill'        => 'New Alliance Bill',
     'corporation_application_new'      => 'New Corporation Application',
+    'corporation_war_declared'         => 'Corporation War Declared',
     'moon_mining_extraction_finished'  => 'MM Finished Extractions',
     'moon_mining_extraction_started'   => 'MM Started Extractions',
     'orbital_attacked'                 => 'Attacked Customs Office',
