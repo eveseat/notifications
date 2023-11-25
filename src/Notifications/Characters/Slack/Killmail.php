@@ -23,9 +23,10 @@
 namespace Seat\Notifications\Notifications\Characters\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Facades\DB;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractKillmailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,7 +34,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class Killmail extends AbstractNotification
+class Killmail extends AbstractKillmailNotification
 {
     use NotificationTools;
 
@@ -68,11 +69,15 @@ class Killmail extends AbstractNotification
     /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return SlackMessage
      */
     public function toSlack($notifiable)
     {
+
+        if (! parent::shouldProcessKillmail($notifiable)) {
+            return null;
+        }
 
         $message = (new SlackMessage)
             ->content('A kill has been recorded for your corporation!')
@@ -100,7 +105,13 @@ class Killmail extends AbstractNotification
                     ->footerIcon('https://zkillboard.com/img/wreck.png');
             });
 
-        $allied_corporation_ids = CorporationInfo::select('corporation_id')->get()->pluck('corporation_id')->toArray();
+        $allied_corporation_ids = DB::table('corporation_infos')
+            ->join('users', 'corporation_infos.ceo_id', '=', 'users.main_character_id')
+            ->where('users.active', '=',  '1')
+            ->select('corporation_id')
+            ->get()
+            ->pluck('corporation_id')
+            ->toArray();
 
         (in_array($this->killmail->victim->corporation_id, $allied_corporation_ids)) ?
             $message->error() : $message->success();
