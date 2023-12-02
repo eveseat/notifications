@@ -56,7 +56,7 @@ class SquadApplicationObserver
     {
         $groups = $settings = NotificationGroup::with('alerts')
             ->whereHas('alerts', function ($query) {
-                $query->where('alert', 'squad_member');
+                $query->where('alert', 'squad_application');
             })->get();
 
         $this->dispatchNotifications('squad_application', $groups, function ($notificationClass) use ($member) {
