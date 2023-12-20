@@ -54,7 +54,7 @@ class StructureWentHighPower extends AbstractDiscordNotification
             ->from('SeAT Structure Monitor')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->notification->timestamp);
-                $embed->color($this->notification->text['hostileState'] ? 13632027 : 16098851);
+                $embed->color(DiscordMessage::SUCCESS);
                 $embed->author('SeAT Structure Monitor', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
