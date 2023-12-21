@@ -82,7 +82,7 @@ class StructureServicesOffline extends AbstractDiscordNotification
                     });
                 }
 
-                $embed->color('danger');
+                $embed->color(DiscordMessage::ERROR);
             });
     }
 }

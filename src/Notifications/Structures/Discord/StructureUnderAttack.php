@@ -114,42 +114,42 @@ class StructureUnderAttack extends AbstractDiscordNotification
                 $embed->field(function (DiscordEmbedField $field) {
                     $field->name('Shield')
                         ->value(number_format($this->notification->text['shieldPercentage'], 2));
-                })->color('good');
+                })->color(DiscordMessage::SUCCESS);
 
                 if ($this->notification->text['shieldPercentage'] < 70) {
-                    $embed->color('warning');
+                    $embed->color(DiscordMessage::WARNING);
                 }
 
                 if ($this->notification->text['shieldPercentage'] < 40) {
-                    $embed->color('danger');
+                    $embed->color(DiscordMessage::ERROR);
                 }
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
                     $field->name('Armor')
                         ->value(number_format($this->notification->text['armorPercentage'], 2));
-                })->color('good');
+                })->color(DiscordMessage::SUCCESS);
 
                 if ($this->notification->text['armorPercentage'] < 70) {
-                    $embed->color('warning');
+                    $embed->color(DiscordMessage::WARNING);
                 }
 
                 if ($this->notification->text['armorPercentage'] < 40) {
-                    $embed->color('danger');
+                    $embed->color(DiscordMessage::ERROR);
                 }
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
                     $field->name('Hull')
                         ->value(number_format($this->notification->text['hullPercentage'], 2));
-                })->color('good');
+                })->color(DiscordMessage::SUCCESS);
 
                 if ($this->notification->text['hullPercentage'] < 70) {
-                    $embed->color('warning');
+                    $embed->color(DiscordMessage::WARNING);
                 }
 
                 if ($this->notification->text['hullPercentage'] < 40) {
-                    $embed->color('danger');
+                    $embed->color(DiscordMessage::ERROR);
                 }
             });
     }

@@ -121,14 +121,14 @@ class OrbitalAttacked extends AbstractDiscordNotification
                 $embed->field(function (DiscordEmbedField $field) {
                     $field->name('Shield')
                         ->value(number_format($this->notification->text['shieldLevel'] * 100, 2));
-                })->color('good');
+                })->color(DiscordMessage::SUCCESS);
 
                 if ($this->notification->text['shieldLevel'] * 100 < 70) {
-                    $embed->color('warning');
+                    $embed->color(DiscordMessage::WARNING);
                 }
 
                 if ($this->notification->text['shieldLevel'] * 100 < 40) {
-                    $embed->color('danger');
+                    $embed->color(DiscordMessage::ERROR);
                 }
             });
     }
