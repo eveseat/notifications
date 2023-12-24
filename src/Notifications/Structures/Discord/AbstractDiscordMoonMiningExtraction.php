@@ -20,12 +20,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-namespace Seat\Notifications\Notifications\Structures\Slack;
+namespace Seat\Notifications\Notifications\Structures\Discord;
 
-use Illuminate\Notifications\Messages\SlackMessage;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
-use Seat\Notifications\Notifications\AbstractSlackNotification;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Notifications\Structures\Traits\MoonMiningNotificationTrait;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
+use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
+use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,43 +36,32 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-abstract class AbstractSlackMoonMiningExtraction extends AbstractSlackNotification
+abstract class AbstractDiscordMoonMiningExtraction extends AbstractDiscordNotification
 {
     use NotificationTools;
     use MoonMiningNotificationTrait;
 
-    /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
-     */
-    protected $notification;
+    protected CharacterNotification $notification;
 
-    /**
-     * @param  \Illuminate\Notifications\Messages\SlackMessage  $message
-     */
-    protected function addOreAttachments(SlackMessage $message)
+    protected function addOreAttachments(DiscordMessage $message): void
     {
         $ore_categories = $this->mapOreToColorsArray();
 
         foreach ($ore_categories as $color => $ore) {
             if (! empty($ore)) {
-
-                $message->attachment(function ($attachment) use ($color, $ore) {
-
-                    $attachment->color($color);
+                $message->embed(function (DiscordEmbed $embed) use ($color, $ore) {
+                    $embed->color($color);
 
                     foreach ($ore as $type_id => $volume) {
-
-                        $attachment->field(function ($field) use ($type_id, $volume) {
+                        $embed->field(function (DiscordEmbedField $field) use ($type_id, $volume) {
                             $type = InvType::find($type_id);
 
-                            $field->title($type->typeName)
-                                ->content(sprintf('%s m3', number_format($volume, 2)));
+                            $field->name($type->typeName)
+                                ->value(sprintf('%s m3', number_format($volume, 2)));
                         });
                     }
                 });
             }
         }
-
-        return $message;
     }
 }
