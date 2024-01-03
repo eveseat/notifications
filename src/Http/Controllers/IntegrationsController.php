@@ -42,8 +42,8 @@ class IntegrationsController extends Controller
      */
     public function getIntegrations()
     {
-
-        return view('notifications::integrations.list');
+        $integration_types = config('notifications.integrations');
+        return view('notifications::integrations.list', compact('integration_types'));
     }
 
     /**
