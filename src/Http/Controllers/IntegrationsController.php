@@ -42,8 +42,9 @@ class IntegrationsController extends Controller
      */
     public function getIntegrations()
     {
+        $integration_types = config('notifications.integrations');
 
-        return view('notifications::integrations.list');
+        return view('notifications::integrations.list', compact('integration_types'));
     }
 
     /**
@@ -125,9 +126,9 @@ class IntegrationsController extends Controller
     {
 
         Integration::create([
-            'name'     => $request->input('name'),
+            'name' => $request->input('name'),
             'settings' => ['url' => $request->input('url')],
-            'type'     => 'discord',
+            'type' => 'discord',
         ]);
 
         return redirect()->route('seatcore::notifications.integrations.list')
@@ -151,9 +152,9 @@ class IntegrationsController extends Controller
     {
 
         Integration::create([
-            'name'     => $request->input('name'),
+            'name' => $request->input('name'),
             'settings' => ['email' => $request->input('email')],
-            'type'     => 'mail',
+            'type' => 'mail',
         ]);
 
         return redirect()->route('seatcore::notifications.integrations.list')
@@ -177,9 +178,9 @@ class IntegrationsController extends Controller
     {
 
         Integration::create([
-            'name'     => $request->input('name'),
+            'name' => $request->input('name'),
             'settings' => ['url' => $request->input('url')],
-            'type'     => 'slack',
+            'type' => 'slack',
         ]);
 
         return redirect()->route('seatcore::notifications.integrations.list')
