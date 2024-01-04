@@ -22,31 +22,31 @@
 
 return [
 
-    'group'      => '通知グループ',
-    'new_group'  => '新たな通知グループ',
+    'group' => '通知グループ',
+    'new_group' => '新たな通知グループ',
     'edit_group' => 'グループの編集',
     'group_name' => 'グループ名',
     'group_type' => 'グループタイプ',
 
-    'add'            => '追加',
-    'name'           => '名前',
-    'type'           => 'タイプ',
-    'alert'          => 'アラート',
-    'integration'    => '外部サービス連携 | 一覧',
-    'affiliation'    => '加入者 | 一覧',
+    'add' => '追加',
+    'name' => '名前',
+    'type' => 'タイプ',
+    'alert' => 'アラート',
+    'integration' => '外部サービス連携 | 一覧',
+    'affiliation' => '加入者 | 一覧',
     'add_all_alerts' => 'すべてのアラートを追加',
 
     'no_affiliation_notice' => 'このグループに紐づけられている加入者は ' .
         'まだいません. この設定ではマッチしたアラートによる全ての通知が ' .
         'フィルターなしで送信されます。',
 
-    'new_integration'         => '新規外部サービス連携',
+    'new_integration' => '新規外部サービス連携',
     'new_integration_message' => '新規外部サービス連携',
-    'new_email'               => '新たなE-メールの統合',
-    'new_slack'               => '新たなslackの統合',
+    'new_email' => '新たなE-メールの統合',
+    'new_slack' => '新たなslackの統合',
     'configured_integrations' => '外部サービスの連携設定',
-    'settings'                => '設定',
+    'settings' => '設定',
 
-    'setup_label'             => '通知の設定',
-    'setup_description'       => 'ユーザーが通知チャンネルとサブスクリプションを定義できるようにします。',
+    'setup_label' => '通知の設定',
+    'setup_description' => 'ユーザーが通知チャンネルとサブスクリプションを定義できるようにします。',
 ];

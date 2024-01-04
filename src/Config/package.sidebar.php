@@ -23,25 +23,25 @@
 return [
 
     'notifications' => [
-        'name'          => 'notifications',
-        'label'         => 'Notifications',
-        'icon'          => 'fas fa-bell',
+        'name' => 'notifications',
+        'label' => 'Notifications',
+        'icon' => 'fas fa-bell',
         'route_segment' => 'notifications',
-        'permission'    => 'notifications.setup',
-        'entries'       => [
+        'permission' => 'notifications.setup',
+        'entries' => [
             [
-                'name'       => 'integrations',
-                'label'      => 'Integrations',
+                'name' => 'integrations',
+                'label' => 'Integrations',
                 'permission' => 'notifications.setup',
-                'icon'       => 'fas fa-toggle-on',
-                'route'      => 'seatcore::notifications.integrations.list',
+                'icon' => 'fas fa-toggle-on',
+                'route' => 'seatcore::notifications.integrations.list',
             ],
             [
-                'name'       => 'notification.groups',
-                'label'      => 'Notifications Groups',
+                'name' => 'notification.groups',
+                'label' => 'Notifications Groups',
                 'permission' => 'notifications.setup',
-                'icon'       => 'fas fa-object-group',
-                'route'      => 'seatcore::notifications.groups.list',
+                'icon' => 'fas fa-object-group',
+                'route' => 'seatcore::notifications.groups.list',
             ],
         ],
     ],

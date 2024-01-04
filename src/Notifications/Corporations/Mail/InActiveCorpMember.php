@@ -84,10 +84,10 @@ class InActiveCorpMember extends AbstractMailNotification
     {
 
         return [
-            'name'        => $this->member->character->name,
+            'name' => $this->member->character->name,
             'last_logoff' => $this->member->logoff_date,
-            'location'    => $this->member->location,
-            'ship'        => $this->member->ship->typeName,
+            'location' => $this->member->location,
+            'ship' => $this->member->ship->typeName,
         ];
     }
 }

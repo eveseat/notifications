@@ -22,31 +22,31 @@
 
 return [
 
-    'group'      => 'Notification Group|Notification Groups',
-    'new_group'  => 'New Notifications Group',
+    'group' => 'Notification Group|Notification Groups',
+    'new_group' => 'New Notifications Group',
     'edit_group' => 'Edit Group',
     'group_name' => 'Group Name',
     'group_type' => 'Group Type',
 
-    'add'            => 'Adaugă',
-    'name'           => 'Nume',
-    'type'           => 'Tip',
-    'alert'          => 'Alert|Alerts',
-    'integration'    => 'Integration|Integrations',
-    'affiliation'    => 'Affiliation|Affiliations',
+    'add' => 'Adaugă',
+    'name' => 'Nume',
+    'type' => 'Tip',
+    'alert' => 'Alert|Alerts',
+    'integration' => 'Integration|Integrations',
+    'affiliation' => 'Affiliation|Affiliations',
     'add_all_alerts' => 'Add All Alerts',
 
     'no_affiliation_notice' => 'No affiliations have been assosciated with this group ' .
         'yet. In this configuration, all notifications for the matched alerts will be ' .
         'sent without any filter.',
 
-    'new_integration'         => 'New Integration',
+    'new_integration' => 'New Integration',
     'new_integration_message' => 'Add a New Integration',
-    'new_email'               => 'New Email Integration',
-    'new_slack'               => 'New Slack Integration',
+    'new_email' => 'New Email Integration',
+    'new_slack' => 'New Slack Integration',
     'configured_integrations' => 'Configured Integrations',
-    'settings'                => 'Setări',
+    'settings' => 'Setări',
 
-    'setup_label'             => 'Setările notificăriilor',
-    'setup_description'       => 'Permite utilizatorului să definească canalele de notificare și abonamentele.',
+    'setup_label' => 'Setările notificăriilor',
+    'setup_description' => 'Permite utilizatorului să definească canalele de notificare și abonamentele.',
 ];

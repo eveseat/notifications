@@ -76,7 +76,7 @@ class SquadMemberNotification extends AbstractSlackNotification
 
                 $attachment->title('Squad', $this->squad->link)
                 ->fields([
-                    'User'  => $this->user->name,
+                    'User' => $this->user->name,
                     'Squad' => $this->squad->name,
                 ]);
             });

@@ -72,13 +72,13 @@ class ContractNotification extends AbstractSlackNotification
                 $attachment
                     ->fields([
                         'Issuer' => $this->contract->issuer->name,
-                        'Assignee'  => $this->contract->assignee->name,
+                        'Assignee' => $this->contract->assignee->name,
                         'Acceptor' => $this->contract->acceptor()->exists() ? $this->contract->acceptor->name : '-',
-                        'Type'=> $type,
-                        'Status'=> $this->contract->status,
-                        'Description'=>$this->contract->title ?? '-',
-                        'Issued'=>carbon($this->contract->date_issued)->toDayDateTimeString(),
-                        'Completed'=>$this->contract->date_completed ? carbon($this->contract->date_completed)->toDayDateTimeString() : '-',
+                        'Type' => $type,
+                        'Status' => $this->contract->status,
+                        'Description' => $this->contract->title ?? '-',
+                        'Issued' => carbon($this->contract->date_issued)->toDayDateTimeString(),
+                        'Completed' => $this->contract->date_completed ? carbon($this->contract->date_completed)->toDayDateTimeString() : '-',
                     ]);
             });
 

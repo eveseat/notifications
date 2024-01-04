@@ -21,12 +21,12 @@
  */
 
 Route::group([
-    'namespace'  => 'Seat\Notifications\Http\Controllers',
-    'prefix'     => 'notifications',
+    'namespace' => 'Seat\Notifications\Http\Controllers',
+    'prefix' => 'notifications',
     'middleware' => ['web', 'auth'],
 ], function () {
     Route::group([
-        'prefix'     => 'integrations',
+        'prefix' => 'integrations',
         'middleware' => 'can:notifications.setup',
     ], function () {
 
@@ -78,7 +78,7 @@ Route::group([
     });
 
     Route::group([
-        'prefix'     => 'groups',
+        'prefix' => 'groups',
         'middleware' => 'can:notifications.setup',
     ], function () {
 

@@ -51,7 +51,7 @@ class GroupAllAlert extends FormRequest
     {
 
         return [
-            'id'       => 'required|numeric|exists:notification_groups,id',
+            'id' => 'required|numeric|exists:notification_groups,id',
         ];
     }
 }

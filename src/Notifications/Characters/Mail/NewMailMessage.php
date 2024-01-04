@@ -85,8 +85,8 @@ class NewMailMessage extends AbstractMailNotification
     {
 
         return [
-            'from'      => $this->message->senderName,
-            'subject'   => $this->message->title,
+            'from' => $this->message->senderName,
+            'subject' => $this->message->title,
             'sent_date' => $this->message->sentDate,
         ];
     }

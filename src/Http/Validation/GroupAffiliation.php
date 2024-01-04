@@ -63,10 +63,10 @@ class GroupAffiliation extends FormRequest
             Arr::prepend(CorporationInfo::pluck('corporation_id')->toArray(), 0));
 
         return [
-            'id'             => 'required|numeric|exists:notification_groups,id',
-            'characters'     => 'required_without_all:corporations',
-            'corporations'   => 'required_without_all:characters',
-            'characters.*'   => 'in:' . $character_ids,
+            'id' => 'required|numeric|exists:notification_groups,id',
+            'characters' => 'required_without_all:corporations',
+            'corporations' => 'required_without_all:characters',
+            'characters.*' => 'in:' . $character_ids,
             'corporations.*' => 'in:' . $corporation_ids,
         ];
 

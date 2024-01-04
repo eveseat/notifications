@@ -63,7 +63,7 @@ class InActiveCorpMember extends AbstractSlackNotification
                     'corporation' => $this->member->corporation_id,
                 ]))->fields([
                     'Last Logoff' => $this->member->logoff_date,
-                    'Ship'        => $this->member->ship->typeName,
+                    'Ship' => $this->member->ship->typeName,
                 ]);
             });
 
