@@ -53,7 +53,7 @@ class CreateGroupMention extends FormRequest
 
         return [
             'mention_type' => "required|string|in:$mention_types",
-            'id'             => 'required|numeric|exists:notification_groups,id',
+            'id' => 'required|numeric|exists:notification_groups,id',
         ];
     }
 }

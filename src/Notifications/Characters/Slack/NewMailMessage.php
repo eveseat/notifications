@@ -66,9 +66,9 @@ class NewMailMessage extends AbstractSlackNotification
                 $attachment->title('Read on SeAT', route('seatcore::character.view.mail.timeline.read', [
                     'message_id' => $this->message->mail_id,
                 ]))->fields([
-                    'Subject'   => $this->message->subject,
+                    'Subject' => $this->message->subject,
                     'Sent Date' => $this->message->timestamp,
-                    'Message'   => Str::limit(
+                    'Message' => Str::limit(
                         str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),
                         2000),
                 ]);

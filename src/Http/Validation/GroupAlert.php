@@ -54,7 +54,7 @@ class GroupAlert extends FormRequest
 
             'alerts.*' => 'required|in:' . implode(
                     ',', array_keys(config('notifications.alerts'))),
-            'id'       => 'required|numeric|exists:notification_groups,id',
+            'id' => 'required|numeric|exists:notification_groups,id',
         ];
     }
 }

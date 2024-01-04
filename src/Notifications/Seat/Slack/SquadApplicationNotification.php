@@ -65,8 +65,8 @@ class SquadApplicationNotification extends AbstractSlackNotification
 
                 $attachment->title('Squad Application', $this->application->squad->link)
                 ->fields([
-                    'User'    => $this->application->user->name,
-                    'Squad'   => $this->application->squad->name,
+                    'User' => $this->application->user->name,
+                    'Squad' => $this->application->squad->name,
                     'Message' => $this->application->message,
                 ]);
             });

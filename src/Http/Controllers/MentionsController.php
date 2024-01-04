@@ -46,7 +46,7 @@ class MentionsController extends Controller
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->id])
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id' => $request->id])
             ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 
@@ -60,7 +60,7 @@ class MentionsController extends Controller
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->id])
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id' => $request->id])
             ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 
@@ -73,12 +73,12 @@ class MentionsController extends Controller
 
         $mention = new GroupMention();
         $mention->type = 'discord_role';
-        $mention->data = ['role'=>(int) $request->role_id];
+        $mention->data = ['role' => (int) $request->role_id];
 
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->group_id])
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id' => $request->group_id])
             ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 
@@ -91,12 +91,12 @@ class MentionsController extends Controller
 
         $mention = new GroupMention();
         $mention->type = 'discord_user';
-        $mention->data = ['user'=>(int) $request->user_id];
+        $mention->data = ['user' => (int) $request->user_id];
 
         $group->mentions()->save($mention);
 
         return redirect()
-            ->route('seatcore::notifications.groups.edit', ['notification_group_id'=>$request->group_id])
+            ->route('seatcore::notifications.groups.edit', ['notification_group_id' => $request->group_id])
             ->with('success', trans('notifications::notifications.successfully_created_mention'));
     }
 }

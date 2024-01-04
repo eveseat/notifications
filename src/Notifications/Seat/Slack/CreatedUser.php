@@ -65,9 +65,9 @@ class CreatedUser extends AbstractSlackNotification
                 $attachment->title('Account Details', route('seatcore::configuration.users.edit', [
                     'user_id' => $this->user->id,
                 ]))->fields([
-                    'Account Name'            => $this->user->name,
+                    'Account Name' => $this->user->name,
                     'Owner Last Login Source' => $this->user->last_login_source,
-                    'Owner Last Login Time'   => $this->user->last_login,
+                    'Owner Last Login Time' => $this->user->last_login,
                 ]);
             });
     }

@@ -256,7 +256,7 @@ class GroupsController extends Controller
             foreach ($request->input('corporations') as $corp)
                 if (! $group->affiliations->contains('affiliation_id', $corp))
                     $group->affiliations()->save(new GroupAffiliationModel([
-                        'type'           => 'corp',
+                        'type' => 'corp',
                         'affiliation_id' => $corp,
                     ]));
 
@@ -265,7 +265,7 @@ class GroupsController extends Controller
             foreach ($request->input('characters') as $character)
                 if (! $group->affiliations->contains('affiliation_id', $character))
                     $group->affiliations()->save(new GroupAffiliationModel([
-                        'type'           => 'char',
+                        'type' => 'char',
                         'affiliation_id' => $character,
                     ]));
 

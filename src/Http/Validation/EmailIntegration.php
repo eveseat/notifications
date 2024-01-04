@@ -52,7 +52,7 @@ class EmailIntegration extends FormRequest
 
         return [
 
-            'name'  => 'required|max:255|unique:integrations,name',
+            'name' => 'required|max:255|unique:integrations,name',
             'email' => 'required|email',
         ];
     }

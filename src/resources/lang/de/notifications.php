@@ -22,31 +22,31 @@
 
 return [
 
-    'group'      => 'Notification Group|Notification Groups',
-    'new_group'  => 'New Notifications Group',
+    'group' => 'Notification Group|Notification Groups',
+    'new_group' => 'New Notifications Group',
     'edit_group' => 'Edit Group',
     'group_name' => 'Group Name',
     'group_type' => 'Group Type',
 
-    'add'            => 'Hinzufügen',
-    'name'           => 'Name',
-    'type'           => 'Typ',
-    'alert'          => 'Warnung|Warnungen',
-    'integration'    => 'Integration|Integrationen',
-    'affiliation'    => 'Affiliation|Affiliations',
+    'add' => 'Hinzufügen',
+    'name' => 'Name',
+    'type' => 'Typ',
+    'alert' => 'Warnung|Warnungen',
+    'integration' => 'Integration|Integrationen',
+    'affiliation' => 'Affiliation|Affiliations',
     'add_all_alerts' => 'Alle Warnungen hinzufügen',
 
     'no_affiliation_notice' => 'No affiliations have been assosciated with this group ' .
         'yet. In this configuration, all notifications for the matched alerts will be ' .
         'sent without any filter.',
 
-    'new_integration'         => 'Neue Integration',
+    'new_integration' => 'Neue Integration',
     'new_integration_message' => 'Neue Integration hinzufügen',
-    'new_email'               => 'Neue E-Mail Integration',
-    'new_slack'               => 'Neue Slack-Integration',
+    'new_email' => 'Neue E-Mail Integration',
+    'new_slack' => 'Neue Slack-Integration',
     'configured_integrations' => 'Konfigurierte Integrationen',
-    'settings'                => 'Einstellungen',
+    'settings' => 'Einstellungen',
 
-    'setup_label'             => 'Benachrichtigungseinrichtung',
-    'setup_description'       => 'Erlaubt einem Nutzer, Benachrichtigungskanäle und Abonnoments zu definieren.',
+    'setup_label' => 'Benachrichtigungseinrichtung',
+    'setup_description' => 'Erlaubt einem Nutzer, Benachrichtigungskanäle und Abonnoments zu definieren.',
 ];

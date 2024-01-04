@@ -53,7 +53,7 @@ class GroupIntegration extends FormRequest
         return [
 
             'integrations.*' => 'required|numeric|exists:integrations,id',
-            'id'             => 'required|numeric|exists:notification_groups,id',
+            'id' => 'required|numeric|exists:notification_groups,id',
         ];
     }
 }

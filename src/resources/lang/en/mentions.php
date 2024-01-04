@@ -22,8 +22,8 @@
 
 return [
     'discord_everyone' => 'Ping @everyone',
-    'discord_here'=>'Ping @here',
-    'discord_role'=>'Ping Role',
-    'discord_user'=>'Ping User',
+    'discord_here' => 'Ping @here',
+    'discord_role' => 'Ping Role',
+    'discord_user' => 'Ping User',
     'unknown' => 'Unknown',
 ];

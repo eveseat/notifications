@@ -86,63 +86,63 @@ return [
     // Esi Character Notifications
     //
     'AllAnchoringMsg' => [
-        'label'   => 'notifications::alerts.alliance_anchoring',
+        'label' => 'notifications::alerts.alliance_anchoring',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\AllAnchoringMsg::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\AllAnchoringMsg::class,
         ],
     ],
     'AllWarDeclaredMsg' => [
-        'label'   => 'notifications::alerts.alliance_war_declared',
+        'label' => 'notifications::alerts.alliance_war_declared',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllWarDeclaredMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarDeclaredMsg::class,
         ],
     ],
     'AllWarInvalidatedMsg' => [
-        'label'   => 'notifications::alerts.alliance_war_invalidated',
+        'label' => 'notifications::alerts.alliance_war_invalidated',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllWarInvalidatedMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllWarInvalidatedMsg::class,
         ],
     ],
     'AllianceCapitalChanged' => [
-        'label'   => 'notifications::alerts.alliance_capital_changed',
+        'label' => 'notifications::alerts.alliance_capital_changed',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Alliances\Discord\AllianceCapitalChanged::class,
             'slack' => \Seat\Notifications\Notifications\Alliances\Slack\AllianceCapitalChanged::class,
         ],
     ],
     'AllyJoinedWarAggressorMsg' => [
-        'label'   => 'notifications::alerts.ally_joined_war_aggressor',
+        'label' => 'notifications::alerts.ally_joined_war_aggressor',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllyJoinedWarAggressorMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAggressorMsg::class,
         ],
     ],
     'AllyJoinedWarAllyMsg' => [
-        'label'   => 'notifications::alerts.ally_joined_war_ally',
+        'label' => 'notifications::alerts.ally_joined_war_ally',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllyJoinedWarAllyMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarAllyMsg::class,
         ],
     ],
     'AllyJoinedWarDefenderMsg' => [
-        'label'   => 'notifications::alerts.ally_joined_war_defender',
+        'label' => 'notifications::alerts.ally_joined_war_defender',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Wars\Discord\AllyJoinedWarDefenderMsg::class,
             'slack' => \Seat\Notifications\Notifications\Wars\Slack\AllyJoinedWarDefenderMsg::class,
         ],
     ],
     'BillPaidCorpAllMsg' => [
-        'label'   => 'notifications::alerts.bill_paid_corporation_alliance',
+        'label' => 'notifications::alerts.bill_paid_corporation_alliance',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Corporations\Discord\BillPaidCorpAllMsg::class,
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\BillPaidCorpAllMsg::class,
         ],
     ],
     'CharLeftCorpMsg' => [
-        'label'   => 'notifications::alerts.character_left_corporation',
+        'label' => 'notifications::alerts.character_left_corporation',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Corporations\Discord\CharLeftCorpMsg::class,
             'mail' => \Seat\Notifications\Notifications\Corporations\Mail\CharLeftCorpMsg::class,
@@ -150,7 +150,7 @@ return [
         ],
     ],
     'CorpAllBillMsg' => [
-        'label'   => 'notifications::alerts.corporation_alliance_bill',
+        'label' => 'notifications::alerts.corporation_alliance_bill',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Corporations\Discord\CorpAllBillMsg::class,
             'mail' => \Seat\Notifications\Notifications\Corporations\Mail\CorpAllBillMsg::class,
@@ -158,14 +158,14 @@ return [
         ],
     ],
     'CorpAppNewMsg' => [
-        'label'   => 'notifications::alerts.corporation_application_new',
+        'label' => 'notifications::alerts.corporation_application_new',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Corporations\Discord\CorpAppNewMsg::class,
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CorpAppNewMsg::class,
         ],
     ],
     'MoonminingExtractionFinished' => [
-        'label'   => 'notifications::alerts.moon_mining_extraction_finished',
+        'label' => 'notifications::alerts.moon_mining_extraction_finished',
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Structures\Mail\MoonMiningExtractionFinished::class,
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\MoonMiningExtractionFinished::class,
@@ -173,7 +173,7 @@ return [
         ],
     ],
     'MoonminingExtractionStarted' => [
-        'label'   => 'notifications::alerts.moon_mining_extraction_started',
+        'label' => 'notifications::alerts.moon_mining_extraction_started',
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Structures\Mail\MoonMiningExtractionStarted::class,
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\MoonMiningExtractionStarted::class,
@@ -181,49 +181,49 @@ return [
         ],
     ],
     'OrbitalAttacked' => [
-        'label'   => 'notifications::alerts.orbital_attacked',
+        'label' => 'notifications::alerts.orbital_attacked',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\OrbitalAttacked::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\OrbitalAttacked::class,
         ],
     ],
     'OwnershipTransferred' => [
-        'label'   => 'notifications::alerts.ownership_transferred',
+        'label' => 'notifications::alerts.ownership_transferred',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\OwnershipTransferred::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\OwnershipTransferred::class,
         ],
     ],
     'RaffleCreated' => [
-        'label'   => 'notifications::alerts.raffle_created',
+        'label' => 'notifications::alerts.raffle_created',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Characters\Slack\RaffleCreated::class,
             'discord' => \Seat\Notifications\Notifications\Characters\Discord\RaffleCreated::class,
         ],
     ],
     'RaffleExpired' => [
-        'label'   => 'notifications::alerts.raffle_expired',
+        'label' => 'notifications::alerts.raffle_expired',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Characters\Slack\RaffleExpired::class,
             'discord' => \Seat\Notifications\Notifications\Characters\Discord\RaffleExpired::class,
         ],
     ],
     'RaffleFinished' => [
-        'label'   => 'notifications::alerts.raffle_finished',
+        'label' => 'notifications::alerts.raffle_finished',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Characters\Slack\RaffleFinished::class,
             'discord' => \Seat\Notifications\Notifications\Characters\Discord\RaffleFinished::class,
         ],
     ],
     'ResearchMissionAvailableMsg' => [
-        'label'   => 'notifications::alerts.research_mission_available',
+        'label' => 'notifications::alerts.research_mission_available',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Characters\Slack\ResearchMissionAvailableMsg::class,
             'discord' => \Seat\Notifications\Notifications\Characters\Discord\ResearchMissionAvailableMsg::class,
         ],
     ],
     'SovStructureDestroyed' => [
-        'label'   => 'notifications::alerts.sovereignty_structure_destroyed',
+        'label' => 'notifications::alerts.sovereignty_structure_destroyed',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Sovereignties\Discord\SovStructureDestroyed::class,
             'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\SovStructureDestroyed::class,
@@ -231,7 +231,7 @@ return [
         ],
     ],
     'SovStructureReinforced' => [
-        'label'   => 'notifications::alerts.sovereignty_structure_reinforced',
+        'label' => 'notifications::alerts.sovereignty_structure_reinforced',
         'handlers' => [
             'discord' => \Seat\Notifications\Notifications\Sovereignties\Discord\SovStructureReinforced::class,
             'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\SovStructureReinforced::class,
@@ -239,28 +239,28 @@ return [
         ],
     ],
     'StoryLineMissionAvailableMsg' => [
-        'label'   => 'notifications::alerts.story_line_mission_available',
+        'label' => 'notifications::alerts.story_line_mission_available',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Characters\Slack\StoryLineMissionAvailableMsg::class,
             'discord' => \Seat\Notifications\Notifications\Characters\Discord\StoryLineMissionAvailableMsg::class,
         ],
     ],
     'StructureAnchoring' => [
-        'label'   => 'notifications::alerts.structure_anchoring',
+        'label' => 'notifications::alerts.structure_anchoring',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureAnchoring::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureAnchoring::class,
         ],
     ],
     'StructureDestroyed' => [
-        'label'   => 'notifications::alerts.structure_destroyed',
+        'label' => 'notifications::alerts.structure_destroyed',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureDestroyed::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureDestroyed::class,
         ],
     ],
     'StructureFuelAlert' => [
-        'label'   => 'notifications::alerts.structure_fuel_alert',
+        'label' => 'notifications::alerts.structure_fuel_alert',
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureFuelAlert::class,
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureFuelAlert::class,
@@ -268,21 +268,21 @@ return [
         ],
     ],
     'StructureLostArmor' => [
-        'label'   => 'notifications::alerts.structure_lost_armor',
+        'label' => 'notifications::alerts.structure_lost_armor',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureLostArmor::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureLostArmor::class,
         ],
     ],
     'StructureLostShields' => [
-        'label'   => 'notifications::alerts.structure_lost_shield',
+        'label' => 'notifications::alerts.structure_lost_shield',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureLostShields::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureLostShields::class,
         ],
     ],
     'StructureServicesOffline' => [
-        'label'   => 'notifications::alerts.structure_services_offline',
+        'label' => 'notifications::alerts.structure_services_offline',
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureServicesOffline::class,
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureServicesOffline::class,
@@ -290,14 +290,14 @@ return [
         ],
     ],
     'StructureUnanchoring' => [
-        'label'   => 'notifications::alerts.structure_unanchoring',
+        'label' => 'notifications::alerts.structure_unanchoring',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureUnanchoring::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureUnanchoring::class,
         ],
     ],
     'StructureUnderAttack' => [
-        'label'   => 'notifications::alerts.structure_under_attack',
+        'label' => 'notifications::alerts.structure_under_attack',
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureUnderAttack::class,
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureUnderAttack::class,
@@ -305,14 +305,14 @@ return [
         ],
     ],
     'StructureWentHighPower' => [
-        'label'   => 'notifications::alerts.structure_went_high_power',
+        'label' => 'notifications::alerts.structure_went_high_power',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureWentHighPower::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureWentHighPower::class,
         ],
     ],
     'StructureWentLowPower' => [
-        'label'   => 'notifications::alerts.structure_went_low_power',
+        'label' => 'notifications::alerts.structure_went_low_power',
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureWentLowPower::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureWentLowPower::class,
@@ -338,7 +338,7 @@ return [
         'handlers' => [
             'mail' => \Seat\Notifications\Notifications\Seat\Mail\TestNotification::class,
             'slack' => \Seat\Notifications\Notifications\Seat\Slack\TestNotification::class,
-            'discord'=>\Seat\Notifications\Notifications\Seat\Discord\TestNotification::class,
+            'discord' => \Seat\Notifications\Notifications\Seat\Discord\TestNotification::class,
         ],
         'visible' => false,
     ],

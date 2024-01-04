@@ -88,11 +88,11 @@ class Killmail extends AbstractMailNotification
     {
 
         return [
-            'characterName'   => $this->killmail->attacker->character->name,
+            'characterName' => $this->killmail->attacker->character->name,
             'corporationName' => $this->killmail->attacker->corporation->name,
-            'typeName'        => $this->killmail->victim->ship->typeName,
-            'system'          => $this->killmail->solar_system->name,
-            'security'        => $this->killmail->solar_system->security,
+            'typeName' => $this->killmail->victim->ship->typeName,
+            'system' => $this->killmail->solar_system->name,
+            'security' => $this->killmail->solar_system->security,
         ];
     }
 }
