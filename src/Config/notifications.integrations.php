@@ -22,18 +22,18 @@
 
 return [
     'discord' => [
-        'route'=>'seatcore::notifications.integrations.new.discord',
-        'icon'=>'fab fa-discord',
-        'label'=>'notifications::notifications.new_discord'
+        'route' => 'seatcore::notifications.integrations.new.discord',
+        'icon' => 'fab fa-discord',
+        'label' => 'notifications::notifications.new_discord',
     ],
     'slack' => [
-        'route'=>'seatcore::notifications.integrations.new.slack',
-        'icon'=>'fab fa-slack',
-        'label'=>'notifications::notifications.new_slack'
+        'route' => 'seatcore::notifications.integrations.new.slack',
+        'icon' => 'fab fa-slack',
+        'label' => 'notifications::notifications.new_slack',
     ],
     'mail' => [
-        'route'=>'seatcore::notifications.integrations.new.email',
-        'icon'=>'fas fa-envelope',
-        'label'=>'notifications::notifications.new_email'
+        'route' => 'seatcore::notifications.integrations.new.email',
+        'icon' => 'fas fa-envelope',
+        'label' => 'notifications::notifications.new_email',
     ],
 ];
