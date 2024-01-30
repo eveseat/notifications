@@ -164,6 +164,14 @@ return [
             'slack' => \Seat\Notifications\Notifications\Corporations\Slack\CorpAppNewMsg::class,
         ],
     ],
+    'EntosisCaptureStarted' => [
+        'label' => 'notifications::alerts.entosis_capture_started',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Sovereignties\Discord\EntosisCaptureStarted::class,
+            'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\EntosisCaptureStarted::class,
+            'slack' => \Seat\Notifications\Notifications\Sovereignties\Slack\EntosisCaptureStarted::class,
+        ],
+    ],
     'MoonminingExtractionFinished' => [
         'label' => 'notifications::alerts.moon_mining_extraction_finished',
         'handlers' => [
@@ -220,6 +228,14 @@ return [
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Characters\Slack\ResearchMissionAvailableMsg::class,
             'discord' => \Seat\Notifications\Notifications\Characters\Discord\ResearchMissionAvailableMsg::class,
+        ],
+    ],
+    'SovCommandNodeEventStarted' => [
+        'label' => 'notifications::alerts.sovereignty_command_node_event_started',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Sovereignties\Discord\SovCommandNodeEventStarted::class,
+            'mail' => \Seat\Notifications\Notifications\Sovereignties\Mail\SovCommandNodeEventStarted::class,
+            'slack' => \Seat\Notifications\Notifications\Sovereignties\Slack\SovCommandNodeEventStarted::class,
         ],
     ],
     'SovStructureDestroyed' => [
