@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace Seat\Notifications\Notifications\Structures\Traits;
 
+use Seat\Eveapi\Models\Sde\InvType;
+
 trait MoonMiningNotificationTrait
 {
     const GAZ_MARKET_GROUP_ID = 2396;
