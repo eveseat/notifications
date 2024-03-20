@@ -38,17 +38,17 @@ trait MoonMiningNotificationTrait
 
     const R64_MARKET_GROUP_ID = 2401;
 
-    const ORE_COLOR = '#d2d6de';
+    const ORE_COLOR = 12370112;
 
-    const GAZ_COLOR = '#00a65a';
+    const GAZ_COLOR = 5763719;
 
-    const R8_COLOR = '#3c8dbc';
+    const R8_COLOR = 9936031;
 
-    const R16_COLOR = '#00c0ef';
+    const R16_COLOR = 10038562;
 
-    const R32_COLOR = '#f39c12';
+    const R32_COLOR = 11027200;
 
-    const R64_COLOR = '#dd4b39';
+    const R64_COLOR = 15844367;
 
     /**
      * @return array<string, array<int|string, mixed>>

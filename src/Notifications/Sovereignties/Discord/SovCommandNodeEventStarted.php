@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Sovereignties\Discord;
 
 use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Eveapi\Models\Sde\SolarSystem;
+use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -67,7 +67,7 @@ class SovCommandNodeEventStarted extends AbstractDiscordNotification
                 $embed->author('SeAT Sovereignty Health', asset('web/img/favico/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $system = SolarSystem::find($this->notification->text['solarSystemID']);
+                    $system = MapDenormalize::find($this->notification->text['solarSystemID']);
 
                     $field->name('System')
                         ->value($this->zKillBoardToDiscordLink(
