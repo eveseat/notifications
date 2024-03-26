@@ -72,9 +72,11 @@ class AllyJoinedWarAggressorMsg extends AbstractDiscordNotification
                         ['name' => trans('web::seat.unknown')]
                     );
 
-                    $field->name('Aggressor')
-                        ->value($this->zKillBoardToDiscordLink(
-                            $aggressor->category, $aggressor->entity_id, $aggressor->name));
+                    $field->name('Aggressor')->value(
+                        is_null($aggressor->category) ?
+                            sprintf('Unknown: %d', $aggressor->entity_id) :
+                            $this->zKillBoardToDiscordLink($aggressor->category, $aggressor->entity_id, $aggressor->name)
+                    );
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
@@ -83,9 +85,11 @@ class AllyJoinedWarAggressorMsg extends AbstractDiscordNotification
                         ['name' => trans('web::seat.unknown')]
                     );
 
-                    $field->name('Defender')
-                        ->value($this->zKillBoardToDiscordLink(
-                            $defender->category, $defender->entity_id, $defender->name));
+                    $field->name('Defender')->value(
+                        is_null($defender->category) ?
+                            sprintf('Unknown: %d', $defender->entity_id) :
+                            $this->zKillBoardToDiscordLink($defender->category, $defender->entity_id, $defender->name)
+                    );
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
