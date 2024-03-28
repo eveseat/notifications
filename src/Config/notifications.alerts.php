@@ -334,6 +334,13 @@ return [
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureWentLowPower::class,
         ],
     ],
+    'WarDeclared' => [
+        'label' => 'notifications::alerts.corporation_war_declared',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Wars\Discord\WarDeclaredMsg::class,
+            'slack' => \Seat\Notifications\Notifications\Wars\Slack\WarDeclaredMsg::class,
+        ],
+    ],
     'inactive_member' => [
         'label' => 'notifications::alerts.war_inactive_member',
         'handlers' => [

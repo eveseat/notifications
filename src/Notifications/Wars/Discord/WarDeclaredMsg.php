@@ -31,11 +31,11 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
- * Class AllWarDeclaredMsg.
+ * Class WarDeclaredMsg.
  *
  * @package Seat\Notifications\Notifications\Wars\Discord
  */
-class AllWarDeclaredMsg extends AbstractDiscordNotification
+class WarDeclaredMsg extends AbstractDiscordNotification
 {
     use NotificationTools;
 
@@ -60,6 +60,8 @@ class AllWarDeclaredMsg extends AbstractDiscordNotification
      */
     public function populateMessage(DiscordMessage $message, $notifiable)
     {
+        logger()->debug('[DiscordMessage] Init.', $this->notification->toArray());
+
         $message
             ->content('A new War has been declared ! :boom:')
             ->embed(function (DiscordEmbed $embed) {

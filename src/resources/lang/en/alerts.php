@@ -43,6 +43,7 @@ return [
     'character_left_corporation' => 'Corporation Leaving Character',
     'corporation_alliance_bill' => 'New Alliance Bill',
     'corporation_application_new' => 'New Corporation Application',
+    'corporation_war_declared' => 'Corporation War Declared',
     'entosis_capture_started' => 'Entosis Capture Started',
     'moon_mining_extraction_finished' => 'MM Finished Extractions',
     'moon_mining_extraction_started' => 'MM Started Extractions',
