@@ -87,7 +87,7 @@ class StructureFuelAlert extends AbstractDiscordNotification
                     });
                 }
 
-                $embed->color('#439fe0');
+                $embed->color(DiscordMessage::INFO);
             });
     }
 }
