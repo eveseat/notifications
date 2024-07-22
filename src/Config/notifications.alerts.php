@@ -230,6 +230,42 @@ return [
             'discord' => \Seat\Notifications\Notifications\Characters\Discord\ResearchMissionAvailableMsg::class,
         ],
     ],
+    'SkyhookDeployed' => [
+        'label' => 'notifications::alerts.skyhook_deployed',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureAnchoring::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureAnchoring::class,
+        ],
+    ],
+    'SkyhookDestroyed' => [
+        'label' => 'notifications::alerts.skyhook_destroyed',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureDestroyed::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureDestroyed::class,
+        ],
+    ],
+    'SkyhookLostShields' => [
+        'label' => 'notifications::alerts.skyhook_lost_shields',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureLostShields::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureLostShields::class,
+        ],
+    ],
+    'SkyhookOnline' => [
+        'label' => 'notifications::alerts.skyhook_online',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureWentHighPower::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureWentHighPower::class,
+        ],
+    ],
+    'SkyhookUnderAttack' => [
+        'label' => 'notifications::alerts.skyhook_under_attack',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureUnderAttack::class,
+            'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureUnderAttack::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureUnderAttack::class,
+        ],
+    ],
     'SovCommandNodeEventStarted' => [
         'label' => 'notifications::alerts.sovereignty_command_node_event_started',
         'handlers' => [
@@ -295,6 +331,22 @@ return [
         'handlers' => [
             'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureLostShields::class,
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureLostShields::class,
+        ],
+    ],
+    'StructureLowReagentsAlert' => [
+        'label' => 'notifications::alerts.structure_low_reagents_alert',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureFuelAlert::class,
+            'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureFuelAlert::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureFuelAlert::class,
+        ],
+    ],
+    'StructureNoReagentsAlert' => [
+        'label' => 'notifications::alerts.structure_no_reagents_alert',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureServicesOffline::class,
+            'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureServicesOffline::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureServicesOffline::class,
         ],
     ],
     'StructureServicesOffline' => [
