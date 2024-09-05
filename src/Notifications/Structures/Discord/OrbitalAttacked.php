@@ -69,13 +69,12 @@ class OrbitalAttacked extends AbstractDiscordNotification
                                     ->name
                             )
                         );
-                })
-                    ->field(function (DiscordEmbedField $field) {
-                        if (! array_key_exists('aggressorAllianceID', $this->notification->text) || is_null(
-                                $this->notification->text['aggressorAllianceID']
-                            )) {
-                            return;
-                        }
+                });
+
+                if (array_key_exists('aggressorAllianceID', $this->notification->text) && ! is_null(
+                    $this->notification->text['aggressorAllianceID']
+                    )) {
+                    $embed->field(function (DiscordEmbedField $field) {
 
                         $field->name('Alliance')
                             ->value(
@@ -90,6 +89,7 @@ class OrbitalAttacked extends AbstractDiscordNotification
                                 )
                             );
                     });
+                }
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {

@@ -66,14 +66,12 @@ class StructureUnderAttack extends AbstractDiscordNotification
                                 $this->notification->text['corpName']
                             )
                         );
-                })
-                    ->field(function (DiscordEmbedField $field) {
-                        if (! array_key_exists('allianceID', $this->notification->text) || is_null(
-                                $this->notification->text['allianceID']
-                            )) {
-                            return;
-                        }
+                });
 
+                if (array_key_exists('aggressorAllianceID', $this->notification->text) && ! is_null(
+                    $this->notification->text['aggressorAllianceID']
+                    )) {
+                    $embed->field(function (DiscordEmbedField $field) {
                         $field->name('Alliance')
                             ->value(
                                 $this->zKillBoardToDiscordLink(
@@ -82,33 +80,35 @@ class StructureUnderAttack extends AbstractDiscordNotification
                                     $this->notification->text['allianceName']
                                 )
                             );
-                    })
-                    ->field(function (DiscordEmbedField $field) {
-                        $system = MapDenormalize::find($this->notification->text['solarsystemID']);
-
-                        $field->name('System')
-                            ->value(
-                                $this->zKillBoardToDiscordLink(
-                                    'system',
-                                    $system->itemID,
-                                    $system->itemName . ' (' . number_format($system->security, 2) . ')'
-                                )
-                            );
-                    })
-                    ->field(function (DiscordEmbedField $field) {
-                        $structure = UniverseStructure::find($this->notification->text['structureID']);
-
-                        $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
-
-                        $title = 'Structure';
-
-                        if (! is_null($structure)) {
-                            $title = $structure->name;
-                        }
-
-                        $field->name($title)
-                            ->value($type->typeName);
                     });
+                }
+
+                $embed->field(function (DiscordEmbedField $field) {
+                    $system = MapDenormalize::find($this->notification->text['solarsystemID']);
+
+                    $field->name('System')
+                        ->value(
+                            $this->zKillBoardToDiscordLink(
+                                'system',
+                                $system->itemID,
+                                $system->itemName . ' (' . number_format($system->security, 2) . ')'
+                            )
+                        );
+                })
+                ->field(function (DiscordEmbedField $field) {
+                    $structure = UniverseStructure::find($this->notification->text['structureID']);
+
+                    $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
+
+                    $title = 'Structure';
+
+                    if (! is_null($structure)) {
+                        $title = $structure->name;
+                    }
+
+                    $field->name($title)
+                        ->value($type->typeName);
+                });
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
