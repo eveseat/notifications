@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,31 +22,46 @@
 
 return [
 
-    'group'      => 'Groupe de notifications|Groupes de notifications',
-    'new_group'  => 'Nouveau groupe de notifications',
+    'group' => 'Groupe de notifications|Groupes de notifications',
+    'new_group' => 'Nouveau groupe de notifications',
     'edit_group' => 'Modifier le groupe',
     'group_name' => 'Nom du groupe',
     'group_type' => 'Type de groupe',
 
-    'add'            => 'Ajouter',
-    'name'           => 'Nom',
-    'type'           => 'Type',
-    'alert'          => 'Alerte | Alertes',
-    'integration'    => 'Intégration | Intégrations',
-    'affiliation'    => 'Affiliation|Affiliations',
+    'add' => 'Ajouter',
+    'name' => 'Nom',
+    'type' => 'Type',
+    'alert' => 'Alerte | Alertes',
+    'integration' => 'Intégration | Intégrations',
+    'affiliation' => 'Affiliation|Affiliations',
     'add_all_alerts' => 'Ajouter toutes les alertes',
 
     'no_affiliation_notice' => 'Aucune affiliation n\'a été associée à ce groupe ' .
         'pour le moment, dans cette configuration, toutes les notifications pour les alertes correspondantes seront ' .
         'envoyé sans filtre.',
 
-    'new_integration'         => 'Nouvelle intégration',
+    'new_integration' => 'Nouvelle intégration',
     'new_integration_message' => 'Ajouter une intégration',
-    'new_email'               => 'Intégration par e-mail',
-    'new_slack'               => 'Intégration par Slack',
+    'new_discord' => 'New Discord Integration',
+    'new_email' => 'Intégration par e-mail',
+    'new_slack' => 'Intégration par Slack',
     'configured_integrations' => 'Intégrations configurées',
-    'settings'                => 'Paramètres',
+    'settings' => 'Paramètres',
 
-    'setup_label'             => 'Paramètres de notification',
-    'setup_description'       => 'Permet à l\'utilisateur de définir des canaux de notification et des abonnements.',
+    'setup_label' => 'Paramètres de notification',
+    'setup_description' => 'Permet à l\'utilisateur de définir des canaux de notification et des abonnements.',
+
+    'test_integration' => 'Test',
+
+    'mention' => 'Mention|Mentions',
+    'data' => 'Data',
+    'actions' => 'Actions',
+    'successfully_created_mention' => 'Successfully created a new mention!',
+    'create_mention' => 'Create Mention',
+    'create_discord_role_mention' => 'New Discord Role Mention',
+    'discord_role_id' => 'Discord Role ID',
+    'discord_role_id_help' => 'Enter the ID of the discord role to ping. Make sure to enable discord\'s developer mode in the \'Advanced\' section of your settings. Afterwards, open the server settings, open the \'Roles\' section, click the role and select \'Copy Role ID\'.',
+    'create_discord_user_mention' => 'New Discord User Mention',
+    'discord_user_id' => 'Discord User ID',
+    'discord_user_id_help' => 'Enter the ID of the discord user to ping. Make sure to enable discord\'s developer mode in the \'Advanced\' section of your settings. Afterwards, click on the avatar in the member list and select \'Copy User ID\'.',
 ];
