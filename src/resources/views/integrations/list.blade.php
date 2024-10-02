@@ -16,16 +16,12 @@
       </p>
 
       <p>
-
-        <a href="{{ route('notifications.integrations.new.email') }}" class="btn btn-primary btn-block">
-          <i class="fas fa-envelope"></i>
-          {{ trans('notifications::notifications.new_email') }}
-        </a>
-        <a href="{{ route('notifications.integrations.new.slack') }}" class="btn btn-primary btn-block">
-          <i class="fab fa-slack"></i>
-          {{ trans('notifications::notifications.new_slack') }}
-        </a>
-
+        @foreach($integration_types as $integration_type)
+          <a href="{{ route($integration_type['route']) }}" class="btn btn-primary btn-block">
+            <i class="{{ $integration_type['icon'] }}"></i>
+            {{ trans($integration_type['label']) }}
+          </a>
+        @endforeach
       </p>
 
     </div>
@@ -64,7 +60,7 @@
     $('table#integrations').DataTable({
       processing: true,
       serverSide: true,
-      ajax      : '{{ route('notifications.integrations.list.data') }}',
+      ajax      : '{{ route('seatcore::notifications.integrations.list.data') }}',
       columns   : [
         {data: 'name', name: 'name'},
         {data: 'type', name: 'type'},

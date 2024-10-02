@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,7 +32,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters\Slack
  */
-class StoryLineMissionAvailableMsg extends AbstractNotification
+class StoryLineMissionAvailableMsg extends AbstractSlackNotification
 {
     use NotificationTools;
 
@@ -52,16 +52,7 @@ class StoryLineMissionAvailableMsg extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

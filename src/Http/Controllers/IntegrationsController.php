@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
 
 namespace Seat\Notifications\Http\Controllers;
 
+use Illuminate\Support\Facades\Notification;
+use Seat\Notifications\Http\Validation\DiscordIntegration;
 use Seat\Notifications\Http\Validation\EmailIntegration;
 use Seat\Notifications\Http\Validation\SlackIntegration;
 use Seat\Notifications\Models\Integration;
@@ -40,8 +42,9 @@ class IntegrationsController extends Controller
      */
     public function getIntegrations()
     {
+        $integration_types = config('notifications.integrations');
 
-        return view('notifications::integrations.list');
+        return view('notifications::integrations.list', compact('integration_types'));
     }
 
     /**
@@ -60,7 +63,7 @@ class IntegrationsController extends Controller
             ->addColumn('actions', function ($row) {
 
                 return view(
-                    'notifications::integrations.partials.deleteintegration', compact('row')
+                    'notifications::integrations.partials.actions', compact('row')
                 )->render();
             })
             ->rawColumns(['actions'])
@@ -81,6 +84,57 @@ class IntegrationsController extends Controller
             ->with('success', 'Integration deleted!');
     }
 
+    public function getTestIntegration(int $integration_id) {
+        $integration = Integration::find($integration_id);
+
+        if($integration === null){
+            return redirect()->back()
+                ->with('error', 'Integration not found!');
+        }
+
+        $notification = config(sprintf('notifications.alerts.test_integration.handlers.%s', $integration->type), null);
+
+        if($notification === null || ! class_exists($notification)){
+            return redirect()->back()
+                ->with('error', 'Integration doesn\'t support test notifications. Please report this to the SeAT team.');
+        }
+
+        $setting = (array) $integration->settings;
+        $key = array_key_first($setting);
+        $route = $setting[$key];
+
+        Notification::route($integration->type, $route)->notify(new $notification());
+
+        return redirect()->back()
+            ->with('success', 'Successfully scheduled notification test');
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getNewDiscord()
+    {
+
+        return view('notifications::integrations.forms.discord');
+    }
+
+    /**
+     * @param  \Seat\Notifications\Http\Validation\DiscordIntegration  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postNewDiscord(DiscordIntegration $request)
+    {
+
+        Integration::create([
+            'name' => $request->input('name'),
+            'settings' => ['url' => $request->input('url')],
+            'type' => 'discord',
+        ]);
+
+        return redirect()->route('seatcore::notifications.integrations.list')
+            ->with('success', 'Discord Integration Added!');
+    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -98,12 +152,12 @@ class IntegrationsController extends Controller
     {
 
         Integration::create([
-            'name'     => $request->input('name'),
+            'name' => $request->input('name'),
             'settings' => ['email' => $request->input('email')],
-            'type'     => 'mail',
+            'type' => 'mail',
         ]);
 
-        return redirect()->route('notifications.integrations.list')
+        return redirect()->route('seatcore::notifications.integrations.list')
             ->with('success', 'Mail Integration Added!');
     }
 
@@ -124,12 +178,12 @@ class IntegrationsController extends Controller
     {
 
         Integration::create([
-            'name'     => $request->input('name'),
+            'name' => $request->input('name'),
             'settings' => ['url' => $request->input('url')],
-            'type'     => 'slack',
+            'type' => 'slack',
         ]);
 
-        return redirect()->route('notifications.integrations.list')
+        return redirect()->route('seatcore::notifications.integrations.list')
             ->with('success', 'Slack Integration Added!');
     }
 }

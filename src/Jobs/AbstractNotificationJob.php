@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Seat\Services\Helpers\AnalyticsContainer;
 use Seat\Services\Jobs\Analytics;
 
@@ -37,7 +38,7 @@ use Seat\Services\Jobs\Analytics;
  */
 abstract class AbstractNotificationJob extends Notification implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * When a job fails, grab some information and send a
@@ -56,13 +57,20 @@ abstract class AbstractNotificationJob extends Notification implements ShouldQue
     public function failed(Exception $exception)
     {
         // Analytics. Report only the Exception class and message.
-        dispatch((new Analytics((new AnalyticsContainer)
+        dispatch(new Analytics((new AnalyticsContainer)
             ->set('type', 'exception')
             ->set('exd', get_class($exception) . ':' . $exception->getMessage())
-            ->set('exf', 1))))->onQueue('default');
+            ->set('exf', 1)))->onQueue('default');
+
+        logger()->error(
+            sprintf('[Jobs][Notifications][%s] An error occurred while processing notification:', $this->job->getJobId()),
+            [
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
+            ]);
 
         // Rethrow the original exception for Horizon
-        throw $exception;
+        $this->fail($exception);
     }
 
     /**

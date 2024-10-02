@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,6 +66,22 @@ trait NotificationTools
             return '';
 
         return sprintf('<https://zkillboard.com/%s/%d/|%s>', $type, $id, $name);
+    }
+
+    /**
+     * Build a link to zKillboard using Discord message formatting.
+     *
+     * @param  string  $type
+     * @param  int  $id
+     * @param  string  $name
+     * @return string
+     */
+    public function zKillBoardToDiscordLink(string $type, int $id, string $name): string
+    {
+        if (! in_array($type, ['ship', 'character', 'corporation', 'alliance', 'kill', 'system', 'location']))
+            return '';
+
+        return sprintf('[%s](https://zkillboard.com/%s/%d/)', $name, $type, $id);
     }
 
     /**

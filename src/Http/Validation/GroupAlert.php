@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ class GroupAlert extends FormRequest
 
             'alerts.*' => 'required|in:' . implode(
                     ',', array_keys(config('notifications.alerts'))),
-            'id'       => 'required|numeric|exists:notification_groups,id',
+            'id' => 'required|numeric|exists:notification_groups,id',
         ];
     }
 }

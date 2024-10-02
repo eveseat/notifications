@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Web\Models\User;
 
 /**
@@ -31,7 +31,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class CreatedUser extends AbstractNotification
+class CreatedUser extends AbstractMailNotification
 {
     /**
      * @var \Seat\Web\Models\User
@@ -46,17 +46,6 @@ class CreatedUser extends AbstractNotification
     public function __construct(User $user)
     {
         $this->user = $user;
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
     }
 
     /**
@@ -76,6 +65,6 @@ class CreatedUser extends AbstractNotification
                 'logged in from ' . $this->user->last_login_source . ' at ' .
                 $this->user->last_login . '.'
             )
-            ->action('Check it out on SeAT', route('configuration.users.edit', ['user_id' => $this->user->id]));
+            ->action('Check it out on SeAT', route('seatcore::configuration.users.edit', ['user_id' => $this->user->id]));
     }
 }

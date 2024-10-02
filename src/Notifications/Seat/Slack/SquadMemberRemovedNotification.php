@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Web\Models\Squads\Squad;
 use Seat\Web\Models\Squads\SquadMember;
 use Seat\Web\Models\User;
@@ -33,7 +33,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class SquadMemberRemovedNotification extends AbstractNotification
+class SquadMemberRemovedNotification extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Web\Models\Squads\Squad
@@ -61,20 +61,9 @@ class SquadMemberRemovedNotification extends AbstractNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -87,7 +76,7 @@ class SquadMemberRemovedNotification extends AbstractNotification
 
                 $attachment->title('Squad', $this->squad->link)
                 ->fields([
-                    'User'  => $this->user->name,
+                    'User' => $this->user->name,
                     'Squad' => $this->squad->name,
                 ]);
             });

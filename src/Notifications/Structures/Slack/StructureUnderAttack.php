@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseStructure;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -35,7 +35,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class StructureUnderAttack extends AbstractNotification
+class StructureUnderAttack extends AbstractSlackNotification
 {
     use NotificationTools;
 
@@ -55,17 +55,7 @@ class StructureUnderAttack extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -159,14 +149,5 @@ class StructureUnderAttack extends AbstractNotification
                 if ($this->notification->text['hullPercentage'] < 40)
                     $attachment->color('danger');
             });
-    }
-
-    /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function toArray($notifiable)
-    {
-        return $this->notification->text;
     }
 }

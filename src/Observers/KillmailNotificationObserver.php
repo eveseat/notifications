@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,10 +22,9 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Notifications\AnonymousNotifiable;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Models\NotificationGroup;
-use Seat\Notifications\Notifications\Characters\Slack\Killmail;
+use Seat\Notifications\Traits\NotificationDispatchTool;
 
 /**
  * Class KillmailNotificationObserver.
@@ -34,6 +33,8 @@ use Seat\Notifications\Notifications\Characters\Slack\Killmail;
  */
 class KillmailNotificationObserver
 {
+    use NotificationDispatchTool;
+
     const EXPIRATION_DELAY = 3600;
 
     /**
@@ -41,6 +42,10 @@ class KillmailNotificationObserver
      */
     public function updated(KillmailDetail $killmail)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Killmail - Queuing job due to updated killmail.', $killmail->killmail_id),
+            $killmail->toArray());
+
         $this->dispatch($killmail);
     }
 
@@ -53,35 +58,7 @@ class KillmailNotificationObserver
         if (carbon()->diffInSeconds($killmail->killmail_time) > self::EXPIRATION_DELAY)
             return;
 
-        // ask Laravel to enqueue the notification
-        $manager = new AnonymousNotifiable();
-
-        // retrieve routing candidates for the current notification
-        $routes = $this->getRoutingCandidates($killmail);
-
-        // in case no routing candidates has been delivered, exit
-        if ($routes->isEmpty())
-            return;
-
-        // append each routing candidate to the notification process
-        $routes->each(function ($integration) use ($manager) {
-            $manager->route($integration->channel, $integration->route);
-        });
-
-        // enqueue the notification - delay by 5 minutes to leave time to SeAT to pull complete killmail from ESI
-        $when = now()->addMinutes(5);
-        $manager->notify((new Killmail($killmail))->delay($when));
-    }
-
-    /**
-     * Provide a unique list of notification channels (including driver and route).
-     *
-     * @param  \Seat\Eveapi\Models\Killmails\KillmailDetail  $killmail
-     * @return \Illuminate\Support\Collection
-     */
-    private function getRoutingCandidates(KillmailDetail $killmail)
-    {
-        $settings = NotificationGroup::with('alerts', 'affiliations')
+        $groups = NotificationGroup::with('alerts', 'affiliations')
             ->whereHas('alerts', function ($query) {
                 $query->where('alert', 'killmail');
             })->whereHas('affiliations', function ($query) use ($killmail) {
@@ -90,22 +67,10 @@ class KillmailNotificationObserver
                 $query->orWhereIn('affiliation_id', $killmail->attackers->pluck('character_id'));
                 $query->orWhereIn('affiliation_id', $killmail->attackers->pluck('corporation_id'));
             })->get();
+        $when = now()->addMinutes(5);
 
-        $routes = $settings->map(function ($group) {
-            return $group->integrations->map(function ($channel) {
-                $setting = (array) $channel->settings;
-                $key = array_key_first($setting);
-                $route = $setting[$key];
-
-                return (object) [
-                    'channel' => $channel->type,
-                    'route' => $route,
-                ];
-            });
-        });
-
-        return $routes->flatten()->unique(function ($integration) {
-            return $integration->channel . $integration->route;
+        $this->dispatchNotifications('Killmail', $groups, function ($notificationClass) use ($when, $killmail) {
+            return (new $notificationClass($killmail))->delay($when);
         });
     }
 }

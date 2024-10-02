@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -34,7 +34,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-class OrbitalAttacked extends AbstractNotification
+class OrbitalAttacked extends AbstractSlackNotification
 {
     use NotificationTools;
 
@@ -54,17 +54,7 @@ class OrbitalAttacked extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -79,10 +69,10 @@ class OrbitalAttacked extends AbstractNotification
                             $this->zKillBoardToSlackLink(
                                 'corporation',
                                 $this->notification->text['aggressorCorpID'],
-                                (UniverseName::firstOrNew(
+                                UniverseName::firstOrNew(
                                     ['entity_id' => $this->notification->text['aggressorCorpID']],
                                     ['category' => 'corporation', 'name' => trans('web::seat.unknown')])
-                                )->name
+                                ->name
                             ));
                     })
                     ->field(function ($field) {
@@ -95,10 +85,10 @@ class OrbitalAttacked extends AbstractNotification
                                 $this->zKillBoardToSlackLink(
                                     'alliance',
                                     $this->notification->text['aggressorAllianceID'],
-                                    (UniverseName::firstOrNew(
+                                    UniverseName::firstOrNew(
                                         ['entity_id' => $this->notification->text['aggressorAllianceID']],
                                         ['category' => 'alliance', 'name' => trans('web::seat.unknown')])
-                                    )->name
+                                    ->name
                                 ));
                     });
             })
@@ -140,14 +130,5 @@ class OrbitalAttacked extends AbstractNotification
                 if ($this->notification->text['shieldLevel'] * 100 < 40)
                     $attachment->color('danger');
             });
-    }
-
-    /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function toArray($notifiable)
-    {
-        return $this->notification->text;
     }
 }

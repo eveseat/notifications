@@ -16,20 +16,20 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.3",
-    "fideloper/proxy": "^4.0",
-    "laravel/framework": "^6.2",
+    "php": "^8.2",
+    "laravel/framework": "^10.0",
     "laravel/slack-notification-channel": "^2.0",
-    "laravel/tinker": "^2.5",
-    "eveseat/eveapi": "^4.0",
-    "eveseat/services": "^4.1",
-    "symfony/yaml": "^4.0",
-    "yajra/laravel-datatables-oracle": "~9"
+    "eveseat/eveapi": "^5.0",
+    "eveseat/services": "^5.0",
+    "eveseat/web": "^5.0",
+    "symfony/yaml": "^6.2",
+    "yajra/laravel-datatables-oracle": "^10.0"
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Seat\\Notifications\\NotificationsServiceProvider"
+        "Seat\\Notifications\\NotificationsServiceProvider",
+        "Seat\\Notifications\\Services\\Discord\\DiscordChannelServiceProvider"
       ]
     }
   }

@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Characters\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -32,7 +32,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class Killmail extends AbstractNotification
+class Killmail extends AbstractMailNotification
 {
     use NotificationTools;
 
@@ -50,18 +50,6 @@ class Killmail extends AbstractNotification
     {
 
         $this->killmail = $killmail;
-    }
-
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-
-        return ['mail'];
     }
 
     /**
@@ -100,11 +88,11 @@ class Killmail extends AbstractNotification
     {
 
         return [
-            'characterName'   => $this->killmail->attacker->character->name,
+            'characterName' => $this->killmail->attacker->character->name,
             'corporationName' => $this->killmail->attacker->corporation->name,
-            'typeName'        => $this->killmail->victim->ship->typeName,
-            'system'          => $this->killmail->solar_system->name,
-            'security'        => $this->killmail->solar_system->security,
+            'typeName' => $this->killmail->victim->ship->typeName,
+            'system' => $this->killmail->solar_system->name,
+            'security' => $this->killmail->solar_system->security,
         ];
     }
 }

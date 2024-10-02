@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,14 +24,14 @@ namespace Seat\Notifications\Notifications\Corporations\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /**
  * Class InActiveCorpMember.
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class InActiveCorpMember extends AbstractNotification
+class InActiveCorpMember extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\Corporation\CorporationMemberTracking
@@ -49,18 +49,7 @@ class InActiveCorpMember extends AbstractNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -70,11 +59,11 @@ class InActiveCorpMember extends AbstractNotification
             ->from('SeAT Corporation Supervisor')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Tracking Details', route('corporation.view.tracking', [
+                $attachment->title('Tracking Details', route('seatcore::corporation.view.tracking', [
                     'corporation' => $this->member->corporation_id,
                 ]))->fields([
                     'Last Logoff' => $this->member->logoff_date,
-                    'Ship'        => $this->member->ship->typeName,
+                    'Ship' => $this->member->ship->typeName,
                 ]);
             });
 

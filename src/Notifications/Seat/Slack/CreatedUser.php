@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Web\Models\User;
 
 /**
@@ -31,7 +31,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class CreatedUser extends AbstractNotification
+class CreatedUser extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Web\Models\User
@@ -49,20 +49,9 @@ class CreatedUser extends AbstractNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -73,12 +62,12 @@ class CreatedUser extends AbstractNotification
             ->from('SeAT State of Things')
             ->attachment(function ($attachment) {
 
-                $attachment->title('Account Details', route('configuration.users.edit', [
+                $attachment->title('Account Details', route('seatcore::configuration.users.edit', [
                     'user_id' => $this->user->id,
                 ]))->fields([
-                    'Account Name'            => $this->user->name,
+                    'Account Name' => $this->user->name,
                     'Owner Last Login Source' => $this->user->last_login_source,
-                    'Owner Last Login Time'   => $this->user->last_login,
+                    'Owner Last Login Time' => $this->user->last_login,
                 ]);
             });
     }

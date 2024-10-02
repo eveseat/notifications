@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,30 +23,25 @@
 return [
 
     'notifications' => [
-        'name'          => 'notifications',
-        'label'         => 'Notifications',
-        'icon'          => 'fas fa-bell',
+        'name' => 'notifications',
+        'label' => 'Notifications',
+        'icon' => 'fas fa-bell',
         'route_segment' => 'notifications',
-        'entries'       => [
+        'permission' => 'notifications.setup',
+        'entries' => [
             [
-                'name'       => 'integrations',
-                'label'      => 'Integrations',
+                'name' => 'integrations',
+                'label' => 'Integrations',
                 'permission' => 'notifications.setup',
-                'icon'       => 'fas fa-toggle-on',
-                'route'      => 'notifications.integrations.list',
+                'icon' => 'fas fa-toggle-on',
+                'route' => 'seatcore::notifications.integrations.list',
             ],
             [
-                'name'  => 'notifications',
-                'label' => 'My Notifications',
-                'icon'  => 'fas fa-envelope-square',
-                'route' => 'notifications.list',
-            ],
-            [
-                'name'       => 'notification.groups',
-                'label'      => 'Notifications Groups',
+                'name' => 'notification.groups',
+                'label' => 'Notifications Groups',
                 'permission' => 'notifications.setup',
-                'icon'       => 'fas fa-object-group',
-                'route'      => 'notifications.groups.list',
+                'icon' => 'fas fa-object-group',
+                'route' => 'seatcore::notifications.groups.list',
             ],
         ],
     ],

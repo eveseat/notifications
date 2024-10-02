@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,24 @@
 
 namespace Seat\Notifications;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 use Seat\Eveapi\Models\Character\CharacterNotification;
+use Seat\Eveapi\Models\Contracts\ContractDetail;
 use Seat\Eveapi\Models\Corporation\CorporationMemberTracking;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
+use Seat\Notifications\Notifications\AbstractDiscordNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Observers\CharacterNotificationObserver;
+use Seat\Notifications\Observers\ContractDetailObserver;
 use Seat\Notifications\Observers\CorporationMemberTrackingObserver;
 use Seat\Notifications\Observers\KillmailNotificationObserver;
 use Seat\Notifications\Observers\SquadApplicationObserver;
 use Seat\Notifications\Observers\SquadMemberObserver;
 use Seat\Notifications\Observers\UserObserver;
 use Seat\Services\AbstractSeatPlugin;
+use Seat\Services\Settings\Profile;
 use Seat\Web\Models\Squads\SquadApplication;
 use Seat\Web\Models\Squads\SquadMember;
 use Seat\Web\Models\User;
@@ -50,6 +58,9 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
      */
     public function boot()
     {
+        // Register settings
+        $this->register_settings();
+
         // Register alerts
         $this->add_alerts();
 
@@ -64,6 +75,9 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
 
         // Add events listeners
         $this->add_events();
+
+        // rate limiting for slack/discord
+        $this->add_rate_limiters();
     }
 
     /**
@@ -73,16 +87,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     {
 
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'notifications');
-    }
-
-    /**
-     * Publish alerts configuration file - so user can tweak it.
-     */
-    private function add_alerts()
-    {
-        $this->publishes([
-            __DIR__ . '/Config/notifications.alerts.php' => config_path('notifications.alerts.php'),
-        ], ['config', 'seat']);
     }
 
     /**
@@ -106,19 +110,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     }
 
     /**
-     * Register custom events that may be fire for this package.
-     */
-    private function add_events()
-    {
-        CharacterNotification::observe(CharacterNotificationObserver::class);
-        CorporationMemberTracking::observe(CorporationMemberTrackingObserver::class);
-        KillmailDetail::observe(KillmailNotificationObserver::class);
-        User::observe(UserObserver::class);
-        SquadApplication::observe(SquadApplicationObserver::class);
-        SquadMember::observe(SquadMemberObserver::class);
-    }
-
-    /**
      * Register the application services.
      *
      * @return void
@@ -131,16 +122,6 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
         // Include this packages menu items
         $this->mergeConfigFrom(
             __DIR__ . '/Config/package.sidebar.php', 'package.sidebar');
-    }
-
-    /**
-     * Set the path for migrations which should
-     * be migrated by laravel. More informations:
-     * https://laravel.com/docs/5.5/packages#migrations.
-     */
-    private function add_migrations()
-    {
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
     }
 
     /**
@@ -181,5 +162,68 @@ class NotificationsServiceProvider extends AbstractSeatPlugin
     public function getPackagistVendorName(): string
     {
         return 'eveseat';
+    }
+
+    /**
+     * Publish alerts configuration file - so user can tweak it.
+     */
+    private function add_alerts()
+    {
+        $this->publishes([
+            __DIR__ . '/Config/notifications.alerts.php' => config_path('notifications.alerts.php'),
+            __DIR__ . '/Config/notifications.mentions.php' => config_path('notifications.mentions.php'),
+            __DIR__ . '/Config/notifications.integrations.php' => config_path('notifications.integrations.php'),
+        ], ['config', 'seat']);
+    }
+
+    /**
+     * Register custom events that may be fire for this package.
+     */
+    private function add_events()
+    {
+        CharacterNotification::observe(CharacterNotificationObserver::class);
+        CorporationMemberTracking::observe(CorporationMemberTrackingObserver::class);
+        KillmailDetail::observe(KillmailNotificationObserver::class);
+        User::observe(UserObserver::class);
+        SquadApplication::observe(SquadApplicationObserver::class);
+        SquadMember::observe(SquadMemberObserver::class);
+        ContractDetail::observe(ContractDetailObserver::class);
+    }
+
+    /**
+     * Set the path for migrations which should
+     * be migrated by laravel. More informations:
+     * https://laravel.com/docs/5.5/packages#migrations.
+     */
+    private function add_migrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations/');
+    }
+
+    /**
+     * Register default settings value for user profile.
+     */
+    private function register_settings()
+    {
+        // Notifications
+        Profile::define('email_notifications', 'no');
+        Profile::define('email_address', '');
+    }
+
+    private function add_rate_limiters() {
+        // https://api.slack.com/docs/rate-limits
+        RateLimiter::for(AbstractSlackNotification::RATE_LIMIT_KEY, function (object $job) {
+            return Limit::perMinute(AbstractSlackNotification::RATE_LIMIT);
+        });
+
+        // just make usre we don't spam the mail server
+        RateLimiter::for(AbstractMailNotification::RATE_LIMIT_KEY, function (object $job) {
+            return Limit::perMinute(AbstractMailNotification::RATE_LIMIT);
+        });
+
+        // https://discord.com/developers/docs/topics/rate-limits#global-rate-limit
+        RateLimiter::for(AbstractDiscordNotification::RATE_LIMIT_KEY, function (object $job) {
+            return Limit::perMinute(AbstractDiscordNotification::RATE_LIMIT);
+        });
     }
 }

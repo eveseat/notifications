@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Alliances\Alliance;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /***
@@ -34,7 +34,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Alliances\Slack
  */
-class AllianceCapitalChanged extends AbstractNotification
+class AllianceCapitalChanged extends AbstractSlackNotification
 {
     use NotificationTools;
 
@@ -54,16 +54,7 @@ class AllianceCapitalChanged extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)

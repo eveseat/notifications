@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -34,7 +34,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Sovereignties
  */
-class SovStructureDestroyed extends AbstractNotification
+class SovStructureDestroyed extends AbstractMailNotification
 {
     use NotificationTools;
 
@@ -43,22 +43,18 @@ class SovStructureDestroyed extends AbstractNotification
      */
     private $notification;
 
+    /**
+     * Constructor.
+     *
+     * @param  \Seat\Eveapi\Models\Character\CharacterNotification  $notification
+     */
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
     }
 
     /**
-     * @param $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['mail'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -77,7 +73,7 @@ class SovStructureDestroyed extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

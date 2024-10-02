@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,10 +63,10 @@ class GroupAffiliation extends FormRequest
             Arr::prepend(CorporationInfo::pluck('corporation_id')->toArray(), 0));
 
         return [
-            'id'             => 'required|numeric|exists:notification_groups,id',
-            'characters'     => 'required_without_all:corporations',
-            'corporations'   => 'required_without_all:characters',
-            'characters.*'   => 'in:' . $character_ids,
+            'id' => 'required|numeric|exists:notification_groups,id',
+            'characters' => 'required_without_all:corporations',
+            'corporations' => 'required_without_all:characters',
+            'characters.*' => 'in:' . $character_ids,
             'corporations.*' => 'in:' . $corporation_ids,
         ];
 

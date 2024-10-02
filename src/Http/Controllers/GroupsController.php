@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ use Illuminate\Http\Request;
 use Seat\Eveapi\Models\Character\CharacterInfo;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Notifications\Http\DataTables\NotificationGroupDataTable;
+use Seat\Notifications\Http\Validation\CreateGroupMention;
 use Seat\Notifications\Http\Validation\Group;
 use Seat\Notifications\Http\Validation\GroupAffiliation;
 use Seat\Notifications\Http\Validation\GroupAlert;
@@ -33,6 +34,7 @@ use Seat\Notifications\Http\Validation\GroupAllAlert;
 use Seat\Notifications\Http\Validation\GroupIntegration;
 use Seat\Notifications\Models\GroupAffiliation as GroupAffiliationModel;
 use Seat\Notifications\Models\GroupAlert as GroupAlertModel;
+use Seat\Notifications\Models\GroupMention;
 use Seat\Notifications\Models\Integration;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Web\Http\Controllers\Controller;
@@ -115,15 +117,6 @@ class GroupsController extends Controller
 
         // Attach the integrations to the group.
         foreach ($request->integrations as $integration_id) {
-
-            $integration = Integration::find($integration_id);
-
-            // Make sure only one integration type is added.
-            if ($group->integrations->contains('type', $integration->type))
-                return redirect()->back()
-                    ->with('warning', 'A ' . $integration->type .
-                        ' integration already exists. Please choose another type.');
-
             // Add the integration
             if (! $group->integrations->contains($integration_id))
                 $group->integrations()
@@ -150,6 +143,20 @@ class GroupsController extends Controller
 
     }
 
+    public function postAddGroupMention(CreateGroupMention $request) {
+        $mention_type = config('notifications.mentions')[$request->mention_type];
+
+        // call the controller for creation. It can either show a page to enter more details or directly create the mention.
+        return app()->call($mention_type['creation_controller_method']);
+    }
+
+    public function postDeleteGroupMention($mention_id) {
+        GroupMention::destroy($mention_id);
+
+        return redirect()->back()
+            ->with('success', 'Removed mention!');
+    }
+
     /**
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -158,6 +165,13 @@ class GroupsController extends Controller
     {
         $keyword = strtolower($request->query('q', ''));
         $alerts = collect(config('notifications.alerts', []));
+
+        // remove all hidden groups
+        $alerts = $alerts->filter(function ($alert) {
+            $is_visible = $alert['visible'] ?? true;
+
+            return $is_visible;
+        });
 
         if (! empty($keyword)) {
             $alerts = $alerts->filter(function ($alert) use ($keyword) {
@@ -242,7 +256,7 @@ class GroupsController extends Controller
             foreach ($request->input('corporations') as $corp)
                 if (! $group->affiliations->contains('affiliation_id', $corp))
                     $group->affiliations()->save(new GroupAffiliationModel([
-                        'type'           => 'corp',
+                        'type' => 'corp',
                         'affiliation_id' => $corp,
                     ]));
 
@@ -251,7 +265,7 @@ class GroupsController extends Controller
             foreach ($request->input('characters') as $character)
                 if (! $group->affiliations->contains('affiliation_id', $character))
                     $group->affiliations()->save(new GroupAffiliationModel([
-                        'type'           => 'char',
+                        'type' => 'char',
                         'affiliation_id' => $character,
                     ]));
 

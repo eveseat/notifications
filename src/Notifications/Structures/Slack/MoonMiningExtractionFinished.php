@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ use Seat\Eveapi\Models\Sde\MapDenormalize;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class MoonMiningExtractionFinished extends AbstractMoonMiningExtraction
+class MoonMiningExtractionFinished extends AbstractSlackMoonMiningExtraction
 {
     /**
      * MoonMiningExtractionFinished constructor.
@@ -45,15 +45,7 @@ class MoonMiningExtractionFinished extends AbstractMoonMiningExtraction
     }
 
     /**
-     * @param $notifiable
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -104,7 +96,7 @@ class MoonMiningExtractionFinished extends AbstractMoonMiningExtraction
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

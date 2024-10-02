@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,9 @@ namespace Seat\Notifications\Notifications\Corporations\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\Alliances\Alliance;
+use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Corporation\CorporationInfo;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,36 +34,27 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class CorpAllBillMsg extends AbstractNotification
+class CorpAllBillMsg extends AbstractSlackNotification
 {
     use NotificationTools;
 
     /**
-     * @var \Seat\Eveapi\Models\Character\CharacterNotification
+     * @var CharacterNotification
      */
     private $notification;
 
     /**
      * CorpAllBillMsg constructor.
      *
-     * @param $notification
+     * @param  CharacterNotification  $notification
      */
-    public function __construct($notification)
+    public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
     }
 
     /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -114,7 +106,7 @@ class CorpAllBillMsg extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return array
      */
     public function toArray($notifiable)

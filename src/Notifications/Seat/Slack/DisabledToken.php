@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ namespace Seat\Notifications\Notifications\Seat\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
 use Seat\Eveapi\Models\RefreshToken;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Web\Models\User;
 
 /**
@@ -32,7 +32,7 @@ use Seat\Web\Models\User;
  *
  * @package Seat\Notifications\Notifications\Seat
  */
-class DisabledToken extends AbstractNotification
+class DisabledToken extends AbstractSlackNotification
 {
     /**
      * @var \Seat\Eveapi\Models\RefreshToken
@@ -50,20 +50,9 @@ class DisabledToken extends AbstractNotification
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
-    {
-        return ['slack'];
-    }
-
-    /**
      * Get the Slack representation of the notification.
      *
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
      */
     public function toSlack($notifiable)
@@ -76,7 +65,7 @@ class DisabledToken extends AbstractNotification
                 $owner = User::where('id', $this->token->user_id)
                     ->first();
 
-                $attachment->title('Token Details', route('corporation.view.tracking', [
+                $attachment->title('Token Details', route('seatcore::corporation.view.tracking', [
                     'corporation_id' => $this->token->affiliation->corporation_id,
                 ]))->fields([
                     'Character Name' => $this->token->character->name,

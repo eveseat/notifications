@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ namespace Seat\Notifications\Notifications\Structures\Mail;
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
-use Seat\Notifications\Notifications\AbstractNotification;
+use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
 /**
@@ -33,7 +33,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class StructureUnderAttack extends AbstractNotification
+class StructureUnderAttack extends AbstractMailNotification
 {
     use NotificationTools;
 
@@ -53,17 +53,7 @@ class StructureUnderAttack extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
-     * @return mixed
-     */
-    public function via($notifiable)
-    {
-
-        return ['mail'];
-    }
-
-    /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -90,7 +80,7 @@ class StructureUnderAttack extends AbstractNotification
     }
 
     /**
-     * @param $notifiable
+     * @param  $notifiable
      * @return mixed
      */
     public function toArray($notifiable)

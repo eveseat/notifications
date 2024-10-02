@@ -3,7 +3,7 @@
 /*
  * This file is part of SeAT
  *
- * Copyright (C) 2015 to 2022 Leon Jacobs
+ * Copyright (C) 2015 to present Leon Jacobs
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
 
 namespace Seat\Notifications\Observers;
 
-use Illuminate\Support\Facades\Notification;
 use Seat\Notifications\Models\NotificationGroup;
+use Seat\Notifications\Traits\NotificationDispatchTool;
 use Seat\Web\Models\Squads\SquadApplication;
 
 /**
@@ -33,11 +33,17 @@ use Seat\Web\Models\Squads\SquadApplication;
  */
 class SquadApplicationObserver
 {
+    use NotificationDispatchTool;
+
     /**
      * @param  \Seat\Web\Models\Squads\SquadApplication  $member
      */
     public function created(SquadApplication $member)
     {
+        logger()->debug(
+            sprintf('[Notifications][%d] Squad Application - Queuing job due to new squad application.', $member->application_id),
+            $member->toArray());
+
         $this->dispatch($member);
     }
 
@@ -48,60 +54,14 @@ class SquadApplicationObserver
      */
     private function dispatch(SquadApplication $member)
     {
-        // detect handlers setup for the current notification
-        $handlers = config('notifications.alerts.squad_application.handlers', []);
-
-        // retrieve routing candidates for the current notification
-        $routes = $this->getRoutingCandidates();
-
-        // in case no routing candidates has been delivered, exit
-        if ($routes->isEmpty())
-            return;
-
-        // attempt to enqueue a notification for each routing candidates
-        $routes->each(function ($integration) use ($handlers, $member) {
-            if (array_key_exists($integration->channel, $handlers)) {
-
-                // extract handler from the list
-                $handler = $handlers[$integration->channel];
-
-                // enqueue the notification
-                Notification::route($integration->channel, $integration->route)
-                    ->notify(new $handler($member));
-            }
-        });
-    }
-
-    /**
-     * Provide a unique list of notification channels (including driver and route).
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    private function getRoutingCandidates()
-    {
-        $settings = NotificationGroup::with('alerts')
+        $groups = $settings = NotificationGroup::with('alerts')
             ->whereHas('alerts', function ($query) {
-                $query->where('alert', 'squad_member');
+                $query->where('alert', 'squad_application');
             })->get();
 
-        $routes = $settings->map(function ($group) {
-            return $group->integrations->map(function ($channel) {
-
-                // extract the route value from settings field
-                $settings = (array) $channel->settings;
-                $key = array_key_first($settings);
-                $route = $settings[$key];
-
-                // build a composite object built with channel and route
-                return (object) [
-                    'channel' => $channel->type,
-                    'route' => $route,
-                ];
-            });
+        $this->dispatchNotifications('squad_application', $groups, function ($notificationClass) use ($member) {
+            return new $notificationClass($member);
         });
 
-        return $routes->flatten()->unique(function ($integration) {
-            return $integration->channel . $integration->route;
-        });
     }
 }
