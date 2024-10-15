@@ -71,8 +71,14 @@ class StructureFuelAlert extends AbstractDiscordNotification
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
+                   
+                    $title = 'Structure';
 
-                    $field->name('Structure')
+                    if (! is_null($structure)) {
+                        $title = $structure->name;
+                    }
+
+                    $field->name($title)
                         ->value($type->typeName);
                 });
             })
