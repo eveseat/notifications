@@ -73,13 +73,16 @@ class StructureLostShields extends AbstractDiscordNotification
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $type = InvType::firstOrNew(
-                        ['typeID' => $this->notification->text['structureTypeID']],
-                        ['typeName' => trans('web::seat.unknown')]
-                    );
+                    $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
+                   
+                    $title = 'Structure';
 
-                    $field->name('Structure')
-                        ->value($this->zKillBoardToDiscordLink('ship', $type->typeID, $type->typeName));
+                    if (! is_null($structure)) {
+                        $title = $structure->name;
+                    }
+
+                    $field->name($title)
+                        ->value($type->typeName);
                 });
             })
             ->warning();
