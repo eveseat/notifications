@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications\Structures\Discord;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Seat\Eveapi\Models\Universe\UniverseStructure;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -70,10 +71,26 @@ class StructureFuelAlert extends AbstractDiscordNotification
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
+                    // Find the structure by its ID from the notification data.
+                    // If the structure ID exists in the notification, retrieve it from the UniverseStructure model.
+                    $structure = UniverseStructure::find($this->notification->text['structureID']);
+
+                    // Retrieve the structure's type information using the structureShowInfoData from the notification.
+                    // The second index ([1]) contains the type ID which is used to look up the structure type from the InvType model.
                     $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
 
-                    $field->name('Structure')
-                        ->value($type->typeName);
+                    // Initialize a default title for the structure field as 'Structure'.
+                    $title = 'Structure';
+
+                    // If a structure is found (i.e., it's not null), set the title to the name of the structure.
+                    if (! is_null($structure)) {
+                        $title = $structure->name;
+                    }
+
+                    // Set the field's name to the title (either 'Structure' or the structure's actual name).
+                    // Set the field's value to a zKillboard link, formatted for Discord. This uses the structure's type ID and name.
+                    $field->name($title)
+                        ->value($this->zKillBoardToDiscordLink('ship', $type->typeID, $type->typeName));
                 });
             })
             ->embed(function (DiscordEmbed $embed) {

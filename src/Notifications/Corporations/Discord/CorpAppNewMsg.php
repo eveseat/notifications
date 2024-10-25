@@ -73,7 +73,7 @@ class CorpAppNewMsg extends AbstractDiscordNotification
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $field
-                        ->name('Character Name')
+                        ->name('Corporation Name')
                         ->long();
 
                     $entity = UniverseName::find($this->notification->text['corpID']);
