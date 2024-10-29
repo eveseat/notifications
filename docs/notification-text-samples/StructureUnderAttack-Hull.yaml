@@ -1,0 +1,22 @@
+allianceID: 99011162
+allianceLinkData:
+  - showinfo
+  - 16159
+  - 99011162
+allianceName: Test Alliance Please Ignore
+armorPercentage: -340.00000000000006
+charID: 2120512110
+corpLinkData:
+  - showinfo
+  - 2
+  - 1000001
+corpName: Doomheim
+hullPercentage: 99.05702928542462
+shieldPercentage: 4.833641826923347e-15
+solarsystemID: 31000671
+structureID: &id001 1032717532381
+structureShowInfoData:
+  - showinfo
+  - 35835
+  - *id001
+structureTypeID: 35835
