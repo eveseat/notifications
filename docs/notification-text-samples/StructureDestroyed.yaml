@@ -1,0 +1,13 @@
+isAbandoned: false
+ownerCorpLinkData:
+  - showinfo
+  - 2
+  - 1000001
+ownerCorpName: Doomheim
+solarsystemID: 31000671
+structureID: &id001 1032717532381
+structureShowInfoData:
+  - showinfo
+  - 35835
+  - *id001
+structureTypeID: 35835

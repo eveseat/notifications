@@ -1,0 +1,10 @@
+solarsystemID: 31000671
+structureID: &id001 1032717532381
+structureShowInfoData:
+  - showinfo
+  - 35835
+  - *id001
+structureTypeID: 35835
+timeLeft: 3252541831648
+timestamp: 123688745190000000
+vulnerableTime: 9000000000
