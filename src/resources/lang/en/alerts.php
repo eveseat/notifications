@@ -55,7 +55,7 @@ return [
     'research_mission_available' => 'New Research Mission',
     'skyhook_deployed' => 'Skyhook Deployed',
     'skyhook_destroyed' => 'Skyhook Destroyed',
-    'skyhook_lost_shields', 'Skyhook Lost Shields',
+    'skyhook_lost_shields' => 'Skyhook Lost Shields',
     'skyhook_online' => 'Skyhook Online',
     'skyhook_under_attack' => 'Skyhook Under Attack',
     'sovereignty_command_node_event_started' => 'Sovereignty Command Node Event Started',
