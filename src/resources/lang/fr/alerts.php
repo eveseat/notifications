@@ -64,5 +64,6 @@ return [
     'structure_under_attack' => 'Structure attaquée',
     'structure_went_high_power' => 'Structure à pleine puissance',
     'structure_went_low_power' => 'Structure à faible puissance',
+    'tower_alert_msg' => 'Tour attaquée',
     'killmails' => 'Rapport de combat',
 ];
