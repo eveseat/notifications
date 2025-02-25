@@ -63,7 +63,7 @@ class TowerAlertMsg extends AbstractDiscordNotification
                             $this->zKillBoardToDiscordLink(
                                 'character',
                                 $this->notification->text['aggressorID'],
-                                "Link to Character"
+                                'Link to Character'
                             )
                         );
                 });
@@ -74,7 +74,7 @@ class TowerAlertMsg extends AbstractDiscordNotification
                             $this->zKillBoardToDiscordLink(
                                 'corporation',
                                 $this->notification->text['aggressorCorpID'],
-                                "Link to Corporation"
+                                'Link to Corporation'
                             )
                         );
                 });
@@ -88,7 +88,7 @@ class TowerAlertMsg extends AbstractDiscordNotification
                                 $this->zKillBoardToDiscordLink(
                                     'alliance',
                                     $this->notification->text['aggressorAllianceID'],
-                                    "Link to Alliance"
+                                    'Link to Alliance'
                                 )
                             );
                     });
