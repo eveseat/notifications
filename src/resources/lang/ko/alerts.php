@@ -64,5 +64,6 @@ return [
     'structure_under_attack' => '구조물 공격받음',
     'structure_went_high_power' => '구조물 최고출력상태',
     'structure_went_low_power' => '구조물 저전력',
+    'tower_alert_msg' => '공격받은 타워',
     'killmails' => '킬메일',
 ];

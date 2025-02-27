@@ -386,6 +386,13 @@ return [
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureWentLowPower::class,
         ],
     ],
+    'TowerAlertMsg' => [
+        'label' => 'notifications::alerts.tower_alert_msg',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Structures\Mail\TowerAlertMsg::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\TowerAlertMsg::class,
+        ],
+    ],
     'WarDeclared' => [
         'label' => 'notifications::alerts.corporation_war_declared',
         'handlers' => [
