@@ -105,7 +105,7 @@ trait NotificationDispatchTool
                 // return the notifiable/notification pair
                 return [
                     'notifiable' => Notification::route($integration->channel, $integration->route),
-                    'notification' => $notification
+                    'notification' => $notification,
                 ];
             }
 
