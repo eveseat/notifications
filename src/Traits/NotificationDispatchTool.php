@@ -102,7 +102,7 @@ trait NotificationDispatchTool
                 $notification = $notification_creation_callback($handler);
                 $notification->setMentions($integration->mentions);
 
-                // enqueue the notification
+                // return the notifiable/notification pair
                 return [
                     'notifiable' => Notification::route($integration->channel, $integration->route),
                     'notification' => $notification
