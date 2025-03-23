@@ -59,8 +59,6 @@ class KillmailNotificationObserver
         if (carbon()->diffInSeconds($killmail->killmail_time) > self::EXPIRATION_DELAY)
             return;
 
-        EnsureRequiredDataIsAvailable::dispatch('Killmail', $killmail);
-
         $groups = NotificationGroup::with('alerts', 'affiliations')
             ->whereHas('alerts', function ($query) {
                 $query->where('alert', 'killmail');
@@ -72,8 +70,8 @@ class KillmailNotificationObserver
             })->get();
         $when = now()->addMinutes(5);
 
-        $this->dispatchNotifications('Killmail', $groups, function ($notificationClass) use ($when, $killmail) {
+        $this->dispatchNotificationsWhenDataAvailable('Killmail', $groups, function ($notificationClass) use ($when, $killmail) {
             return (new $notificationClass($killmail))->delay($when);
-        });
+        }, new EnsureRequiredDataIsAvailable('Killmail', $killmail));
     }
 }
