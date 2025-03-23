@@ -25,6 +25,7 @@ namespace Seat\Notifications\Observers;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
+use Seat\Notifications\Jobs\EnsureRequiredDataIsAvailable;
 
 /**
  * Class KillmailNotificationObserver.
@@ -57,6 +58,8 @@ class KillmailNotificationObserver
         // ignore any notification created since more than 60 minutes
         if (carbon()->diffInSeconds($killmail->killmail_time) > self::EXPIRATION_DELAY)
             return;
+
+        EnsureRequiredDataIsAvailable::dispatch('Killmail', $killmail);
 
         $groups = NotificationGroup::with('alerts', 'affiliations')
             ->whereHas('alerts', function ($query) {
