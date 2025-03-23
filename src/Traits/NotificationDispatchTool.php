@@ -91,6 +91,8 @@ trait NotificationDispatchTool
                     'notification' => $notification
                 ];
             }
-        });
+
+            return null;
+        })->filter();
     }
 }
