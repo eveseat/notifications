@@ -74,7 +74,7 @@ trait NotificationDispatchTool
                 'type' => $alert_type,
             ]);
 
-            return;
+            return false;
         }
 
         // attempt to build a notifiable/notification pair for each routing candidate
