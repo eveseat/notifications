@@ -23,9 +23,9 @@
 namespace Seat\Notifications\Observers;
 
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
+use Seat\Notifications\Jobs\EnsureRequiredDataIsAvailable;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
-use Seat\Notifications\Jobs\EnsureRequiredDataIsAvailable;
 
 /**
  * Class KillmailNotificationObserver.
