@@ -22,7 +22,9 @@
 
 namespace Seat\Notifications\Traits;
 
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
+use Seat\Notifications\Jobs\DispatchNotifications;
 
 trait NotificationDispatchTool
 {
@@ -59,6 +61,19 @@ trait NotificationDispatchTool
             $toDispatch->each(function ($notificationToDispatch) {
                 $notificationToDispatch['notifiable']->notify($notificationToDispatch['notification']);
             });
+        }
+    }
+
+    public function dispatchNotificationsWhenDataAvailable($alert_type, $groups, $notification_creation_callback, $dataPrepJob)
+    {
+        // determine routing, build notifications, create wrapper jobs
+        $toDispatch = $this->getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback);
+
+        if ($toDispatch) {
+            Bus::chain([
+                $dataPrepJob,
+                new DispatchNotifications($toDispatch),
+            ])->dispatch();
         }
     }
 
