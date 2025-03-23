@@ -27,6 +27,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Seat\Eveapi\Jobs\Universe\Names as ResolveUniverseNames;
 use Seat\Services\Models\ExtensibleModel;
 
 class EnsureRequiredDataIsAvailable implements ShouldQueue
@@ -67,8 +68,7 @@ class EnsureRequiredDataIsAvailable implements ShouldQueue
         if ($requiredIds->isEmpty())
             return;
 
-        $request = new Request(['ids' => $requiredIds->join(',')]);
-        app(Seat\Web\Http\Controllers\Support\ResolveController::class)->resolveIdsToNames($request);
+        ResolveUniverseNames::dispatchSync();
     }
 
     /**
