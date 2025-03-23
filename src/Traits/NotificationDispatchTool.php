@@ -54,10 +54,12 @@ trait NotificationDispatchTool
         // determine routing, build notifications
         $toDispatch = $this->getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback);
 
-        // actually dispatch the notifications
-        $toDispatch->each(function ($notificationToDispatch) {
-            $notificationToDispatch['notifiable']->notify($notificationToDispatch['notification']);
-        });
+        if ($toDispatch) {
+            // actually dispatch the notifications
+            $toDispatch->each(function ($notificationToDispatch) {
+                $notificationToDispatch['notifiable']->notify($notificationToDispatch['notification']);
+            });
+        }
     }
 
     public function getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback)
