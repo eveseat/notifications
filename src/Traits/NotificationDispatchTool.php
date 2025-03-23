@@ -51,6 +51,17 @@ trait NotificationDispatchTool
 
     public function dispatchNotifications($alert_type, $groups, $notification_creation_callback)
     {
+        // determine routing, build notifications
+        $toDispatch = $this->getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback);
+
+        // actually dispatch the notifications
+        $toDispatch->each(function ($notificationToDispatch) {
+            $notificationToDispatch['notifiable']->notify($notificationToDispatch['notification']);
+        });
+    }
+
+    public function getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback)
+    {
         // loop over each group candidate and collect available integrations
         $integrations = $this->mapGroups($groups);
 
@@ -64,8 +75,8 @@ trait NotificationDispatchTool
             return;
         }
 
-        // attempt to enqueue a notification for each routing candidate
-        $integrations->each(function ($integration) use ($notification_creation_callback, $handlers) {
+        // attempt to build a notifiable/notification pair for each routing candidate
+        return $integrations->map(function ($integration) use ($notification_creation_callback, $handlers) {
             if (array_key_exists($integration->channel, $handlers)) {
 
                 // extract handler from the list
@@ -75,8 +86,10 @@ trait NotificationDispatchTool
                 $notification->setMentions($integration->mentions);
 
                 // enqueue the notification
-                Notification::route($integration->channel, $integration->route)
-                    ->notify($notification);
+                return [
+                    'notifiable' => Notification::route($integration->channel, $integration->route),
+                    'notification' => $notification
+                ];
             }
         });
     }
