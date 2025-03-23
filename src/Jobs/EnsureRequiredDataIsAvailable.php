@@ -81,5 +81,4 @@ class EnsureRequiredDataIsAvailable implements ShouldQueue
     {
         return ['notifications', 'other'];
     }
-
 }
