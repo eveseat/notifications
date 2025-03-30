@@ -22,9 +22,7 @@
 
 namespace Seat\Notifications\Traits;
 
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Notification;
-use Seat\Notifications\Jobs\DispatchNotifications;
 
 trait NotificationDispatchTool
 {
@@ -53,32 +51,6 @@ trait NotificationDispatchTool
 
     public function dispatchNotifications($alert_type, $groups, $notification_creation_callback)
     {
-        // determine routing, build notifications
-        $toDispatch = $this->getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback);
-
-        if ($toDispatch) {
-            // actually dispatch the notifications
-            $toDispatch->each(function ($notificationToDispatch) {
-                $notificationToDispatch['notifiable']->notify($notificationToDispatch['notification']);
-            });
-        }
-    }
-
-    public function dispatchNotificationsWhenDataAvailable($alert_type, $groups, $notification_creation_callback, $dataPrepJob)
-    {
-        // determine routing, build notifications, create wrapper jobs
-        $toDispatch = $this->getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback);
-
-        if ($toDispatch) {
-            Bus::chain([
-                $dataPrepJob,
-                new DispatchNotifications($toDispatch),
-            ])->dispatch();
-        }
-    }
-
-    public function getNotificationsToDispatch($alert_type, $groups, $notification_creation_callback)
-    {
         // loop over each group candidate and collect available integrations
         $integrations = $this->mapGroups($groups);
 
@@ -89,11 +61,11 @@ trait NotificationDispatchTool
                 'type' => $alert_type,
             ]);
 
-            return false;
+            return;
         }
 
-        // attempt to build a notifiable/notification pair for each routing candidate
-        return $integrations->map(function ($integration) use ($notification_creation_callback, $handlers) {
+        // attempt to enqueue a notification for each routing candidate
+        $integrations->each(function ($integration) use ($notification_creation_callback, $handlers) {
             if (array_key_exists($integration->channel, $handlers)) {
 
                 // extract handler from the list
@@ -102,14 +74,10 @@ trait NotificationDispatchTool
                 $notification = $notification_creation_callback($handler);
                 $notification->setMentions($integration->mentions);
 
-                // return the notifiable/notification pair
-                return [
-                    'notifiable' => Notification::route($integration->channel, $integration->route),
-                    'notification' => $notification,
-                ];
+                // enqueue the notification
+                Notification::route($integration->channel, $integration->route)
+                    ->notify($notification);
             }
-
-            return null;
-        })->filter();
+        });
     }
 }
