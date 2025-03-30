@@ -23,7 +23,6 @@
 namespace Seat\Notifications\Observers;
 
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
-use Seat\Notifications\Jobs\EnsureRequiredDataIsAvailable;
 use Seat\Notifications\Models\NotificationGroup;
 use Seat\Notifications\Traits\NotificationDispatchTool;
 
@@ -70,8 +69,8 @@ class KillmailNotificationObserver
             })->get();
         $when = now()->addMinutes(5);
 
-        $this->dispatchNotificationsWhenDataAvailable('Killmail', $groups, function ($notificationClass) use ($when, $killmail) {
+        $this->dispatchNotifications('Killmail', $groups, function ($notificationClass) use ($when, $killmail) {
             return (new $notificationClass($killmail))->delay($when);
-        }, new EnsureRequiredDataIsAvailable('Killmail', $killmail));
+        });
     }
 }
