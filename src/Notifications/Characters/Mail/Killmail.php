@@ -69,8 +69,8 @@ class Killmail extends AbstractMailNotification implements ExposesRequiredUniver
 
         $ids->push($this->killmail->victim->character_id);
         $ids->push($this->killmail->victim->corporation_id);
-        $ids->merge($this->killmail->attackers->pluck('character_id'));
-        $ids->merge($this->killmail->attackers->pluck('corporation_id'));
+        $ids = $ids->merge($this->killmail->attackers->pluck('character_id'));
+        $ids = $ids->merge($this->killmail->attackers->pluck('corporation_id'));
 
         return $ids->unique();
     }
