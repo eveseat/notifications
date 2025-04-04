@@ -19,7 +19,7 @@
     "php": "^8.2",
     "laravel/framework": "^10.0",
     "laravel/slack-notification-channel": "^2.0",
-    "eveseat/eveapi": "^5.0",
+    "eveseat/eveapi": "^5.0.23",
     "eveseat/services": "^5.0",
     "eveseat/web": "^5.0",
     "symfony/yaml": "^6.2",
