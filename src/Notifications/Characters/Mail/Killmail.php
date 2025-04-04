@@ -23,7 +23,10 @@
 namespace Seat\Notifications\Notifications\Characters\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Killmails\KillmailDetail;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -32,7 +35,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Characters
  */
-class Killmail extends AbstractMailNotification
+class Killmail extends AbstractMailNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -50,6 +53,26 @@ class Killmail extends AbstractMailNotification
     {
 
         $this->killmail = $killmail;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        $ids = collect();
+
+        $ids->push($this->killmail->victim->character_id);
+        $ids->push($this->killmail->victim->corporation_id);
+        $ids = $ids->merge($this->killmail->attackers->pluck('character_id'));
+        $ids = $ids->merge($this->killmail->attackers->pluck('corporation_id'));
+
+        return $ids->unique();
     }
 
     /**
