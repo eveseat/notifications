@@ -56,9 +56,11 @@ abstract class AbstractDiscordNotification extends AbstractNotification
     {
         $message = new DiscordMessage();
 
-        foreach ($this->getMentions() as $mention){
-            [$class,$method] = explode('@', $mention->getType()->message_adapter, 2);
-            $class::$method($message, $mention->data);
+        if(! $this->suppressMentions()) {
+            foreach ($this->getMentions() as $mention) {
+                [$class, $method] = explode('@', $mention->getType()->message_adapter, 2);
+                $class::$method($message, $mention->data);
+            }
         }
 
         $this->populateMessage($message, $notifiable);
@@ -73,4 +75,14 @@ abstract class AbstractDiscordNotification extends AbstractNotification
      * @param  $notifiable
      * */
     abstract protected function populateMessage(DiscordMessage $message, $notifiable);
+
+    /**
+     * Whether to suppress discord pings for this notification.
+     *
+     * @return bool
+     */
+    protected function suppressMentions(): bool
+    {
+        return false;
+    }
 }
