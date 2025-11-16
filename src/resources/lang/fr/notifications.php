@@ -42,6 +42,7 @@ return [
 
     'new_integration' => 'Nouvelle intégration',
     'new_integration_message' => 'Ajouter une intégration',
+    'new_discord' => 'New Discord Integration',
     'new_email' => 'Intégration par e-mail',
     'new_slack' => 'Intégration par Slack',
     'configured_integrations' => 'Intégrations configurées',
@@ -49,4 +50,18 @@ return [
 
     'setup_label' => 'Paramètres de notification',
     'setup_description' => 'Permet à l\'utilisateur de définir des canaux de notification et des abonnements.',
+
+    'test_integration' => 'Test',
+
+    'mention' => 'Mention|Mentions',
+    'data' => 'Data',
+    'actions' => 'Actions',
+    'successfully_created_mention' => 'Successfully created a new mention!',
+    'create_mention' => 'Create Mention',
+    'create_discord_role_mention' => 'New Discord Role Mention',
+    'discord_role_id' => 'Discord Role ID',
+    'discord_role_id_help' => 'Enter the ID of the discord role to ping. Make sure to enable discord\'s developer mode in the \'Advanced\' section of your settings. Afterwards, open the server settings, open the \'Roles\' section, click the role and select \'Copy Role ID\'.',
+    'create_discord_user_mention' => 'New Discord User Mention',
+    'discord_user_id' => 'Discord User ID',
+    'discord_user_id_help' => 'Enter the ID of the discord user to ping. Make sure to enable discord\'s developer mode in the \'Advanced\' section of your settings. Afterwards, click on the avatar in the member list and select \'Copy User ID\'.',
 ];
