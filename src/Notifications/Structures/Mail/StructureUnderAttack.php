@@ -68,6 +68,7 @@ class StructureUnderAttack extends AbstractMailNotification
             $title = $structure->name;
         }
         $structureType = $type->typeName;
+        
         return (new MailMessage)
             ->subject('Structure Under Attack Notification')
             ->line('A structure is under attack!')
