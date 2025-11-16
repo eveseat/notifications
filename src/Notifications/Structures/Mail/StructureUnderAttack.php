@@ -24,7 +24,9 @@ namespace Seat\Notifications\Notifications\Structures\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Seat\Eveapi\Models\Character\CharacterNotification;
+use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Seat\Eveapi\Models\Universe\UniverseStructure;
 use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -59,12 +61,18 @@ class StructureUnderAttack extends AbstractMailNotification
     public function toMail($notifiable)
     {
         $system = MapDenormalize::find($this->notification->text['solarsystemID']);
-
+        $structure = UniverseStructure::find($this->notification->text['structureID']);
+        $type = InvType::find($this->notification->text['structureShowInfoData'][1]);
+        $title = 'Structure';
+        if (! is_null($structure)) {
+            $title = $structure->name;
+        }
+        $structureType = $type->typeName;
         return (new MailMessage)
             ->subject('Structure Under Attack Notification')
             ->line('A structure is under attack!')
             ->line(
-                sprintf('Citadel (%s, "%s") attacked')
+                sprintf('Citadel (%s, "%s") attacked', $title, $structureType)
             )
             ->line(
                 sprintf('(%d shield, %d armor, %d hull)',
