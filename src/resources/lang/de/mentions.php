@@ -21,9 +21,9 @@
  */
 
 return [
-    'discord_everyone' => 'Ping @everyone',
-    'discord_here' => 'Ping @here',
-    'discord_role' => 'Ping Role',
-    'discord_user' => 'Ping User',
-    'unknown' => 'Unknown',
+    'discord_everyone' => 'Benachrichtige @everyone',
+    'discord_here' => 'Benachrichtige @here',
+    'discord_role' => 'Benachrichtige eine Rolle',
+    'discord_user' => 'Benachrichtige ein Benutzer',
+    'unknown' => 'Unbekannt',
 ];
