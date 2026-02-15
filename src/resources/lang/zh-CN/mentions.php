@@ -21,9 +21,9 @@
  */
 
 return [
-    'discord_everyone' => 'Ping @everyone',
-    'discord_here' => 'Ping @here',
-    'discord_role' => 'Ping Role',
-    'discord_user' => 'Ping User',
-    'unknown' => 'Unknown',
+    'discord_everyone' => 'Ping @全体',
+    'discord_here' => 'Ping @在线成员',
+    'discord_role' => 'Ping @角色组',
+    'discord_user' => 'Ping @用户',
+    'unknown' => '未知',
 ];
