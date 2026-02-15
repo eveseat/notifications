@@ -51,7 +51,7 @@ return [
     'ownership_transferred' => 'Transferred Ownership',
     'raffle_created' => 'Created Raffle',
     'raffle_expired' => 'Expired Raffle',
-    'raffle_finished' => 'Finished Raffle',
+    'raffle_finished' => '',
     'research_mission_available' => 'New Research Mission',
     'skyhook_deployed' => 'Skyhook Deployed',
     'skyhook_destroyed' => 'Skyhook Destroyed',
