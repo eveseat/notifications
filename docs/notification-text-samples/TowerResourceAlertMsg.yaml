@@ -1,0 +1,10 @@
+allianceID: 99011162
+corpID: 1000001
+moonID: 40439200
+solarSystemID: 31001703
+typeID: 20060
+wants:
+  - quantity: 8
+    typeID: 16275
+  - quantity: 4
+    typeID: 16273

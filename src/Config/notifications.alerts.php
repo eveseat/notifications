@@ -393,6 +393,13 @@ return [
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\TowerAlertMsg::class,
         ],
     ],
+    'TowerResourceAlertMsg' => [
+        'label' => 'notifications::alerts.tower_resource_alert_msg',
+        'handlers' => [
+            'mail' => \Seat\Notifications\Notifications\Structures\Mail\TowerResourceAlertMsg::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\TowerResourceAlertMsg::class,
+        ],
+    ],
     'WarDeclared' => [
         'label' => 'notifications::alerts.corporation_war_declared',
         'handlers' => [
