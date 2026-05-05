@@ -75,6 +75,7 @@ return [
     'structure_went_high_power' => '建筑服务已运行',
     'structure_went_low_power' => '建筑已低能量',
     'tower_alert_msg' => '控制塔已遭到攻击',
+    'tower_resource_alert_msg' => 'Towers Need Resources',
     'killmails' => '击杀记录',
     'contract_created' => '合同已创建',
     'war_inactive_member' => '战争非活跃成员',
