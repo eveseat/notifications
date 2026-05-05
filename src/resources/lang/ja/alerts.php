@@ -75,6 +75,7 @@ return [
     'structure_went_high_power' => 'オンライン状態のストラクチャ',
     'structure_went_low_power' => 'ローパワー状態のストラクチャ',
     'tower_alert_msg' => 'Towers Attacked',
+    'tower_resource_alert_msg' => 'Towers Need Resources',
     'killmails' => 'キルメール',
     'contract_created' => 'Contract Created',
     'war_inactive_member' => 'War Inactive Member',
