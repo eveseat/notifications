@@ -75,6 +75,7 @@ return [
     'structure_went_high_power' => 'Structure à pleine puissance',
     'structure_went_low_power' => 'Structure à faible puissance',
     'tower_alert_msg' => 'Towers Attacked',
+    'tower_resource_alert_msg' => 'Towers Need Resources',
     'killmails' => 'Rapport de combat',
     'contract_created' => 'Contract Created',
     'war_inactive_member' => 'War Inactive Member',
