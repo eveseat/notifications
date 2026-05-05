@@ -75,6 +75,7 @@ return [
     'structure_went_high_power' => '구조물 최고출력상태',
     'structure_went_low_power' => '구조물 저전력',
     'tower_alert_msg' => 'Towers Attacked',
+    'tower_resource_alert_msg' => 'Towers Need Resources',
     'killmails' => '킬메일',
     'contract_created' => 'Contract Created',
     'war_inactive_member' => 'War Inactive Member',
