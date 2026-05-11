@@ -53,7 +53,19 @@ class DiscordIntegration extends FormRequest
         return [
 
             'name' => 'required|max:255|unique:integrations,name',
-            'url' => 'required|url',
+            'url' => ['required', 'url', function ($attribute, $value, $fail) {
+                $host = parse_url($value, PHP_URL_HOST);
+                $allowedHosts = [
+                    'discord.com',
+                    'discordapp.com',
+                ];
+                $isAllowed = collect($allowedHosts)->contains(function ($allowed) use ($host) {
+                    return $host === $allowed || str_ends_with($host, '.' . $allowed);
+                });
+                if (! $isAllowed) {
+                    $fail('The webhook URL must be a valid Discord webhook URL (discord.com or discordapp.com).');
+                }
+            }],
         ];
     }
 }
