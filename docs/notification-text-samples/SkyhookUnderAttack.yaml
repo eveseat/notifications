@@ -1,0 +1,28 @@
+allianceID: 99015056
+allianceLinkData:
+  - showinfo
+  - 16159
+  - 99015056
+allianceName: Calculated Disorder
+armorPercentage: 100.0
+charID: 1786133582
+corpLinkData:
+  - showinfo
+  - 2
+  - 98328437
+corpName: Applied Anarchy
+hullPercentage: 100.0
+isActive: true
+itemID: &id001 1047299233673
+planetID: 40303639
+planetShowInfoData:
+  - showinfo
+  - 2016
+  - 40303639
+shieldPercentage: 94.96017719205628
+skyhookShowInfoData:
+  - showinfo
+  - 81080
+  - *id001
+solarsystemID: 30004796
+typeID: 81080

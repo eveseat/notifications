@@ -1,0 +1,15 @@
+itemID: &id001 1052265367878
+planetID: 40303956
+planetShowInfoData:
+  - showinfo
+  - 11
+  - 40303956
+skyhookShowInfoData:
+  - showinfo
+  - 81080
+  - *id001
+solarsystemID: 30004801
+timeLeft: 2086699818101
+timestamp: 134258793670000000
+typeID: 81080
+vulnerableTime: 9000000000
