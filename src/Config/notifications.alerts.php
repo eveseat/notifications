@@ -233,37 +233,37 @@ return [
     'SkyhookDeployed' => [
         'label' => 'notifications::alerts.skyhook_deployed',
         'handlers' => [
-            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureAnchoring::class,
-            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureAnchoring::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\SkyhookDeployed::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\SkyhookDeployed::class,
         ],
     ],
     'SkyhookDestroyed' => [
         'label' => 'notifications::alerts.skyhook_destroyed',
         'handlers' => [
-            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureDestroyed::class,
-            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureDestroyed::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\SkyhookDestroyed::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\SkyhookDestroyed::class,
         ],
     ],
     'SkyhookLostShields' => [
         'label' => 'notifications::alerts.skyhook_lost_shields',
         'handlers' => [
-            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureLostShields::class,
-            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureLostShields::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\SkyhookLostShields::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\SkyhookLostShields::class,
         ],
     ],
     'SkyhookOnline' => [
         'label' => 'notifications::alerts.skyhook_online',
         'handlers' => [
-            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureWentHighPower::class,
-            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureWentHighPower::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\SkyhookOnline::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\SkyhookOnline::class,
         ],
     ],
     'SkyhookUnderAttack' => [
         'label' => 'notifications::alerts.skyhook_under_attack',
         'handlers' => [
-            'discord' => \Seat\Notifications\Notifications\Structures\Discord\StructureUnderAttack::class,
-            'mail' => \Seat\Notifications\Notifications\Structures\Mail\StructureUnderAttack::class,
-            'slack' => \Seat\Notifications\Notifications\Structures\Slack\StructureUnderAttack::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\SkyhookUnderAttack::class,
+            'mail' => \Seat\Notifications\Notifications\Structures\Mail\SkyhookUnderAttack::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\SkyhookUnderAttack::class,
         ],
     ],
     'SovCommandNodeEventStarted' => [
