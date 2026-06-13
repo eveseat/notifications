@@ -41,7 +41,7 @@ trait NotificationDispatchTool
                         'channel' => $channel->type,
                         'route' => $route,
                         'mentions' => $group->mentions->filter(function ($mention) use ($channel) {
-                            return $mention->getType()->type = $channel->type;
+                            return $mention->getType()->type === $channel->type;
                         }),
                     ];
                 });
