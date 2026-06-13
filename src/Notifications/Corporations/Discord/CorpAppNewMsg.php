@@ -67,7 +67,7 @@ class CorpAppNewMsg extends AbstractDiscordNotification
 
                 $embed->author(
                     'SeAT - New Application',
-                    asset('web/img/favico/apple-icon-180x180.png'),
+                    asset('web/img/favicon/apple-icon-180x180.png'),
                     route('seatcore::corporation.view.default', ['corporation' => $this->notification->text['corpID']])
                 );
 

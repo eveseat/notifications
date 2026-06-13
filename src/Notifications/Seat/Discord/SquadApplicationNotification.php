@@ -47,7 +47,7 @@ class SquadApplicationNotification extends AbstractDiscordNotification
             ->warning()
             ->content('A SeAT Squad has a new Application!')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->author('SeAT State of Things', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT State of Things', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->title('Squad Application', $this->application->squad->link)
                     ->fields([

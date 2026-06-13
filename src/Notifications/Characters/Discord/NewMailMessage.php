@@ -59,7 +59,7 @@ class NewMailMessage extends AbstractDiscordNotification
             ->content('New EVEMail Received!')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->message->timestamp);
-                $embed->author('SeAT Personal Agent', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT Personal Agent', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->description(Str::limit(
                     str_replace('<br>', ' ', clean_ccp_html($this->message->body->body, '<br>')),

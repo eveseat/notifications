@@ -52,7 +52,7 @@ class RaffleExpired extends AbstractDiscordNotification
         $message
             ->content('A raffle has reach end of life!')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->author('SeAT Raffle President', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT Raffle President', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $location = MapDenormalize::firstOrNew(

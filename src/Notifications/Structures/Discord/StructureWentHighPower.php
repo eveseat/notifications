@@ -56,7 +56,7 @@ class StructureWentHighPower extends AbstractDiscordNotification
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->notification->timestamp);
                 $embed->color(DiscordMessage::SUCCESS);
-                $embed->author('SeAT Structure Monitor', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT Structure Monitor', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $system = MapDenormalize::firstOrNew(

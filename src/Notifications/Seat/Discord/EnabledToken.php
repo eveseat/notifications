@@ -59,7 +59,7 @@ class EnabledToken extends AbstractDiscordNotification
                 $embed->timestamp(carbon());
                 $embed->author(
                     'SeAT State of Things',
-                    asset('web/img/favico/apple-icon-180x180.png'),
+                    asset('web/img/favicon/apple-icon-180x180.png'),
                     route('seatcore::corporation.view.tracking', [
                         'corporation_id' => $this->token->affiliation->corporation_id,
                     ]));

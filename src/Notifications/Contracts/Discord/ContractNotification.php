@@ -50,7 +50,7 @@ class ContractNotification extends AbstractDiscordNotification
             ->content('A new event related to a contract has been recorded!')
             ->from('SeAT Contract Monitor')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->author('SeAT Contract Monitor', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT Contract Monitor', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $type = $this->contract->type;
                 if ($type == 'item_exchange') {

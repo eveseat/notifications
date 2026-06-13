@@ -64,7 +64,7 @@ class AllWarInvalidatedMsg extends AbstractDiscordNotification
             ->content('A war has been invalidated! :boom:')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->notification->timestamp);
-                $embed->author('SeAT War Observer', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT War Observer', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $aggressor = UniverseName::firstOrNew(

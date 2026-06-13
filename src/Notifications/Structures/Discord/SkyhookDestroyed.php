@@ -52,7 +52,7 @@ class SkyhookDestroyed extends AbstractDiscordNotification
 
                 $embed->timestamp($this->notification->timestamp);
                 $embed->color(DiscordMessage::ERROR);
-                $embed->author('SeAT Structure Monitor', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT Structure Monitor', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) use ($system) {
                     $field->name('System')

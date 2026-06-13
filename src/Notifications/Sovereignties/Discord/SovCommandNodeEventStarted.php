@@ -64,7 +64,7 @@ class SovCommandNodeEventStarted extends AbstractDiscordNotification
             ->content('A sovereignty command node event started!')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->notification->timestamp);
-                $embed->author('SeAT Sovereignty Health', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT Sovereignty Health', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
                     $system = MapDenormalize::find($this->notification->text['solarSystemID']);

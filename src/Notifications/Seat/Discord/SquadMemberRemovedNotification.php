@@ -61,7 +61,7 @@ class SquadMemberRemovedNotification extends AbstractDiscordNotification
             ->error()
             ->content('A SeAT Squad has lost a Member!')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->author('SeAT State of Things', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT State of Things', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->title('Squad', $this->squad->link)
                     ->fields([

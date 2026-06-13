@@ -86,7 +86,7 @@ class Killmail extends AbstractDiscordNotification implements ExposesRequiredUni
         $message
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->killmail->killmail_time);
-                $embed->author('SeAT Kilometer', asset('web/img/favico/apple-icon-180x180.png'));
+                $embed->author('SeAT Kilometer', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 // title
                 $embed->title(sprintf('%s destroyed in %s', $this->killmail->victim->ship->typeName, $this->killmail->solar_system->name));
