@@ -68,8 +68,8 @@ class StructureUnderAttack extends AbstractDiscordNotification
                         );
                 });
 
-                if (array_key_exists('aggressorAllianceID', $this->notification->text) && ! is_null(
-                    $this->notification->text['aggressorAllianceID']
+                if (array_key_exists('allianceID', $this->notification->text) && ! is_null(
+                    $this->notification->text['allianceID']
                     )) {
                     $embed->field(function (DiscordEmbedField $field) {
                         $field->name('Alliance')

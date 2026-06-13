@@ -189,6 +189,12 @@ class DiscordMessage
      */
     public function content(string $content): DiscordMessage
     {
+        if (empty($this->content)) {
+            $this->content = $content;
+
+            return $this;
+        }
+
         $this->content = "$this->content\n$content";
 
         return $this;
