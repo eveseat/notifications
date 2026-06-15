@@ -58,7 +58,10 @@ class SovStructureReinforced extends AbstractMailNotification
      */
     public function toMail($notifiable)
     {
-        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+        $system = MapDenormalize::firstOrNew(
+            ['itemID' => $this->notification->text['solarSystemID']],
+            ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+        );
 
         return (new MailMessage)
             ->subject('Sovereignty Structure Reinforced Notification!')

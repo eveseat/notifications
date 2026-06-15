@@ -63,7 +63,10 @@ class SovStructureReinforced extends AbstractSlackNotification
             ->from('SeAT Sovereignty Health')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                        $system = MapDenormalize::firstOrNew(
+                            ['itemID' => $this->notification->text['solarSystemID']],
+                            ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+                        );
 
                         $field->title('System')
                             ->content(
