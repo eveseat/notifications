@@ -49,24 +49,40 @@ class OrbitalAttacked extends AbstractDiscordNotification
 
     public function populateMessage(DiscordMessage $message, $notifiable): void
     {
+        $aggressor_character = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['aggressorID']],
+            ['category' => 'character', 'name' => trans('web::seat.unknown')]
+        );
+        $aggressor_corporation = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['aggressorCorpID']],
+            ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+        );
+
         $message
             ->content('A customs office is under attack!')
-            ->embed(function (DiscordEmbed $embed) {
+            ->embed(function (DiscordEmbed $embed) use ($aggressor_character, $aggressor_corporation) {
                 $embed->timestamp($this->notification->timestamp);
                 $embed->color(DiscordMessage::ERROR);
                 $embed->author('SeAT Structure Monitor', asset('web/img/favicon/apple-icon-180x180.png'));
 
-                $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('Attacker')
+                $embed->field(function (DiscordEmbedField $field) use ($aggressor_character) {
+                    $field->name('Character')
+                        ->value(
+                            $this->zKillBoardToDiscordLink(
+                                'character',
+                                $this->notification->text['aggressorID'],
+                                $aggressor_character->name
+                            )
+                        );
+                });
+
+                $embed->field(function (DiscordEmbedField $field) use ($aggressor_corporation) {
+                    $field->name('Corporation')
                         ->value(
                             $this->zKillBoardToDiscordLink(
                                 'corporation',
                                 $this->notification->text['aggressorCorpID'],
-                                UniverseName::firstOrNew(
-                                    ['entity_id' => $this->notification->text['aggressorCorpID']],
-                                    ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
-                                )
-                                    ->name
+                                $aggressor_corporation->name
                             )
                         );
                 });

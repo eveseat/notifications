@@ -59,20 +59,35 @@ class OrbitalAttacked extends AbstractSlackNotification
      */
     public function toSlack($notifiable)
     {
+        $aggressor_character = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['aggressorID']],
+            ['category' => 'character', 'name' => trans('web::seat.unknown')]
+        );
+        $aggressor_corporation = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['aggressorCorpID']],
+            ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+        );
+
         return (new SlackMessage)
             ->content('A customs office is under attack!')
             ->from('SeAT Structure Monitor')
-            ->attachment(function ($attachment) {
-                $attachment->field(function ($field) {
-                    $field->title('Attacker')
+            ->attachment(function ($attachment) use ($aggressor_character, $aggressor_corporation) {
+                $attachment->field(function ($field) use ($aggressor_character) {
+                    $field->title('Character')
                         ->content(
                             $this->zKillBoardToSlackLink(
+                                'character',
+                                $this->notification->text['aggressorID'],
+                                $aggressor_character->name
+                            ));
+                    })
+                    ->field(function ($field) use ($aggressor_corporation) {
+                        $field->title('Corporation')
+                            ->content(
+                                $this->zKillBoardToSlackLink(
                                 'corporation',
                                 $this->notification->text['aggressorCorpID'],
-                                UniverseName::firstOrNew(
-                                    ['entity_id' => $this->notification->text['aggressorCorpID']],
-                                    ['category' => 'corporation', 'name' => trans('web::seat.unknown')])
-                                ->name
+                                $aggressor_corporation->name
                             ));
                     })
                     ->field(function ($field) {
