@@ -22,10 +22,14 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Eveapi\Models\Universe\UniverseStructure;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -37,7 +41,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class StructureUnderAttack extends AbstractDiscordNotification
+class StructureUnderAttack extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -48,17 +52,48 @@ class StructureUnderAttack extends AbstractDiscordNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['charID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     public function populateMessage(DiscordMessage $message, $notifiable): void
     {
+        $attacker = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['charID']],
+            ['category' => 'character', 'name' => trans('web::seat.unknown')]
+        );
+
         $message
             ->content('A structure is under attack!')
-            ->embed(function (DiscordEmbed $embed) {
+            ->embed(function (DiscordEmbed $embed) use ($attacker) {
                 $embed->timestamp($this->notification->timestamp);
                 $embed->color(DiscordMessage::ERROR);
                 $embed->author('SeAT Structure Monitor', asset('web/img/favicon/apple-icon-180x180.png'));
 
+                $embed->field(function (DiscordEmbedField $field) use ($attacker) {
+                    $field->name('Character')
+                        ->value(
+                            $this->zKillBoardToDiscordLink(
+                                'character',
+                                $this->notification->text['charID'],
+                                $attacker->name
+                            )
+                        );
+                });
+
                 $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('Attacker')
+                    $field->name('Corporation')
                         ->value(
                             $this->zKillBoardToDiscordLink(
                                 'corporation',

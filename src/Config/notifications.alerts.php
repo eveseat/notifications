@@ -195,6 +195,13 @@ return [
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\OrbitalAttacked::class,
         ],
     ],
+    'OrbitalReinforced' => [
+        'label' => 'notifications::alerts.orbital_reinforced',
+        'handlers' => [
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\OrbitalReinforced::class,
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\OrbitalReinforced::class,
+        ],
+    ],
     'OwnershipTransferred' => [
         'label' => 'notifications::alerts.ownership_transferred',
         'handlers' => [

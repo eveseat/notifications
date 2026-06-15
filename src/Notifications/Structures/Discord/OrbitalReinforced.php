@@ -25,6 +25,7 @@ namespace Seat\Notifications\Notifications\Structures\Discord;
 use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Universe\UniverseName;
 use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
 use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
@@ -34,12 +35,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
 use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
 use Seat\Notifications\Traits\NotificationTools;
 
-/**
- * Class OrbitalAttacked.
- *
- * @package Seat\Notifications\Notifications\Structures\Slack
- */
-class OrbitalAttacked extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
+class OrbitalReinforced extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -77,95 +73,82 @@ class OrbitalAttacked extends AbstractDiscordNotification implements ExposesRequ
             ['entity_id' => $this->notification->text['aggressorCorpID']],
             ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
         );
+        $type = InvType::firstOrNew(
+            ['typeID' => $this->notification->text['typeID']],
+            ['typeName' => trans('web::seat.unknown')]
+        );
 
         $message
-            ->content('A customs office is under attack!')
+            ->content('A customs office has been reinforced!')
             ->embed(function (DiscordEmbed $embed) use ($aggressor_character, $aggressor_corporation) {
                 $embed->timestamp($this->notification->timestamp);
-                $embed->color(DiscordMessage::ERROR);
+                $embed->color(DiscordMessage::WARNING);
                 $embed->author('SeAT Structure Monitor', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) use ($aggressor_character) {
                     $field->name('Character')
-                        ->value(
-                            $this->zKillBoardToDiscordLink(
-                                'character',
-                                $this->notification->text['aggressorID'],
-                                $aggressor_character->name
-                            )
-                        );
+                        ->value($this->zKillBoardToDiscordLink(
+                            'character',
+                            $this->notification->text['aggressorID'],
+                            $aggressor_character->name
+                        ));
                 });
 
                 $embed->field(function (DiscordEmbedField $field) use ($aggressor_corporation) {
                     $field->name('Corporation')
-                        ->value(
-                            $this->zKillBoardToDiscordLink(
-                                'corporation',
-                                $this->notification->text['aggressorCorpID'],
-                                $aggressor_corporation->name
-                            )
-                        );
+                        ->value($this->zKillBoardToDiscordLink(
+                            'corporation',
+                            $this->notification->text['aggressorCorpID'],
+                            $aggressor_corporation->name
+                        ));
                 });
 
-                if (array_key_exists('aggressorAllianceID', $this->notification->text) && ! is_null(
-                    $this->notification->text['aggressorAllianceID']
-                    )) {
+                if (array_key_exists('aggressorAllianceID', $this->notification->text) && ! is_null($this->notification->text['aggressorAllianceID'])) {
                     $embed->field(function (DiscordEmbedField $field) {
-
                         $field->name('Alliance')
-                            ->value(
-                                $this->zKillBoardToDiscordLink(
-                                    'alliance',
-                                    $this->notification->text['aggressorAllianceID'],
-                                    UniverseName::firstOrNew(
-                                        ['entity_id' => $this->notification->text['aggressorAllianceID']],
-                                        ['category' => 'alliance', 'name' => trans('web::seat.unknown')]
-                                    )
-                                        ->name
-                                )
-                            );
+                            ->value($this->zKillBoardToDiscordLink(
+                                'alliance',
+                                $this->notification->text['aggressorAllianceID'],
+                                UniverseName::firstOrNew(
+                                    ['entity_id' => $this->notification->text['aggressorAllianceID']],
+                                    ['category' => 'alliance', 'name' => trans('web::seat.unknown')]
+                                )->name
+                            ));
                     });
                 }
             })
-            ->embed(function (DiscordEmbed $embed) {
+            ->embed(function (DiscordEmbed $embed) use ($type) {
                 $embed->field(function (DiscordEmbedField $field) {
                     $system = MapDenormalize::find($this->notification->text['solarSystemID']);
 
                     $field->name('System')
-                        ->value(
-                            $this->zKillBoardToDiscordLink(
-                                'system',
-                                $system->itemID,
-                                $system->itemName . ' (' . number_format($system->security, 2) . ')'
-                            )
-                        );
-                })
-                    ->field(function (DiscordEmbedField $field) {
-                        $planet = MapDenormalize::find($this->notification->text['planetID']);
+                        ->value($this->zKillBoardToDiscordLink(
+                            'system',
+                            $system->itemID,
+                            $system->itemName . ' (' . number_format($system->security, 2) . ')'
+                        ));
+                })->field(function (DiscordEmbedField $field) {
+                    $planet = MapDenormalize::find($this->notification->text['planetID']);
 
-                        $field->name('Planet')
-                            ->value(
-                                $this->zKillBoardToDiscordLink(
-                                    'location',
-                                    $planet->itemID,
-                                    $planet->itemName . ' (' . number_format($planet->security, 2) . ')'
-                                )
-                            );
-                    });
+                    $field->name('Planet')
+                        ->value($this->zKillBoardToDiscordLink(
+                            'location',
+                            $planet->itemID,
+                            $planet->itemName
+                        ));
+                })->field(function (DiscordEmbedField $field) use ($type) {
+                    $field->name('Structure')
+                        ->value($this->zKillBoardToDiscordLink('ship', $type->typeID, $type->typeName));
+                });
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('Shield')
-                        ->value(number_format($this->notification->text['shieldLevel'] * 100, 2));
-                })->color(DiscordMessage::SUCCESS);
-
-                if ($this->notification->text['shieldLevel'] * 100 < 70) {
-                    $embed->color(DiscordMessage::WARNING);
-                }
-
-                if ($this->notification->text['shieldLevel'] * 100 < 40) {
-                    $embed->color(DiscordMessage::ERROR);
-                }
+                    $field->name('Reinforcement Exit (UTC)')
+                        ->value($this->mssqlTimestampToDate($this->notification->text['reinforceExitTime'])
+                            ->setTimezone('UTC')
+                            ->format('Y.m.d H:i:s'))
+                        ->long();
+                })->color(DiscordMessage::WARNING);
             });
     }
 }

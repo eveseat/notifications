@@ -23,8 +23,11 @@
 namespace Seat\Notifications\Notifications\Corporations\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -33,7 +36,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations\Slack
  */
-class CorpAppNewMsg extends AbstractSlackNotification
+class CorpAppNewMsg extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -52,6 +55,22 @@ class CorpAppNewMsg extends AbstractSlackNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+            $this->notification->text['charID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
@@ -66,7 +85,7 @@ class CorpAppNewMsg extends AbstractSlackNotification
                     ->field(function ($field) {
                         $corporation = UniverseName::firstOrNew(
                             ['entity_id' => $this->notification->text['corpID']],
-                            ['name' => trans('web::seat.unknown')]
+                            ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
                         );
 
                         $field->title('Corporation')
@@ -80,7 +99,7 @@ class CorpAppNewMsg extends AbstractSlackNotification
                     ->field(function ($field) {
                         $character = UniverseName::firstOrNew(
                             ['entity_id' => $this->notification->text['charID']],
-                            ['name' => trans('web::seat.unknown')]
+                            ['category' => 'character', 'name' => trans('web::seat.unknown')]
                         );
 
                         $field->title('Character')

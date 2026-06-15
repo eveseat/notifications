@@ -33,6 +33,56 @@ use Seat\Services\Image\Eve;
 trait NotificationTools
 {
     /**
+     * Convert an EVE notification duration value stored in 100ns ticks into a readable string.
+     *
+     * @param  int|string  $duration
+     * @return string
+     */
+    public function eveDurationToString(int|string $duration): string
+    {
+        $seconds = max(0, (int) floor(((int) $duration) / 10000000));
+
+        if ($seconds === 0)
+            return '0 seconds';
+
+        $parts = [];
+        $days = intdiv($seconds, 86400);
+        $seconds %= 86400;
+        $hours = intdiv($seconds, 3600);
+        $seconds %= 3600;
+        $minutes = intdiv($seconds, 60);
+        $seconds %= 60;
+
+        if ($days > 0)
+            $parts[] = sprintf('%d day%s', $days, $days === 1 ? '' : 's');
+
+        if ($hours > 0)
+            $parts[] = sprintf('%d hour%s', $hours, $hours === 1 ? '' : 's');
+
+        if ($minutes > 0)
+            $parts[] = sprintf('%d minute%s', $minutes, $minutes === 1 ? '' : 's');
+
+        if ($seconds > 0 && count($parts) < 2)
+            $parts[] = sprintf('%d second%s', $seconds, $seconds === 1 ? '' : 's');
+
+        return implode(' ', array_slice($parts, 0, 3));
+    }
+
+    /**
+     * Convert an EVE notification duration value stored in 100ns ticks into an absolute UTC datetime string.
+     *
+     * @param  int|string  $duration
+     * @param  mixed  $reference
+     * @return string
+     */
+    public function eveDurationToDateTimeString(int|string $duration, $reference): string
+    {
+        $seconds = max(0, (int) floor(((int) $duration) / 10000000));
+
+        return carbon($reference)->copy()->setTimezone('UTC')->addSeconds($seconds)->format('Y.m.d H:i:s');
+    }
+
+    /**
      * Build a link to Eve Type.
      *
      * @param  int  $type_id

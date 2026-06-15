@@ -23,12 +23,16 @@
 namespace Seat\Notifications\Notifications\Structures\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
+use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Notifications\Structures\Traits\SkyhookNotificationTools;
 use Seat\Notifications\Traits\NotificationTools;
 
-class SkyhookUnderAttack extends AbstractMailNotification
+class SkyhookUnderAttack extends AbstractMailNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
     use SkyhookNotificationTools;
@@ -40,8 +44,27 @@ class SkyhookUnderAttack extends AbstractMailNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['charID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     public function toMail($notifiable)
     {
+        $attacker = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['charID']],
+            ['category' => 'character', 'name' => trans('web::seat.unknown')]
+        );
         $system = $this->getSkyhookSystem();
         $planet = $this->getSkyhookPlanet();
         $type = $this->getSkyhookType();
@@ -61,9 +84,10 @@ class SkyhookUnderAttack extends AbstractMailNotification
                 $this->notification->text['hullPercentage']
             ))
             ->line(sprintf(
-                'at %s in %s by %s',
+                'at %s in %s by %s (%s)',
                 $planet->itemName,
                 $system->itemName,
+                $attacker->name,
                 $this->notification->text['corpName']
             ));
 

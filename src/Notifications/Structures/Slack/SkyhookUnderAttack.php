@@ -23,12 +23,16 @@
 namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
+use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Notifications\Structures\Traits\SkyhookNotificationTools;
 use Seat\Notifications\Traits\NotificationTools;
 
-class SkyhookUnderAttack extends AbstractSlackNotification
+class SkyhookUnderAttack extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
     use SkyhookNotificationTools;
@@ -40,8 +44,27 @@ class SkyhookUnderAttack extends AbstractSlackNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['charID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     public function toSlack($notifiable)
     {
+        $attacker = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['charID']],
+            ['category' => 'character', 'name' => trans('web::seat.unknown')]
+        );
         $system = $this->getSkyhookSystem();
         $planet = $this->getSkyhookPlanet();
         $type = $this->getSkyhookType();
@@ -49,9 +72,18 @@ class SkyhookUnderAttack extends AbstractSlackNotification
         return (new SlackMessage)
             ->content('A Skyhook is under attack!')
             ->from('SeAT Structure Monitor')
-            ->attachment(function ($attachment) use ($system, $planet, $type) {
+            ->attachment(function ($attachment) use ($attacker, $system, $planet, $type) {
+                $attachment->field(function ($field) use ($attacker) {
+                    $field->title('Character')
+                        ->content($this->zKillBoardToSlackLink(
+                            'character',
+                            $this->notification->text['charID'],
+                            $attacker->name
+                        ));
+                });
+
                 $attachment->field(function ($field) {
-                    $field->title('Attacker')
+                    $field->title('Corporation')
                         ->content($this->zKillBoardToSlackLink(
                             'corporation',
                             $this->notification->text['corpLinkData'][2],

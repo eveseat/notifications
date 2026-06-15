@@ -22,8 +22,11 @@
 
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -35,7 +38,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations\Discord
  */
-class CorpAppNewMsg extends AbstractDiscordNotification
+class CorpAppNewMsg extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -52,6 +55,22 @@ class CorpAppNewMsg extends AbstractDiscordNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+            $this->notification->text['charID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     /**
@@ -76,12 +95,12 @@ class CorpAppNewMsg extends AbstractDiscordNotification
                         ->name('Corporation Name')
                         ->long();
 
-                    $entity = UniverseName::find($this->notification->text['corpID']);
-                    if($entity) {
-                        $field->value($this->zKillBoardToDiscordLink('character', $entity->entity_id, $entity->name));
-                    } else {
-                        $field->value(trans('web::seat.unknown'));
-                    }
+                    $entity = UniverseName::firstOrNew(
+                        ['entity_id' => $this->notification->text['corpID']],
+                        ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+                    );
+
+                    $field->value($this->zKillBoardToDiscordLink('corporation', $entity->entity_id, $entity->name));
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
@@ -89,12 +108,12 @@ class CorpAppNewMsg extends AbstractDiscordNotification
                         ->name('Character Name')
                         ->long();
 
-                    $entity = UniverseName::find($this->notification->text['charID']);
-                    if($entity) {
-                        $field->value($this->zKillBoardToDiscordLink('character', $entity->entity_id, $entity->name));
-                    } else {
-                        $field->value(trans('web::seat.unknown'));
-                    }
+                    $entity = UniverseName::firstOrNew(
+                        ['entity_id' => $this->notification->text['charID']],
+                        ['category' => 'character', 'name' => trans('web::seat.unknown')]
+                    );
+
+                    $field->value($this->zKillBoardToDiscordLink('character', $entity->entity_id, $entity->name));
                 });
             })
             ->info();
