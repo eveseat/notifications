@@ -23,10 +23,13 @@
 namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -35,7 +38,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-class AllAnchoringMsg extends AbstractSlackNotification
+class AllAnchoringMsg extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -54,6 +57,21 @@ class AllAnchoringMsg extends AbstractSlackNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
@@ -66,7 +84,10 @@ class AllAnchoringMsg extends AbstractSlackNotification
             ->attachment(function ($attachment) {
                 $attachment
                     ->field(function ($field) {
-                        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                        $system = MapDenormalize::firstOrNew(
+                            ['itemID' => $this->notification->text['solarSystemID']],
+                            ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+                        );
 
                         $field->title('System')
                             ->content(
@@ -77,7 +98,10 @@ class AllAnchoringMsg extends AbstractSlackNotification
                             ));
                     })
                     ->field(function ($field) {
-                        $moon = MapDenormalize::find($this->notification->text['moonID']);
+                        $moon = MapDenormalize::firstOrNew(
+                            ['itemID' => $this->notification->text['moonID']],
+                            ['itemName' => trans('web::seat.unknown')]
+                        );
 
                         $field->title('Moon')
                             ->content($moon->itemName);
@@ -88,14 +112,17 @@ class AllAnchoringMsg extends AbstractSlackNotification
                     ->field(function ($field) {
                         $corporation = UniverseName::firstOrNew(
                             ['entity_id' => $this->notification->text['corpID']],
-                            ['name' => trans('web::seat.unkown')]
+                            ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
                         );
 
                         $field->title('Corporation')
-                            ->content($corporation->name);
+                            ->content($this->zKillBoardToSlackLink('corporation', $corporation->entity_id, $corporation->name));
                     })
                     ->field(function ($field) {
-                        $type = InvType::find($this->notification->text['typeID']);
+                        $type = InvType::firstOrNew(
+                            ['typeID' => $this->notification->text['typeID']],
+                            ['typeName' => trans('web::seat.unknown')]
+                        );
 
                         $field->title('Structure')
                             ->content(

@@ -23,10 +23,13 @@
 namespace Seat\Notifications\Notifications\Structures\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -35,7 +38,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class OwnershipTransferred extends AbstractSlackNotification
+class OwnershipTransferred extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -54,6 +57,22 @@ class OwnershipTransferred extends AbstractSlackNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['oldOwnerCorpID'] ?? null,
+            $this->notification->text['newOwnerCorpID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
@@ -65,7 +84,10 @@ class OwnershipTransferred extends AbstractSlackNotification
             ->from('SeAT Structure Monitor')
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                    $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                    $system = MapDenormalize::firstOrNew(
+                        ['itemID' => $this->notification->text['solarSystemID']],
+                        ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+                    );
 
                     $field->title('System')
                         ->content(
@@ -74,7 +96,10 @@ class OwnershipTransferred extends AbstractSlackNotification
                 });
 
                 $attachment->field(function ($field) {
-                    $type = InvType::find($this->notification->text['structureTypeID']);
+                    $type = InvType::firstOrNew(
+                        ['typeID' => $this->notification->text['structureTypeID']],
+                        ['typeName' => trans('web::seat.unknown')]
+                    );
 
                     $field->title('Structure')
                         ->content(sprintf('%s | %s', $type->typeName, $this->notification->text['structureName']));
@@ -84,7 +109,7 @@ class OwnershipTransferred extends AbstractSlackNotification
                 $attachment->field(function ($field) {
                     $old = UniverseName::firstOrNew(
                         ['entity_id' => $this->notification->text['oldOwnerCorpID']],
-                        ['name' => trans('web::seat.unknown')]
+                        ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
                     );
 
                     $field->title('Old Corporation')
@@ -94,7 +119,7 @@ class OwnershipTransferred extends AbstractSlackNotification
                 $attachment->field(function ($field) {
                     $new = UniverseName::firstOrNew(
                         ['entity_id' => $this->notification->text['newOwnerCorpID']],
-                        ['name' => trans('web::seat.unknown')]
+                        ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
                     );
 
                     $field->title('New Corporation')

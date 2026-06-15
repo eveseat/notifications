@@ -89,8 +89,9 @@ class SkyhookDeployed extends AbstractDiscordNotification
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('Remaining Time')
-                        ->value((string) $this->notification->text['timeLeft']);
+                    $field->name('Online At (UTC)')
+                        ->value($this->eveDurationToDateTimeString($this->notification->text['timeLeft'], $this->notification->timestamp))
+                        ->long();
                 });
 
                 $embed->color(DiscordMessage::WARNING);

@@ -98,13 +98,13 @@ class StructureAnchoring extends AbstractSlackNotification
             })
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                    $field->title('Remaining Time')
-                        ->content($this->notification->text['timeLeft']);
+                    $field->title('Anchors At (UTC)')
+                        ->content($this->eveDurationToDateTimeString($this->notification->text['timeLeft'], $this->notification->timestamp));
                 });
 
                 $attachment->field(function ($field) {
-                    $field->title('Vulnerability Time')
-                        ->content($this->notification->text['vulnerableTime']);
+                    $field->title('Vulnerability Window')
+                        ->content($this->eveDurationToString($this->notification->text['vulnerableTime']));
                 });
             })
             ->warning();

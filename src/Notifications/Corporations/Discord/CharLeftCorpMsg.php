@@ -22,8 +22,11 @@
 
 namespace Seat\Notifications\Notifications\Corporations\Discord;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -34,7 +37,7 @@ use Seat\Notifications\Services\Discord\Messages\DiscordMessage;
  *
  * @package Seat\Notifications\Notifications\Corporations\Discord
  */
-class CharLeftCorpMsg extends AbstractDiscordNotification
+class CharLeftCorpMsg extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
@@ -49,6 +52,22 @@ class CharLeftCorpMsg extends AbstractDiscordNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+            $this->notification->text['charID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     /**
@@ -68,7 +87,10 @@ class CharLeftCorpMsg extends AbstractDiscordNotification
                 );
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $corporation = UniverseName::find($this->notification->text['corpID']) ?? trans('web::seat.unknown');
+                    $corporation = UniverseName::firstOrNew(
+                        ['entity_id' => $this->notification->text['corpID']],
+                        ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+                    );
 
                     $field->name('Corporation')
                         ->value($corporation->name)
@@ -76,7 +98,10 @@ class CharLeftCorpMsg extends AbstractDiscordNotification
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $character = UniverseName::find($this->notification->text['charID']) ?? trans('web::seat.unknown');
+                    $character = UniverseName::firstOrNew(
+                        ['entity_id' => $this->notification->text['charID']],
+                        ['category' => 'character', 'name' => trans('web::seat.unknown')]
+                    );
 
                     $field->name('Character')
                         ->value($character->name)

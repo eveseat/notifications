@@ -96,8 +96,9 @@ class StructureUnanchoring extends AbstractDiscordNotification
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('Remaining Time')
-                        ->value($this->notification->text['timeLeft']);
+                    $field->name('Unanchors At (UTC)')
+                        ->value($this->eveDurationToDateTimeString($this->notification->text['timeLeft'], $this->notification->timestamp))
+                        ->long();
                 });
             })
             ->warning();

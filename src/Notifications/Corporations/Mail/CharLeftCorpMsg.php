@@ -23,9 +23,11 @@
 namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Eveapi\Models\Character\CharacterInfo;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Eveapi\Models\Corporation\CorporationInfo;
+use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractMailNotification;
 
 /**
@@ -33,7 +35,7 @@ use Seat\Notifications\Notifications\AbstractMailNotification;
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class CharLeftCorpMsg extends AbstractMailNotification
+class CharLeftCorpMsg extends AbstractMailNotification implements ExposesRequiredUniverseIds
 {
 
     /**
@@ -51,6 +53,22 @@ class CharLeftCorpMsg extends AbstractMailNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+            $this->notification->text['charID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
@@ -61,26 +79,17 @@ class CharLeftCorpMsg extends AbstractMailNotification
             ->subject('Character Left Corp Notification!')
             ->line('A character has left the corporation!');
 
-        $character = CharacterInfo::find($this->notification->text['charID']);
+        $character = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['charID']],
+            ['category' => 'character', 'name' => trans('web::seat.unknown')]
+        );
+        $corporation = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['corpID']],
+            ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+        );
 
-        $corporation = CorporationInfo::find($this->notification->text['corpID']);
-
-        if (! is_null($corporation) || ! is_null($character)) {
-
-            if (! is_null($corporation)) {
-
-                $mail->line(
-                    sprintf('Corporation: %s', $corporation->name)
-                );
-            }
-
-            if (! is_null($character)) {
-
-                $mail->line(
-                    sprintf('Character: %s', $character->name)
-                );
-            }
-        }
+        $mail->line(sprintf('Corporation: %s', $corporation->name));
+        $mail->line(sprintf('Character: %s', $character->name));
 
         return $mail;
     }

@@ -83,8 +83,8 @@ class SkyhookDeployed extends AbstractSlackNotification
             })
             ->attachment(function ($attachment) {
                 $attachment->field(function ($field) {
-                    $field->title('Remaining Time')
-                        ->content($this->notification->text['timeLeft']);
+                    $field->title('Online At (UTC)')
+                        ->content($this->eveDurationToDateTimeString($this->notification->text['timeLeft'], $this->notification->timestamp));
                 });
 
                 $attachment->color('warning');

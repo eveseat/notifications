@@ -23,9 +23,12 @@
 namespace Seat\Notifications\Notifications\Alliances\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Alliances\Alliance;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -34,7 +37,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Alliances\Slack
  */
-class AllianceCapitalChanged extends AbstractSlackNotification
+class AllianceCapitalChanged extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -53,6 +56,21 @@ class AllianceCapitalChanged extends AbstractSlackNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['allianceID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
@@ -65,24 +83,27 @@ class AllianceCapitalChanged extends AbstractSlackNotification
             ->attachment(function ($attachment) {
                 $attachment
                     ->field(function ($field) {
-                        $alliance = Alliance::firstOrNew(
-                            ['alliance_id' => $this->notification->text['allianceID']],
-                            ['name' => trans('web::seat.unknown')]
+                        $alliance = UniverseName::firstOrNew(
+                            ['entity_id' => $this->notification->text['allianceID']],
+                            ['category' => 'alliance', 'name' => trans('web::seat.unknown')]
                         );
 
                         $field->title('Alliance')
                             ->content(
-                                $this->zKillBoardToSlackLink('alliance', $alliance->alliance_id, $alliance->name)
+                                $this->zKillBoardToSlackLink('alliance', $alliance->entity_id, $alliance->name)
                             );
                     })
                     ->field(function ($field) {
-                        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                        $system = MapDenormalize::firstOrNew(
+                            ['itemID' => $this->notification->text['solarSystemID']],
+                            ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+                        );
 
                         $field->title('System')
                             ->content(
                                 $this->zKillBoardToSlackLink(
                                     'system',
-                                    $system->itemName,
+                                    $system->itemID,
                                     sprintf('%s (%s)', $system->itemName, number_format($system->security, 2)))
                             );
                     });

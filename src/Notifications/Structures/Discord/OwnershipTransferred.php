@@ -22,10 +22,13 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -37,7 +40,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class OwnershipTransferred extends AbstractDiscordNotification
+class OwnershipTransferred extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -46,6 +49,22 @@ class OwnershipTransferred extends AbstractDiscordNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['oldOwnerCorpID'] ?? null,
+            $this->notification->text['newOwnerCorpID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     public function populateMessage(DiscordMessage $message, $notifiable): void
@@ -58,7 +77,10 @@ class OwnershipTransferred extends AbstractDiscordNotification
                 $embed->author('SeAT Structure Monitor', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                    $system = MapDenormalize::firstOrNew(
+                        ['itemID' => $this->notification->text['solarSystemID']],
+                        ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+                    );
 
                     $field->name('System')
                         ->value(
@@ -71,7 +93,10 @@ class OwnershipTransferred extends AbstractDiscordNotification
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $type = InvType::find($this->notification->text['structureTypeID']);
+                    $type = InvType::firstOrNew(
+                        ['typeID' => $this->notification->text['structureTypeID']],
+                        ['typeName' => trans('web::seat.unknown')]
+                    );
 
                     $field->name('Structure')
                         ->value(sprintf('%s | %s', $type->typeName, $this->notification->text['structureName']));
@@ -81,7 +106,7 @@ class OwnershipTransferred extends AbstractDiscordNotification
                 $embed->field(function (DiscordEmbedField $field) {
                     $old = UniverseName::firstOrNew(
                         ['entity_id' => $this->notification->text['oldOwnerCorpID']],
-                        ['name' => trans('web::seat.unknown')]
+                        ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
                     );
 
                     $field->name('Old Corporation')
@@ -91,7 +116,7 @@ class OwnershipTransferred extends AbstractDiscordNotification
                 $embed->field(function (DiscordEmbedField $field) {
                     $new = UniverseName::firstOrNew(
                         ['entity_id' => $this->notification->text['newOwnerCorpID']],
-                        ['name' => trans('web::seat.unknown')]
+                        ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
                     );
 
                     $field->name('New Corporation')

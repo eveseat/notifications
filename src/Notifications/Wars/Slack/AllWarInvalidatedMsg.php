@@ -23,8 +23,11 @@
 namespace Seat\Notifications\Notifications\Wars\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 
 /***
@@ -32,7 +35,7 @@ use Seat\Notifications\Notifications\AbstractSlackNotification;
  *
  * @package Seat\Notifications\Notifications\Corporations\Slack
  */
-class AllWarInvalidatedMsg extends AbstractSlackNotification
+class AllWarInvalidatedMsg extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
@@ -47,6 +50,22 @@ class AllWarInvalidatedMsg extends AbstractSlackNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['declaredByID'] ?? null,
+            $this->notification->text['againstID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     /**
@@ -66,7 +85,7 @@ class AllWarInvalidatedMsg extends AbstractSlackNotification
                             ['name' => trans('web::seat.unknown')]
                         );
 
-                        $field->title('Agressor')
+                        $field->title('Aggressor')
                             ->content($entity->name);
                     })
                     ->field(function ($field) {
@@ -75,7 +94,7 @@ class AllWarInvalidatedMsg extends AbstractSlackNotification
                             ['name' => trans('web::seat.unknown')]
                         );
 
-                        $field->title('Victim')
+                        $field->title('Defender')
                             ->content($entity->name);
                     });
             })

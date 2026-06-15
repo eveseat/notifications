@@ -22,8 +22,11 @@
 
 namespace Seat\Notifications\Notifications\Wars\Discord;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -35,7 +38,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Wars\Discord
  */
-class WarDeclaredMsg extends AbstractDiscordNotification
+class WarDeclaredMsg extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -52,6 +55,22 @@ class WarDeclaredMsg extends AbstractDiscordNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['declaredByID'] ?? null,
+            $this->notification->text['againstID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     /**

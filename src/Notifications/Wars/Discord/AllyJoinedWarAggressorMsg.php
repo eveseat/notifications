@@ -22,8 +22,11 @@
 
 namespace Seat\Notifications\Notifications\Wars\Discord;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -35,7 +38,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Wars\Discord
  */
-class AllyJoinedWarAggressorMsg extends AbstractDiscordNotification
+class AllyJoinedWarAggressorMsg extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -54,6 +57,22 @@ class AllyJoinedWarAggressorMsg extends AbstractDiscordNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['declaredByID'] ?? $this->notification->text['aggressorID'] ?? null,
+            $this->notification->text['defenderID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  DiscordMessage  $message
      * @param  $notifiable
@@ -67,8 +86,9 @@ class AllyJoinedWarAggressorMsg extends AbstractDiscordNotification
                 $embed->author('SeAT War Observer', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
+                    $aggressor_id = $this->notification->text['declaredByID'] ?? $this->notification->text['aggressorID'];
                     $aggressor = UniverseName::firstOrNew(
-                        ['entity_id' => $this->notification->text['declaredByID']],
+                        ['entity_id' => $aggressor_id],
                         ['name' => trans('web::seat.unknown')]
                     );
 
@@ -80,8 +100,9 @@ class AllyJoinedWarAggressorMsg extends AbstractDiscordNotification
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
+                    $defender_id = $this->notification->text['defenderID'] ?? $this->notification->text['againstID'];
                     $defender = UniverseName::firstOrNew(
-                        ['entity_id' => $this->notification->text['defenderID']],
+                        ['entity_id' => $defender_id],
                         ['name' => trans('web::seat.unknown')]
                     );
 

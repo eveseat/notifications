@@ -23,17 +23,23 @@
 namespace Seat\Notifications\Notifications\Wars\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
+use Seat\Notifications\Traits\NotificationTools;
 
 /**
  * Class AllyJoinedWarDefenderMsg.
  *
  * @package Seat\Notifications\Notifications\Wars\Slack
  */
-class AllyJoinedWarDefenderMsg extends AbstractSlackNotification
+class AllyJoinedWarDefenderMsg extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
+    use NotificationTools;
+
     /**
      * @var \Seat\Eveapi\Models\Character\CharacterNotification
      */
@@ -49,6 +55,22 @@ class AllyJoinedWarDefenderMsg extends AbstractSlackNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['aggressorID'] ?? $this->notification->text['declaredByID'] ?? null,
+            $this->notification->text['defenderID'] ?? $this->notification->text['againstID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\SlackMessage
@@ -62,8 +84,9 @@ class AllyJoinedWarDefenderMsg extends AbstractSlackNotification
                 $attachment
                     ->timestamp($this->mssqlTimestampToDate($this->notification->text['startTime']))
                     ->field(function ($field) {
+                        $aggressor_id = $this->notification->text['aggressorID'] ?? $this->notification->text['declaredByID'];
                         $entity = UniverseName::firstOrNew(
-                            ['entity_id' => $this->notification->text['aggressorID']],
+                            ['entity_id' => $aggressor_id],
                             ['name' => trans('web::seat.unknown')]
                         );
 
@@ -71,8 +94,9 @@ class AllyJoinedWarDefenderMsg extends AbstractSlackNotification
                             ->content($entity->name);
                     })
                     ->field(function ($field) {
+                        $defender_id = $this->notification->text['defenderID'] ?? $this->notification->text['againstID'];
                         $entity = UniverseName::firstOrNew(
-                            ['entity_id' => $this->notification->text['defenderID']],
+                            ['entity_id' => $defender_id],
                             ['name' => trans('web::seat.unknown')]
                         );
 

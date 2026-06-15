@@ -23,11 +23,13 @@
 namespace Seat\Notifications\Notifications\Structures\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Eveapi\Models\Alliances\Alliance;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -36,7 +38,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class TowerResourceAlertMsg extends AbstractMailNotification
+class TowerResourceAlertMsg extends AbstractMailNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -45,6 +47,22 @@ class TowerResourceAlertMsg extends AbstractMailNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+            $this->notification->text['allianceID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     public function toMail($notifiable)
@@ -61,7 +79,10 @@ class TowerResourceAlertMsg extends AbstractMailNotification
             ['typeID' => $this->notification->text['typeID']],
             ['typeName' => trans('web::seat.unknown')]
         );
-        $corporation = UniverseName::find($this->notification->text['corpID']);
+        $corporation = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['corpID']],
+            ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+        );
         $alliance = $this->notification->text['allianceID'] ?? null;
         $mail = (new MailMessage)
             ->subject('Tower Resource Alert Notification')
@@ -74,19 +95,14 @@ class TowerResourceAlertMsg extends AbstractMailNotification
                 number_format($system->security, 2)
             ));
 
-        if (! is_null($corporation)) {
-            $mail->line(sprintf('Corporation: %s', $corporation->name));
-        }
+        $mail->line(sprintf('Corporation: %s', $corporation->name));
 
         if (! is_null($alliance)) {
-            $alliance_name = Alliance::firstOrNew(
-                ['alliance_id' => $alliance],
-                ['name' => trans('web::seat.unknown')]
+            $alliance_name = UniverseName::firstOrNew(
+                ['entity_id' => $alliance],
+                ['category' => 'alliance', 'name' => trans('web::seat.unknown')]
             );
-
-            if (! is_null($alliance_name)) {
-                $mail->line(sprintf('Alliance: %s', $alliance_name->name));
-            }
+            $mail->line(sprintf('Alliance: %s', $alliance_name->name));
         }
 
         foreach ($this->notification->text['wants'] ?? [] as $item) {

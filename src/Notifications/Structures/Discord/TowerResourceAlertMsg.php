@@ -22,11 +22,13 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
-use Seat\Eveapi\Models\Alliances\Alliance;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -38,7 +40,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures
  */
-class TowerResourceAlertMsg extends AbstractDiscordNotification
+class TowerResourceAlertMsg extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -47,6 +49,22 @@ class TowerResourceAlertMsg extends AbstractDiscordNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+            $this->notification->text['allianceID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     public function populateMessage(DiscordMessage $message, $notifiable): void
@@ -95,17 +113,20 @@ class TowerResourceAlertMsg extends AbstractDiscordNotification
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $corporation = UniverseName::find($this->notification->text['corpID']);
+                    $corporation = UniverseName::firstOrNew(
+                        ['entity_id' => $this->notification->text['corpID']],
+                        ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
+                    );
 
                     $field->name('Corporation')
-                        ->value($corporation?->name ?? trans('web::seat.unknown'));
+                        ->value($corporation->name);
                 });
 
                 if (array_key_exists('allianceID', $this->notification->text) && ! is_null($this->notification->text['allianceID'])) {
                     $embed->field(function (DiscordEmbedField $field) {
-                        $alliance = Alliance::firstOrNew(
-                            ['alliance_id' => $this->notification->text['allianceID']],
-                            ['name' => trans('web::seat.unknown')]
+                        $alliance = UniverseName::firstOrNew(
+                            ['entity_id' => $this->notification->text['allianceID']],
+                            ['category' => 'alliance', 'name' => trans('web::seat.unknown')]
                         );
 
                         $field->name('Alliance')

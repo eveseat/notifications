@@ -96,13 +96,14 @@ class StructureAnchoring extends AbstractDiscordNotification
             })
             ->embed(function (DiscordEmbed $embed) {
                 $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('Remaining Time')
-                        ->value($this->notification->text['timeLeft']);
+                    $field->name('Anchors At (UTC)')
+                        ->value($this->eveDurationToDateTimeString($this->notification->text['timeLeft'], $this->notification->timestamp))
+                        ->long();
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $field->name('Vulnerability Time')
-                        ->value($this->notification->text['vulnerableTime']);
+                    $field->name('Vulnerability Window')
+                        ->value($this->eveDurationToString($this->notification->text['vulnerableTime']));
                 });
             })
             ->warning();

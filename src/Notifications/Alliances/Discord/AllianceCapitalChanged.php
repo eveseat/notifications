@@ -22,9 +22,12 @@
 
 namespace Seat\Notifications\Notifications\Alliances\Discord;
 
-use Seat\Eveapi\Models\Alliances\Alliance;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Eveapi\Models\Sde\SolarSystem;
+use Seat\Eveapi\Models\Sde\MapDenormalize;
+use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -36,7 +39,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Alliances\Discord
  */
-class AllianceCapitalChanged extends AbstractDiscordNotification
+class AllianceCapitalChanged extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -55,6 +58,21 @@ class AllianceCapitalChanged extends AbstractDiscordNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['allianceID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  DiscordMessage  $message
      * @param  $notifiable
@@ -64,27 +82,30 @@ class AllianceCapitalChanged extends AbstractDiscordNotification
         $message
             ->content('Capital has been modified! :white_sun_small_cloud:')
             ->embed(function (DiscordEmbed $embed) {
-                $embed->timestamp($this->notification->timestamps);
+                $embed->timestamp($this->notification->timestamp);
                 $embed->author('SeAT Alliance Weather', asset('web/img/favicon/apple-icon-180x180.png'));
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $alliance = Alliance::firstOrNew(
-                        ['alliance_id' => $this->notification->text['allianceID']],
-                        ['name' => trans('web::seat.unknown')],
+                    $alliance = UniverseName::firstOrNew(
+                        ['entity_id' => $this->notification->text['allianceID']],
+                        ['category' => 'alliance', 'name' => trans('web::seat.unknown')],
                     );
 
                     $field->name('Alliance');
-                    $field->value($this->zKillBoardToDiscordLink('alliance', $alliance->alliance_id, $alliance->name));
+                    $field->value($this->zKillBoardToDiscordLink('alliance', $alliance->entity_id, $alliance->name));
                 });
 
                 $embed->field(function (DiscordEmbedField $field) {
-                    $system = SolarSystem::find($this->notification->text['solarSystemID']);
+                    $system = MapDenormalize::firstOrNew(
+                        ['itemID' => $this->notification->text['solarSystemID']],
+                        ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+                    );
 
                     $field->name('System');
                     $field->value($this->zKillBoardToDiscordLink(
                         'system',
-                        $system->system_id,
-                        sprintf('%s (%s)', $system->name, number_format($system->security, 2))
+                        $system->itemID,
+                        sprintf('%s (%s)', $system->itemName, number_format($system->security, 2))
                     ));
                 });
             })

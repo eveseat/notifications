@@ -23,9 +23,11 @@
 namespace Seat\Notifications\Notifications\Corporations\Slack;
 
 use Illuminate\Notifications\Messages\SlackMessage;
-use Seat\Eveapi\Models\Alliances\Alliance;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Eveapi\Models\Corporation\CorporationInfo;
+use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractSlackNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -34,7 +36,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class CorpAllBillMsg extends AbstractSlackNotification
+class CorpAllBillMsg extends AbstractSlackNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -51,6 +53,22 @@ class CorpAllBillMsg extends AbstractSlackNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['debtorID'] ?? null,
+            $this->notification->text['creditorID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     /**
@@ -77,29 +95,33 @@ class CorpAllBillMsg extends AbstractSlackNotification
 
                 });
 
-                $entity = Alliance::find($this->notification->text['creditorID']);
-
-                if (is_null($entity))
-                    CorporationInfo::find($this->notification->text['creditorID']);
+                $entity = UniverseName::firstOrNew(
+                    ['entity_id' => $this->notification->text['creditorID']],
+                    ['name' => trans('web::seat.unknown')]
+                );
 
                 if (! is_null($entity))
                     $attachment->field(function ($field) use ($entity) {
 
                         $field->title('Due To')
-                            ->content($entity->name);
+                            ->content(is_null($entity->category) ?
+                                $entity->name :
+                                $this->zKillBoardToSlackLink($entity->category, $entity->entity_id, $entity->name));
 
                     });
 
-                $entity = Alliance::find($this->notification->text['debtorID']);
-
-                if (is_null($entity))
-                    CorporationInfo::find($this->notification->text['debtorID']);
+                $entity = UniverseName::firstOrNew(
+                    ['entity_id' => $this->notification->text['debtorID']],
+                    ['name' => trans('web::seat.unknown')]
+                );
 
                 if (! is_null($entity))
                     $attachment->field(function ($field) use ($entity) {
 
                         $field->title('Due By')
-                            ->content($entity->name);
+                            ->content(is_null($entity->category) ?
+                                $entity->name :
+                                $this->zKillBoardToSlackLink($entity->category, $entity->entity_id, $entity->name));
 
                     });
             });

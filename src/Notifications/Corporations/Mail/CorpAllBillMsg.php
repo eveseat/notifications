@@ -23,9 +23,11 @@
 namespace Seat\Notifications\Notifications\Corporations\Mail;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Seat\Eveapi\Models\Alliances\Alliance;
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
-use Seat\Eveapi\Models\Corporation\CorporationInfo;
+use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractMailNotification;
 use Seat\Notifications\Traits\NotificationTools;
 
@@ -34,7 +36,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Corporations
  */
-class CorpAllBillMsg extends AbstractMailNotification
+class CorpAllBillMsg extends AbstractMailNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -53,6 +55,22 @@ class CorpAllBillMsg extends AbstractMailNotification
         $this->notification = $notification;
     }
 
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['debtorID'] ?? null,
+            $this->notification->text['creditorID'] ?? null,
+        ])->filter()->unique()->values();
+    }
+
     /**
      * @param  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
@@ -68,25 +86,17 @@ class CorpAllBillMsg extends AbstractMailNotification
                     $this->mssqlTimestampToDate($this->notification->text['dueDate'])->toRfc7231String())
             );
 
-        $entity = Alliance::find($this->notification->text['creditorID']);
+        $creditor = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['creditorID']],
+            ['name' => trans('web::seat.unknown')]
+        );
+        $debtor = UniverseName::firstOrNew(
+            ['entity_id' => $this->notification->text['debtorID']],
+            ['name' => trans('web::seat.unknown')]
+        );
 
-        if (is_null($entity))
-            CorporationInfo::find($this->notification->text['creditorID']);
-
-        if (! is_null($entity))
-            $mail->action(
-                sprintf('Due to: %s', $entity->name),
-                sprintf('https://zkillboard.com/%s/%d', 'corporation', $entity->id));
-
-        $entity = Alliance::find($this->notification->text['debtorID']);
-
-        if (is_null($entity))
-            CorporationInfo::find($this->notification->text['debtorID']);
-
-        if (! is_null($entity))
-            $mail->action(
-                sprintf('Due by: %s', $entity->name),
-                sprintf('https://zkillboard.com/%s/%d', 'corporation', $entity->id));
+        $mail->line(sprintf('Due to: %s', $creditor->name));
+        $mail->line(sprintf('Due by: %s', $debtor->name));
 
         return $mail;
     }

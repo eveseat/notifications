@@ -22,10 +22,13 @@
 
 namespace Seat\Notifications\Notifications\Structures\Discord;
 
+use Illuminate\Support\Collection;
 use Seat\Eveapi\Models\Character\CharacterNotification;
 use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Eveapi\Models\Sde\MapDenormalize;
 use Seat\Eveapi\Models\Universe\UniverseName;
+use Seat\Notifications\Contracts\ExposesRequiredUniverseIds;
+use Seat\Notifications\Jobs\Middleware\LoadRequiredUniverseIds;
 use Seat\Notifications\Notifications\AbstractDiscordNotification;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbed;
 use Seat\Notifications\Services\Discord\Messages\DiscordEmbedField;
@@ -37,7 +40,7 @@ use Seat\Notifications\Traits\NotificationTools;
  *
  * @package Seat\Notifications\Notifications\Structures\Slack
  */
-class AllAnchoringMsg extends AbstractDiscordNotification
+class AllAnchoringMsg extends AbstractDiscordNotification implements ExposesRequiredUniverseIds
 {
     use NotificationTools;
 
@@ -46,6 +49,21 @@ class AllAnchoringMsg extends AbstractDiscordNotification
     public function __construct(CharacterNotification $notification)
     {
         $this->notification = $notification;
+    }
+
+    public function middleware(): array
+    {
+        return array_merge(
+            parent::middleware(),
+            [new LoadRequiredUniverseIds]
+        );
+    }
+
+    public function getRequiredUniverseIds(): Collection
+    {
+        return collect([
+            $this->notification->text['corpID'] ?? null,
+        ])->filter()->unique()->values();
     }
 
     public function populateMessage(DiscordMessage $message, $notifiable): void
@@ -59,7 +77,10 @@ class AllAnchoringMsg extends AbstractDiscordNotification
 
                 $embed
                     ->field(function (DiscordEmbedField $field) {
-                        $system = MapDenormalize::find($this->notification->text['solarSystemID']);
+                        $system = MapDenormalize::firstOrNew(
+                            ['itemID' => $this->notification->text['solarSystemID']],
+                            ['itemName' => trans('web::seat.unknown'), 'security' => 0]
+                        );
 
                         $field->name('System')
                             ->value(
@@ -71,7 +92,10 @@ class AllAnchoringMsg extends AbstractDiscordNotification
                             );
                     })
                     ->field(function (DiscordEmbedField $field) {
-                        $moon = MapDenormalize::find($this->notification->text['moonID']);
+                        $moon = MapDenormalize::firstOrNew(
+                            ['itemID' => $this->notification->text['moonID']],
+                            ['itemName' => trans('web::seat.unknown')]
+                        );
 
                         $field->name('Moon')
                             ->value($moon->itemName);
@@ -82,14 +106,17 @@ class AllAnchoringMsg extends AbstractDiscordNotification
                     ->field(function (DiscordEmbedField $field) {
                         $corporation = UniverseName::firstOrNew(
                             ['entity_id' => $this->notification->text['corpID']],
-                            ['name' => trans('web::seat.unkown')]
+                            ['category' => 'corporation', 'name' => trans('web::seat.unknown')]
                         );
 
                         $field->name('Corporation')
-                            ->value($corporation->name);
+                            ->value($this->zKillBoardToDiscordLink('corporation', $corporation->entity_id, $corporation->name));
                     })
                     ->field(function (DiscordEmbedField $field) {
-                        $type = InvType::find($this->notification->text['typeID']);
+                        $type = InvType::firstOrNew(
+                            ['typeID' => $this->notification->text['typeID']],
+                            ['typeName' => trans('web::seat.unknown')]
+                        );
 
                         $field->name('Structure')
                             ->value(
