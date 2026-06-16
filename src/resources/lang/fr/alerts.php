@@ -48,6 +48,7 @@ return [
     'moon_mining_extraction_finished' => 'Extraction de lune terminée',
     'moon_mining_extraction_started' => 'Extraction de lune démarrée',
     'orbital_attacked' => 'Bureau des douanes attaqué',
+    'orbital_reinforced' => 'Reinforced Customs Office',
     'ownership_transferred' => 'Changement de propriétaire',
     'raffle_created' => 'Tirage au sort créé',
     'raffle_expired' => 'Tirage au sort expiré',
