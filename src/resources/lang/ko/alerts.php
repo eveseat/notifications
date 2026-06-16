@@ -48,6 +48,7 @@ return [
     'moon_mining_extraction_finished' => '문청크 추출 완료',
     'moon_mining_extraction_started' => '문청크 추출 시작',
     'orbital_attacked' => '세관이 공격받음',
+    'orbital_reinforced' => 'Reinforced Customs Office',
     'ownership_transferred' => '소유권 이전됨',
     'raffle_created' => '추첨 생성',
     'raffle_expired' => '만료된 추첨',
