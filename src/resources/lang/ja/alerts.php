@@ -48,6 +48,7 @@ return [
     'moon_mining_extraction_finished' => '月掘りが終了しました',
     'moon_mining_extraction_started' => '月掘りを開始しました',
     'orbital_attacked' => '攻撃された税関',
+    'orbital_reinforced' => 'Reinforced Customs Office',
     'ownership_transferred' => 'オーナー権限の委譲',
     'raffle_created' => '作成された抽選',
     'raffle_expired' => '期限切れの抽選',
