@@ -48,6 +48,7 @@ return [
     'moon_mining_extraction_finished' => '月矿已完成开采',
     'moon_mining_extraction_started' => '月矿已开始开采',
     'orbital_attacked' => '海关办公室遭到攻击',
+    'orbital_reinforced' => 'Reinforced Customs Office',
     'ownership_transferred' => '所有者变更',
     'raffle_created' => '抽签已创建',
     'raffle_expired' => '抽签已过期',
