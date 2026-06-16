@@ -48,6 +48,7 @@ return [
     'moon_mining_extraction_finished' => 'MM Finished Extractions',
     'moon_mining_extraction_started' => 'MM Started Extractions',
     'orbital_attacked' => 'Attacked Customs Office',
+    'orbital_reinforced' => 'Reinforced Customs Office',
     'ownership_transferred' => 'Transferred Ownership',
     'raffle_created' => 'Created Raffle',
     'raffle_expired' => 'Expired Raffle',
