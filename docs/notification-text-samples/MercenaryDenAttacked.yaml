@@ -1,0 +1,18 @@
+aggressorAllianceName: Calculated Disorder
+aggressorCharacterID: 2114408669
+aggressorCorporationName: Sith Navy
+armorPercentage: 100.0
+hullPercentage: 100.0
+itemID: &id001 1054221260563
+mercenaryDenShowInfoData:
+  - showinfo
+  - 85230
+  - *id001
+planetID: 40303921
+planetShowInfoData:
+  - showinfo
+  - 11
+  - 40303921
+shieldPercentage: 86.06991511721807
+solarsystemID: 30004800
+typeID: 85230

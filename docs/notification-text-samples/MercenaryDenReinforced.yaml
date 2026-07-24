@@ -1,0 +1,17 @@
+aggressorAllianceName: Calculated Disorder
+aggressorCharacterID: 2114190616
+aggressorCorporationName: Sith Navy
+itemID: &id001 1054221260563
+mercenaryDenShowInfoData:
+  - showinfo
+  - 85230
+  - *id001
+planetID: 40303921
+planetShowInfoData:
+  - showinfo
+  - 11
+  - 40303921
+solarsystemID: 30004800
+timestampEntered: 134267066949210942
+timestampExited: 134267924529210942
+typeID: 85230
