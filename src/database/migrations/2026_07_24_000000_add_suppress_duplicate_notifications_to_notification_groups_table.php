@@ -24,10 +24,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-/**
- * Class AddSuppressDuplicateNotificationsToNotificationGroups.
- */
-class AddSuppressDuplicateNotificationsToNotificationGroups extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -50,4 +47,4 @@ class AddSuppressDuplicateNotificationsToNotificationGroups extends Migration
             $table->dropColumn('suppress_duplicate_notifications');
         });
     }
-}
+};
