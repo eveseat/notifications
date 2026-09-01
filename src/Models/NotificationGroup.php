@@ -39,6 +39,14 @@ class NotificationGroup extends Model
      */
     protected $fillable = [
         'name',
+        'suppress_duplicate_notifications',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'suppress_duplicate_notifications' => 'boolean',
     ];
 
     /**

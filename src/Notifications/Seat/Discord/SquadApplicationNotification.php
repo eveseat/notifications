@@ -41,6 +41,14 @@ class SquadApplicationNotification extends AbstractDiscordNotification
         $this->application = $application;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'squad_application',
+            'application_id' => $this->application->application_id,
+        ];
+    }
+
     public function populateMessage(DiscordMessage $message, $notifiable): void
     {
         $message

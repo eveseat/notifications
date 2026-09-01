@@ -73,4 +73,44 @@ abstract class AbstractNotification extends AbstractNotificationJob
     {
         $this->mentions = $mentions;
     }
+
+    /**
+     * Return the identifying payload used for duplicate suppression.
+     * Return an associative array describing the event identity, or null to
+     * skip suppression for this notification instance.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'notification' => static::class,
+            'properties' => collect((array) $this)
+                ->mapWithKeys(function ($value, $key) {
+                    if (! str_contains($key, "\0"))
+                        return [$key => $value];
+
+                    return [substr($key, strrpos($key, "\0") + 1) => $value];
+                })
+                ->except([
+                    'mentions',
+                    'job',
+                    'queue',
+                    'connection',
+                    'delay',
+                    'afterCommit',
+                    'chained',
+                    'chainConnection',
+                    'chainQueue',
+                    'chainCatchCallbacks',
+                    'middleware',
+                    'tries',
+                    'timeout',
+                    'maxExceptions',
+                    'locale',
+                ])
+                ->sortKeys()
+                ->all(),
+        ];
+    }
 }

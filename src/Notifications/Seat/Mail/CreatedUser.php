@@ -48,6 +48,14 @@ class CreatedUser extends AbstractMailNotification
         $this->user = $user;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'created_user',
+            'user_id' => $this->user->getKey(),
+        ];
+    }
+
     /**
      * Get the mail representation of the notification.
      *

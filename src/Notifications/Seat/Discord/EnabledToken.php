@@ -46,6 +46,14 @@ class EnabledToken extends AbstractDiscordNotification
         $this->token = $token;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'enabled_token',
+            'character_id' => $this->token->character_id,
+        ];
+    }
+
     /**
      * @param  DiscordMessage  $message
      * @param  $notifiable

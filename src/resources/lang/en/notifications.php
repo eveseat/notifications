@@ -47,6 +47,10 @@ return [
     'new_slack' => 'New Slack Integration',
     'configured_integrations' => 'Configured Integrations',
     'settings' => 'Settings',
+    'save_settings' => 'Save',
+    'suppress_duplicate_notifications' => 'Suppress duplicate notifications',
+    'suppress_duplicate_notifications_help' => 'When enabled, identical copies of the same event will only be sent once per configured destination for this group.',
+    'successfully_updated_settings' => 'Settings updated!',
 
     'setup_label' => 'Notifications Setup',
     'setup_description' => 'Allow user to define notification channels and subscriptions.',

@@ -49,6 +49,15 @@ class SquadMemberRemovedNotification extends AbstractDiscordNotification
         $this->user = $user;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'squad_member_removed',
+            'squad_id' => $this->squad->id ?? null,
+            'user_id' => $this->user->id ?? null,
+        ];
+    }
+
     /**
      * Get the Slack representation of the notification.
      *

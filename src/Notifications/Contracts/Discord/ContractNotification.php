@@ -44,6 +44,21 @@ class ContractNotification extends AbstractDiscordNotification
         $this->contract = $contract;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'contract',
+            'contract_id' => $this->contract->contract_id,
+            'status' => $this->contract->status,
+            'date_issued' => $this->contract->date_issued,
+            'date_accepted' => $this->contract->date_accepted,
+            'date_completed' => $this->contract->date_completed,
+            'date_expired' => $this->contract->date_expired,
+            'date_deleted' => $this->contract->date_deleted,
+            'updated_at' => $this->contract->updated_at,
+        ];
+    }
+
     public function populateMessage(DiscordMessage $message, $notifiable): void
     {
         $message

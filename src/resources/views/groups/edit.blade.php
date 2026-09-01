@@ -225,6 +225,37 @@
 
     <div class="card">
         <div class="card-header">
+            <h3 class="card-title">{{ trans('notifications::notifications.settings') }}</h3>
+        </div>
+        <div class="card-body">
+            <form role="form" action="{{ route('seatcore::notifications.groups.edit.settings') }}" method="post">
+                {{ csrf_field() }}
+                <input name="id" value="{{ $group->id }}" type="hidden">
+                <input type="hidden" name="suppress_duplicate_notifications" value="0">
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               name="suppress_duplicate_notifications"
+                               value="1"
+                               {{ $group->suppress_duplicate_notifications ? 'checked' : '' }}>
+                        {{ trans('notifications::notifications.suppress_duplicate_notifications') }}
+                    </label>
+                </div>
+
+                <p class="text-muted">
+                    {{ trans('notifications::notifications.suppress_duplicate_notifications_help') }}
+                </p>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    {{ trans('notifications::notifications.save_settings') }}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
             <h3 class="card-title">{{ trans_choice('notifications::notifications.affiliation', 2) }}</h3>
         </div>
         <div class="card-body">

@@ -32,6 +32,7 @@ use Seat\Notifications\Http\Validation\GroupAffiliation;
 use Seat\Notifications\Http\Validation\GroupAlert;
 use Seat\Notifications\Http\Validation\GroupAllAlert;
 use Seat\Notifications\Http\Validation\GroupIntegration;
+use Seat\Notifications\Http\Validation\GroupSettings;
 use Seat\Notifications\Models\GroupAffiliation as GroupAffiliationModel;
 use Seat\Notifications\Models\GroupAlert as GroupAlertModel;
 use Seat\Notifications\Models\GroupMention;
@@ -104,6 +105,22 @@ class GroupsController extends Controller
 
         return redirect()->back()
             ->with('success', 'Group removed!');
+    }
+
+    /**
+     * @param  \Seat\Notifications\Http\Validation\GroupSettings  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function postUpdateSettings(GroupSettings $request)
+    {
+        $group = NotificationGroup::findOrFail($request->input('id'));
+
+        $group->update([
+            'suppress_duplicate_notifications' => $request->boolean('suppress_duplicate_notifications'),
+        ]);
+
+        return redirect()->back()
+            ->with('success', trans('notifications::notifications.successfully_updated_settings'));
     }
 
     /**

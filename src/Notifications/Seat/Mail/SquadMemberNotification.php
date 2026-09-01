@@ -56,6 +56,15 @@ class SquadMemberNotification extends AbstractNotification
         $this->user = User::find($member->user_id);
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'squad_member',
+            'squad_id' => $this->squad->id ?? null,
+            'user_id' => $this->user->id ?? null,
+        ];
+    }
+
     /**
      * Get the mail representation of the notification.
      *

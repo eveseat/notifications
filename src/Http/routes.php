@@ -98,6 +98,10 @@ Route::group([
             ->name('seatcore::notifications.groups.edit')
             ->uses('GroupsController@getEditGroup');
 
+        Route::post('/edit/settings')
+            ->name('seatcore::notifications.groups.edit.settings')
+            ->uses('GroupsController@postUpdateSettings');
+
         Route::post('/edit/integration/add')
             ->name('seatcore::notifications.groups.edit.integration.add')
             ->uses('GroupsController@postAddIntegrations');
