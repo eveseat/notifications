@@ -56,6 +56,14 @@ class Killmail extends AbstractSlackNotification implements ExposesRequiredUnive
         $this->killmail = $killmail;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'killmail',
+            'killmail_id' => $this->killmail->killmail_id,
+        ];
+    }
+
     public function middleware(): array
     {
         return array_merge(

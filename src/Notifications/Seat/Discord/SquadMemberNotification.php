@@ -49,6 +49,15 @@ class SquadMemberNotification extends AbstractDiscordNotification
         $this->user = $user;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'squad_member',
+            'squad_id' => $this->squad->id ?? null,
+            'user_id' => $this->user->id ?? null,
+        ];
+    }
+
     public function populateMessage(DiscordMessage $message, $notifiable)
     {
         $message

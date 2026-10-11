@@ -49,6 +49,14 @@ class EnabledToken extends AbstractSlackNotification
         $this->token = $token;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'enabled_token',
+            'character_id' => $this->token->character_id,
+        ];
+    }
+
     /**
      * Get the Slack representation of the notification.
      *

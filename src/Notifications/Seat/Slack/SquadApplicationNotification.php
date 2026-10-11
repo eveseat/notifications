@@ -49,6 +49,14 @@ class SquadApplicationNotification extends AbstractSlackNotification
         $this->application = $application;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'squad_application',
+            'application_id' => $this->application->application_id,
+        ];
+    }
+
     /**
      * Get the Slack representation of the notification.
      *

@@ -48,6 +48,14 @@ class SquadApplicationNotification extends AbstractNotification
         $this->application = $application;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'squad_application',
+            'application_id' => $this->application->application_id,
+        ];
+    }
+
     /**
      * Get the mail representation of the notification.
      *

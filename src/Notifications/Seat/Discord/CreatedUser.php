@@ -50,6 +50,14 @@ class CreatedUser extends AbstractDiscordNotification
         $this->user = $user;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'created_user',
+            'user_id' => $this->user->getKey(),
+        ];
+    }
+
     /**
      * @param  DiscordMessage  $message
      * @param  $notifiable

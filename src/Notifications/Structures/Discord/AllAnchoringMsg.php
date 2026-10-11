@@ -51,6 +51,17 @@ class AllAnchoringMsg extends AbstractDiscordNotification implements ExposesRequ
         $this->notification = $notification;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'character_notification',
+            'notification_type' => $this->notification->type,
+            'sender_id' => $this->notification->sender_id,
+            'timestamp' => $this->notification->timestamp,
+            'text' => $this->notification->text,
+        ];
+    }
+
     public function middleware(): array
     {
         return array_merge(

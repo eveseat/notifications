@@ -44,6 +44,16 @@ class InActiveCorpMember extends AbstractDiscordNotification
         $this->member = $member;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'inactive_member',
+            'character_id' => $this->member->character_id,
+            'corporation_id' => $this->member->corporation_id,
+            'logoff_date' => $this->member->logoff_date,
+        ];
+    }
+
     /**
      * @param  DiscordMessage  $message
      * @param  $notifiable

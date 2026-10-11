@@ -48,6 +48,14 @@ class CreatedUser extends AbstractSlackNotification
         $this->user = $user;
     }
 
+    public function duplicateSuppressionKey()
+    {
+        return [
+            'type' => 'created_user',
+            'user_id' => $this->user->getKey(),
+        ];
+    }
+
     /**
      * Get the Slack representation of the notification.
      *
