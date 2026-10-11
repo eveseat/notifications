@@ -45,6 +45,8 @@ return [
     'corporation_application_new' => '新的军团申请',
     'corporation_war_declared' => '企业已宣战',
     'entosis_capture_started' => '侵蚀链接 占领已开始',
+    'mercenary_den_attacked' => 'Mercenary Den Attacked',
+    'mercenary_den_reinforced' => 'Mercenary Den Reinforced',
     'moon_mining_extraction_finished' => '月矿已完成开采',
     'moon_mining_extraction_started' => '月矿已开始开采',
     'orbital_attacked' => '海关办公室遭到攻击',
