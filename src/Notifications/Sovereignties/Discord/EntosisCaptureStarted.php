@@ -62,7 +62,7 @@ class EntosisCaptureStarted extends AbstractDiscordNotification
     public function populateMessage(DiscordMessage $message, $notifiable)
     {
         $message
-            ->content('A sovereignty structure is beeing captured!')
+            ->content('A sovereignty structure is being captured!')
             ->embed(function (DiscordEmbed $embed) {
                 $embed->timestamp($this->notification->timestamp);
                 $embed->author('SeAT Sovereignty Health', asset('web/img/favicon/apple-icon-180x180.png'));

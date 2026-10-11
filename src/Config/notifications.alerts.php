@@ -188,6 +188,20 @@ return [
             'discord' => \Seat\Notifications\Notifications\Structures\Discord\MoonMiningExtractionStarted::class,
         ],
     ],
+    'MercenaryDenAttacked' => [
+        'label' => 'notifications::alerts.mercenary_den_attacked',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\MercenaryDenAttacked::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\MercenaryDenAttacked::class,
+        ],
+    ],
+    'MercenaryDenReinforced' => [
+        'label' => 'notifications::alerts.mercenary_den_reinforced',
+        'handlers' => [
+            'discord' => \Seat\Notifications\Notifications\Structures\Discord\MercenaryDenReinforced::class,
+            'slack' => \Seat\Notifications\Notifications\Structures\Slack\MercenaryDenReinforced::class,
+        ],
+    ],
     'OrbitalAttacked' => [
         'label' => 'notifications::alerts.orbital_attacked',
         'handlers' => [
