@@ -45,6 +45,8 @@ return [
     'corporation_application_new' => '新しいコーポレーションアプリケーション',
     'corporation_war_declared' => 'Corporation War Declared',
     'entosis_capture_started' => 'Entosis Capture Started',
+    'mercenary_den_attacked' => 'Mercenary Den Attacked',
+    'mercenary_den_reinforced' => 'Mercenary Den Reinforced',
     'moon_mining_extraction_finished' => '月掘りが終了しました',
     'moon_mining_extraction_started' => '月掘りを開始しました',
     'orbital_attacked' => '攻撃された税関',
