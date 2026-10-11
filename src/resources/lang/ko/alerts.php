@@ -45,6 +45,8 @@ return [
     'corporation_application_new' => '새로운 회사 이력서',
     'corporation_war_declared' => 'Corporation War Declared',
     'entosis_capture_started' => 'Entosis Capture Started',
+    'mercenary_den_attacked' => 'Mercenary Den Attacked',
+    'mercenary_den_reinforced' => 'Mercenary Den Reinforced',
     'moon_mining_extraction_finished' => '문청크 추출 완료',
     'moon_mining_extraction_started' => '문청크 추출 시작',
     'orbital_attacked' => '세관이 공격받음',
