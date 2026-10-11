@@ -45,6 +45,8 @@ return [
     'corporation_application_new' => 'Nouvelle candidature à une corporation',
     'corporation_war_declared' => 'Corporation War Declared',
     'entosis_capture_started' => 'Entosis Capture Started',
+    'mercenary_den_attacked' => 'Mercenary Den Attacked',
+    'mercenary_den_reinforced' => 'Mercenary Den Reinforced',
     'moon_mining_extraction_finished' => 'Extraction de lune terminée',
     'moon_mining_extraction_started' => 'Extraction de lune démarrée',
     'orbital_attacked' => 'Bureau des douanes attaqué',
